@@ -1,8 +1,10 @@
-import Vue from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
+import './assets/tailwind.css'
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
 
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+const app = createApp(App);
+app.config.productionTip = false;
+app.use(Antd);
+app.mount('#app');
