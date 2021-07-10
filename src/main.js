@@ -1,30 +1,17 @@
-import {createApp} from 'vue'
-import App from './App.vue'
-import Index from './Index.vue'
-import './assets/tailwind.css'
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
-import { createRouter, createWebHistory } from 'vue-router'
+import { createApp } from 'vue'
+import './assets/css/tailwind.css'
 
+import ElementPlus from 'element-plus';
+import 'element-plus/lib/theme-chalk/index.css';
 
-const app = createApp({});
+import { router } from './route'
 
-app.component("index", App)
-app.component("home", Index)
+import App from "@/App";
 
-const home = app.component('index')
-const index = app.component('home')
-
-const routes = [
-    { path: '/', component: home },
-    { path: '/home', component: index },
-]
-
-const router = createRouter({
-    history: createWebHistory(),
-    routes: routes,
-})
-
+const app = createApp(App)
+app.use(ElementPlus)
 app.use(router)
-app.use(Antd);
-app.mount('#app');
+
+app.mount('#app')
+
+
