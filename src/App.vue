@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <p class="text-2xl text-blue-400"> Hello world</p>
-    <a-button>antd-button</a-button>
+    <router-link to="/home"><a-button>antd-button</a-button></router-link>
   </div>
 </template>
 
