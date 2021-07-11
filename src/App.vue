@@ -1,8 +1,10 @@
 <template>
   <div class="page">
     <el-container class="page">
-      <el-header class="flex w-full">
-        <router-link to="/about"> about </router-link>
+      <el-header class="flex w-full" v-if="$route.path !== '/login'">
+        <Header
+            active="/"
+        > </Header>
       </el-header>
 
       <router-view></router-view>
@@ -12,8 +14,10 @@
 </template>
 
 <script>
+import Header from "@/components/Public/Header";
 export default {
   name: 'App',
+  components: {Header},
 }
 </script>
 
@@ -23,10 +27,9 @@ export default {
 }
 
 .el-header {
-  text-align: center;
-  align-content: center;
   color: white;
   background: #0f1423;
+  position: sticky !important;
+  bottom: 0;
 }
 </style>
-
