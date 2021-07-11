@@ -5,6 +5,7 @@ const login = () => import("../components/login")
 const about = () => import("../components/about")
 const Home = () => import("../pages/Home")
 const Login = () => import("../pages/Login")
+const Me = () => import("../pages/Me")
 
 const routes = [
     {
@@ -30,6 +31,16 @@ const routes = [
     {
         path: "/",
         name: "HomePage",
+        component: Home
+    },
+    {
+        path: "/me",
+        name: "me",
+        component: Me,
+    },
+    {
+        path: "/editInfo",
+        name: "editPersonalInfo",
         component: Home
     }
 ]
