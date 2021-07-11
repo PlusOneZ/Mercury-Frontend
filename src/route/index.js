@@ -1,15 +1,16 @@
-import { createRouter,createWebHashHistory} from "vue-router";
+import { createRouter,createWebHashHistory } from "vue-router";
 
+const home = () => import("../components/com")
 const login = () => import("../components/login")
 const about = () => import("../components/about")
 const Home = () => import("../pages/Home")
-const CommoditySearch = () => import("../pages/CommoditySearch")
+const Login = () => import("../pages/Login")
 
 const routes = [
     {
         path: "/home",
         name: "home",
-        component: Home
+        component: home
     },
     {
         path: "/login",
@@ -22,14 +23,14 @@ const routes = [
         component: about
     },
     {
+        path: "/login",
+        name: 'login',
+        component: Login
+    },
+    {
         path: "/",
         name: "HomePage",
         component: Home
-    },
-    {
-        path: "/CommoditySearch",
-        name: "CommoditySearch",
-        component: CommoditySearch
     }
 ]
 

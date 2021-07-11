@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-xl w-56 mx-3 my-3 bg-white divide-y divide-gray-200 bg-opacity-50 bg-blur hover:shadow-xl">
+  <div class="rounded-xl comm mx-3 my-3 bg-white divide-y divide-gray-200 bg-opacity-50 bg-blur hover:shadow-xl">
     <img
         class="w-56 rounded-b-none rounded-xl image"
         :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
@@ -49,5 +49,8 @@ export default {
 <style scoped>
 .bg-blur {
   backdrop-filter: blur(10px) !important;
+}
+.comm {
+  width: 11rem;
 }
 </style>

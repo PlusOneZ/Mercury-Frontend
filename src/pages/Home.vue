@@ -10,12 +10,6 @@
     <div>
       <Heated></Heated>
 
-      <!--        <div class="grid-cols-6 grid">-->
-      <!--          <CommodityThumbnail-->
-      <!--              v-for="i in 100"-->
-      <!--              :key="i"-->
-      <!--          ></CommodityThumbnail>-->
-      <!--        </div>-->
       <CategoryView> </CategoryView>
     </div>
   </el-main>
@@ -52,10 +46,6 @@ export default {
 .slide-window {
   @apply text-center justify-center;
   width: 80%;
-}
-
-.page {
-  height: 100%
 }
 
 </style>

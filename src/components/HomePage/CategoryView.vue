@@ -31,16 +31,14 @@
         </el-menu>
       </el-aside>
 
-      <el-main>
-        <div class="category-window col-span-3">
-          <div
-              class="inline-flex"
+      <el-main class="col-span-3">
+        <div class="category-window grid md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-6 lg:grid-cols-5">
+          <CommodityThumbnail
               v-for="i in 15"
               :key="i"
           >
-            <CommodityThumbnail>
-            </CommodityThumbnail>
-          </div>
+          </CommodityThumbnail>
+
         </div>
       </el-main>
     </el-container>
@@ -79,6 +77,7 @@ export default {
   @apply rounded-xl;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(20px);
+  padding: 1rem;
 }
 
 
@@ -86,5 +85,6 @@ export default {
   position: sticky !important;
   top: 0;
 }
+
 
 </style>
