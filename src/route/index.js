@@ -6,6 +6,9 @@ const about = () => import("../components/about")
 const Home = () => import("../pages/Home")
 const Login = () => import("../pages/Login")
 const Me = () => import("../pages/Me")
+const Chat = () => import("../pages/Chat")
+const PostDetail = () => import("../pages/PostDetail")
+const OrderDetail = () => import("../pages/OrderDetail")
 
 const routes = [
     {
@@ -42,6 +45,21 @@ const routes = [
         path: "/editInfo",
         name: "editPersonalInfo",
         component: Home
+    }
+    {
+        path: "/chat",
+        name: "chat",
+        component: Chat
+    },
+    {
+        path: "/OrderDetail",
+        name: "OrderDetail",
+        component: OrderDetail
+    },
+    {
+        path: "/PostDetail",
+        name: "PostDetail",
+        component: PostDetail
     }
 ]
 
