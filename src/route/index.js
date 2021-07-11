@@ -45,7 +45,7 @@ const routes = [
         path: "/editInfo",
         name: "editPersonalInfo",
         component: Home
-    }
+    },
     {
         path: "/chat",
         name: "chat",
