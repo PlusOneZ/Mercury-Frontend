@@ -1,19 +1,24 @@
-# demo
+# mercury-frontend
 
-## Project setup 请先运行这段程序
+## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development 用于调试
+### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-## 已经配置好的环境
+### Compiles and minifies for production
+```
+npm run build
+```
 
-* **Vue.js v3**
-* **Element Plus** （Antd for Vue 的教程中大量使用了 TypeScript，不太适合配置和使用）
-* **TailwindCSS** 
+### Lints and fixes files
+```
+npm run lint
+```
 
-**请在 [src/components/com.vue](src/components/com.vue) 中添加你的代码并运行**
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
