@@ -64,8 +64,8 @@ const routes = [
         component: PostDetail
     },
     {
-        path: "/MyOrders",
-        name: "MyOrders",
+        path: "/myOrders",
+        name: "myOrders",
         component: MyOrders
     }
 ]

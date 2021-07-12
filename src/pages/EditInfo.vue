@@ -10,7 +10,7 @@
       <el-form-item>
         <el-row type="flex" class="row-bg" justify="space-around">
           <el-space :size="10" spacer="|">
-            <el-button type="primary" @click="submitForm('ruleForm')">提交修改</el-button>
+            <router-link to="/me"><el-button type="primary" @click="submitForm('ruleForm')">提交修改</el-button></router-link>
             <el-button @click="resetForm('ruleForm')">重置修改</el-button>
           </el-space>
         </el-row>
