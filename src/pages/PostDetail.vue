@@ -1,8 +1,5 @@
 <template>
-  <el-container>
-    <el-header>
 
-    </el-header>
     <el-main >
       <div class="bg-white  justify-center divide-y divide-black">
         <div class="flex flex-row space-x-8">
@@ -64,7 +61,7 @@
         </div>  
       </div>
     </el-main>
-  </el-container>
+
 </template>
 
 <script>
