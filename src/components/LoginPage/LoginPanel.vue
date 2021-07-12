@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {api} from "@/request";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -59,7 +59,7 @@ export default {
       data.append("userId", this.sid)
       data.append("password", this.password)
 
-      this.requestSender({
+      api({
         url: "user/login",
         method: "POST",
         data: data
@@ -97,12 +97,7 @@ export default {
     }
   },
   mounted() {
-    this.requestSender = axios.create({
-      baseURL: "https://139.196.20.137:5001/api",
-      withCredentials: true,
-      timeout: 7000,
-      responseType: "json"
-    })
+
   }
 }
 </script>
