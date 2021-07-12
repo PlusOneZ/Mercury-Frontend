@@ -1,6 +1,6 @@
 <template>
 
-  <form @submit.prevent="postTestInfo">
+  <form @submit.prevent="tryLogin">
     <div class="middle" style="padding-bottom: 1rem !important;">
       <div class="text-center">
         <svg class="inline-block" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
@@ -28,53 +28,81 @@
       <p class="py-4 pl-4 text-xl font-bold font-sans"> Mercury 校园二手交易平台 </p>
     </div>
 
-    <input type="text" placeholder="学号 / 工号">
-    <input type="password" placeholder="密码">
-    <router-link to="/login/register" class="hover:text-green-200"> 新用户？去注册 </router-link>
-    <router-link to="#" class="float-right pb-4 hover:text-green-200"> 忘记密码 </router-link>
+    <input type="text" placeholder="学号 / 工号" v-model="sid">
+    <input type="password" placeholder="密码" v-model="password">
+    <router-link to="/login/register" class="hover:text-green-200"> 新用户？去注册</router-link>
+    <router-link to="#" class="float-right pb-4 hover:text-green-200"> 忘记密码</router-link>
     <button type="submit"
             class="h-12 bg-gradient-to-r from-blue-400 to-green-300 hover:from-green-200 hover:to-blue-300"
-    > 登陆 </button>
+    > 登陆
+    </button>
 
   </form>
 </template>
 
 <script>
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "LoginPanel",
-  methods: {
-    postTestInfo() {
-      let obj = {
-        "SchoolId": "122223",
-        "Nickname": "软院之光光光光",
-        "RealName": "rcw",
-        "Phone": "1111111112 ",
-        "Password": "WHO_CODE_HARDER_THAN_ME",
-        "Major": "SE",
-        "Credit": 10,
-        "Role": "Student",
-        "Grade": 2,
-        "Brief": "I_AM_THE_BEST",
-      }
-      let data = new FormData()
-      for (let attr in obj) {
-        data.append(attr, obj[attr])
-      }
-      console.log(data)
-      const a = axios.create({
-        baseURL: "https://139.196.20.137:5001/api/",
-        timeout: 5000,
-      })
-      a("user", {
-        method: "POST",
-      }).then((response) => {
-        console.log(response)
-      }, (err) => {
-        console.log(err)
-      })
+  data() {
+    return {
+      sid: "",
+      password: "",
+      requestSender: undefined
     }
+  },
+  methods: {
+    tryLogin() {
+      let data = new FormData()
+      data.append("userId", this.sid)
+      data.append("password", this.password)
+
+      this.requestSender({
+        url: "user/login",
+        method: "POST",
+        data: data
+      }).then(
+          // Valid response
+          (response) => {
+            console.log(response)
+
+            // Success login
+            if (response.data.status === 'success') {
+              let user = response.data.user[0];  // TODO: if backend changes, modify this
+              ElMessage.success({
+                message: '欢迎回来，' + user.Nickname,
+                type: 'success'
+              })
+              this.$router.push("/")
+            }
+            // Wrong user id or password
+            else {
+              ElMessage.error({
+                message: '用户名或密码错误',
+                type: 'error'
+              })
+            }
+          },
+
+          // No response
+          (error) => {
+            console.log(error)
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          })
+    }
+  },
+  mounted() {
+    this.requestSender = axios.create({
+      baseURL: "https://139.196.20.137:5001/api",
+      withCredentials: true,
+      timeout: 7000,
+      responseType: "json"
+    })
   }
 }
 </script>
