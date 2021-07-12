@@ -2,7 +2,7 @@
   <div class="block" style="width: 100%">
     <el-dropdown>
       <div style="text-align: right;">
-        <router-link to="/">
+        <router-link to="/login/">
           <div style="line-height: 60px; float: left" class="inline-flex">
             <div class="pt-2 pr-5">
               <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="40" height="40">

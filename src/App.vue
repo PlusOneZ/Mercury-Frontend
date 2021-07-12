@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-container class="page">
-      <el-header class="flex w-full" v-if="$route.path !== '/login'">
+      <el-header class="flex w-full" v-if="!$route.path.startsWith('/login')">
         <Header
             active="/"
         > </Header>
