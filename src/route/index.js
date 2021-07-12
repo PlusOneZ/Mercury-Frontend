@@ -9,6 +9,8 @@ const Me = () => import("../pages/Me")
 const Chat = () => import("../pages/Chat")
 const PostDetail = () => import("../pages/PostDetail")
 const OrderDetail = () => import("../pages/OrderDetail")
+const CommoditySearch = () => import("../pages/CommoditySearch")
+const CommodityDetail = () =>import("../pages/CommodityDetail")
 
 const routes = [
     {
@@ -60,6 +62,16 @@ const routes = [
         path: "/postDetail",
         name: "PostDetail",
         component: PostDetail
+    },
+    {
+        path: "/CommoditySearch",
+        name: "CommoditySearch",
+        component: CommoditySearch
+    },
+    {
+        path: "/CommodityDetail",
+        name: "CommodityDetail",
+        component: CommodityDetail
     }
 ]
 
