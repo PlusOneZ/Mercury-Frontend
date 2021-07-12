@@ -2,9 +2,8 @@
 
   <div class="common-layout">
     <el-container class="page">
-      <el-header class="flex">Header</el-header>
       <el-container class="h-24 flex justify-around items-center ">
-        <div class="font-bold text-blue-600 ">Mercy</div>
+        <div class="font-bold text-blue-600 ">Mercury</div>
         <div class="flex justify-center">
           <el-dropdown @command="handleClick">
             <el-button type="primary">
@@ -75,6 +74,7 @@
 <script>
 import CommodityThumbnail from "@/components/Public/CommodityThumbnail";
 import HotGoodThumbnail from "@/components/Public/HotGoodThumbnail";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "CommoditySearch",
@@ -93,7 +93,8 @@ export default {
       currentPage: 1,
       selectType: '宝贝',
       selectTypeList: ['宝贝', '卖家名', '标签'],
-      selectId: 1
+      selectId: 1,
+      isAlert: false
     };
   },
   mounted() {
@@ -123,7 +124,17 @@ export default {
       }
     },
     pageJump: function () {
+      let str = this.input.replace(' ', '');
+      if(str.length === 0)
+      {
+        ElMessage.warning({
+          message: '搜索内容不能为空',
+          type: 'warning'
+        });
+        return
+      }
       console.log('success')
+      this.isAlert = false
       this.$router.push({
         path: '/CommoditySearch',
         query: {
