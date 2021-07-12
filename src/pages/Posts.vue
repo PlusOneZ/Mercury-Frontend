@@ -10,7 +10,7 @@
         <div class="grid grid-cols-2 h-16 pr-24 pt-2">
           <p>亲~有什么需要的吗？在这里发帖哦！</p>
           <div>
-            <el-button class="float-right" type="primary">发布求物帖</el-button>
+            <el-button class="float-right" type="primary" @click="createPost">发布求物帖</el-button>
           </div>
         </div>
       </div>
@@ -34,7 +34,12 @@
 import PostThumbnail from "../components/Public/PostThumbnail";
 export default {
   name: "Posts",
-  components: {PostThumbnail}
+  components: {PostThumbnail},
+  methods: {
+    createPost() {
+      this.$router.push("/postEdit")
+    }
+  }
 }
 </script>
 
