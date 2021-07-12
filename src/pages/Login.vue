@@ -64,6 +64,9 @@
       <!--      <div class="h-2"></div>-->
       <!--      <button type="button" class="my-2 h-8 border-2 border-indigo-400 hover:border-indigo-600"> 统一认证登陆</button>-->
     </form>
+    <p>
+      {{ response }}
+    </p>
   </section>
 </template>
 
@@ -72,6 +75,11 @@ import axios from "axios";
 
 export default {
   name: "Login",
+  data() {
+    return {
+      response: "",
+    }
+  },
   methods: {
     postTestInfo() {
       let data = {
@@ -88,13 +96,14 @@ export default {
       }
       console.log(data)
       const a = axios.create({
-        baseURL: "https://139.196.20.137:5001/api",
+        baseURL: "https://localhost:5001/api",
         timeout: 5000,
       })
       a("user", {
         method: "GET",
       }).then((response) => {
         console.log(response)
+
       }, (err) => {
         console.log(err)
       })
