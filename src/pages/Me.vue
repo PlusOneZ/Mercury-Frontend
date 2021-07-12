@@ -56,8 +56,8 @@
     </el-row>
     <el-row type="flex" class="row-bg" justify="space-around">
       <el-space :size="100" spacer="|">
-        <el-button size="medium" type="primary" icon="el-icon-star-on">收藏夹</el-button>
-        <el-button size="medium" type="primary" icon="el-icon-shopping-cart-2">购物车</el-button>
+        <router-link to="/likes"><el-button size="medium" type="primary" icon="el-icon-star-on">收藏夹</el-button></router-link>
+        <router-link to="/ShoppingCart"><el-button size="medium" type="primary" icon="el-icon-shopping-cart-2">购物车</el-button></router-link>
         <router-link to="/myOrders"><el-button size="medium" type="primary" icon="el-icon-s-goods">我的订单</el-button></router-link>
         <el-button size="medium" type="primary" icon="el-icon-date">发布历史</el-button>
       </el-space>

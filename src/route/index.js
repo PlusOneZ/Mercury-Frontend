@@ -1,22 +1,39 @@
-import { createRouter,createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
-const home = () => import("../components/com")
-const login = () => import("../components/login")
-const about = () => import("../components/about")
-const Home = () => import("../pages/Home")
-const Login = () => import("../pages/Login")
-const Me = () => import("../pages/Me")
-const Chat = () => import("../pages/Chat")
-const PostDetail = () => import("../pages/PostDetail")
-const OrderDetail = () => import("../pages/OrderDetail")
-const CommoditySearch = () => import("../pages/CommoditySearch")
-const CommodityDetail = () =>import("../pages/CommodityDetail")
-const EditInfo = () => import("../pages/EditInfo")
-const MyOrders = () => import("../pages/MyOrders")
+const home = () =>
+    import ("../components/com")
+const login = () =>
+    import ("../components/login")
+const about = () =>
+    import ("../components/about")
+const Home = () =>
+    import ("../pages/Home")
+const Login = () =>
+    import ("../pages/Login")
+const Me = () =>
+    import ("../pages/Me")
+const Chat = () =>
+    import ("../pages/Chat")
+const PostDetail = () =>
+    import ("../pages/PostDetail")
+const OrderDetail = () =>
+    import ("../pages/OrderDetail")
+const CommoditySearch = () =>
+    import ("../pages/CommoditySearch")
+const CommodityDetail = () =>
+    import ("../pages/CommodityDetail")
+const EditInfo = () =>
+    import ("../pages/EditInfo")
+const MyOrders = () =>
+    import ("../pages/MyOrders")
+const Others = () =>
+    import ("../pages/Others")
+const likes = () =>
+    import ("../pages/likes")
+const ShoppingCart = () =>
+    import ("../pages/ShoppingCart")
 
-
-const routes = [
-    {
+const routes = [{
         path: "/home",
         name: "home",
         component: home
@@ -80,7 +97,22 @@ const routes = [
         path: "/myOrders",
         name: "myOrders",
         component: MyOrders
-    }
+    },
+    {
+        path: "/Others",
+        name: "Others",
+        component: Others
+    },
+    {
+        path: "/likes",
+        name: "likes",
+        component: likes
+    },
+    {
+        path: "/ShoppingCart",
+        name: "ShoppingCart",
+        component: ShoppingCart
+    },
 ]
 
 export const router = createRouter({

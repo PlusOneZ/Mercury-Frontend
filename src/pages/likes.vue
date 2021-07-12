@@ -9,8 +9,7 @@
     :data="tableData"
     border
     height="700"
-    :summary-method="getSummaries"
-    show-summary
+    
     style="width: 100%; margin-top: 20px; ">
     
     
@@ -20,7 +19,7 @@
       <img
             class="w-44 h-44 rounded-b-none rounded-xl image"
             :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
-        ><span>{{ title ? title : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }}</span>
+        ><span> {{ title ? title : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }}</span>
     </el-table-column>
     <el-table-column
       prop="amount1"
@@ -38,11 +37,11 @@
           size="small">
           移除
         </el-button>
-        <router-link to="/OrderDetermine"><el-button
+        <router-link to="/CommodityDetail"><el-button
          
           type="text"
           size="small">
-          结算
+          商品详情
         </el-button>
         </router-link>
        
@@ -54,39 +53,40 @@
 </template>
 <script>
 export default {
-  name: "ShoppingCart",
+  name: "HeatedThumbnail",
   props: {
     title: String,
     img: String,
   },
+
  data() {
       return {
         tableData: [{
           commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
           amount1: '234',
-         
+        
 
         }, {
          commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
           amount1: '165',
-        
-
-        }, {
-         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '324',
-        
-        }, {
-         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '621',
          
 
         }, {
          commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '539',
+          amount1: '324',
+         
+        }, {
+         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '621',
           
 
+        }, {
+         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '539',
+         
+
         }],
-       
+      
       };
     },
     methods: {
