@@ -5,6 +5,10 @@ const login = () => import("../components/login")
 const about = () => import("../components/about")
 const Home = () => import("../pages/Home")
 const Login = () => import("../pages/Login")
+const Me = () => import("../pages/Me")
+const Chat = () => import("../pages/Chat")
+const PostDetail = () => import("../pages/PostDetail")
+const OrderDetail = () => import("../pages/OrderDetail")
 
 const routes = [
     {
@@ -31,6 +35,31 @@ const routes = [
         path: "/",
         name: "HomePage",
         component: Home
+    },
+    {
+        path: "/me",
+        name: "me",
+        component: Me,
+    },
+    {
+        path: "/editInfo",
+        name: "editPersonalInfo",
+        component: Home
+    },
+    {
+        path: "/chat",
+        name: "chat",
+        component: Chat
+    },
+    {
+        path: "/orderDetail",
+        name: "OrderDetail",
+        component: OrderDetail
+    },
+    {
+        path: "/postDetail",
+        name: "PostDetail",
+        component: PostDetail
     }
 ]
 
