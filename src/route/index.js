@@ -13,6 +13,7 @@ const CommoditySearch = () => import("../pages/CommoditySearch")
 const CommodityDetail = () =>import("../pages/CommodityDetail")
 const EditInfo = () => import("../pages/EditInfo")
 const MyOrders = () => import("../pages/MyOrders")
+const MyRelease = () => import("../pages/MyRelease")
 
 
 const routes = [
@@ -80,6 +81,11 @@ const routes = [
         path: "/myOrders",
         name: "myOrders",
         component: MyOrders
+    },
+    {
+        path: "/myRelease",
+        name: "myRelease",
+        component: MyRelease
     }
 ]
 

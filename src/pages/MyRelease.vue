@@ -30,31 +30,42 @@
       </el-table-column>
       <el-table-column
           prop="totalPrice"
-          label="总价格"
+          label="点击量"
+          width="120">
+      </el-table-column>
+      <el-table-column
+          prop="totalPrice"
+          label="收藏量"
           width="120">
       </el-table-column>
       <el-table-column
           fixed="right"
           label="操作"
-          width="240">
+          width="300">
         <template #default="scope">
           <el-button
               @click.prevent="deleteRow(scope.$index, tableData)"
               type="text"
               size="small">
-            查看订单
+            查看商品
           </el-button>
           <el-button
               @click.prevent="deleteRow(scope.$index, tableData)"
               type="text"
               size="small">
-            删除订单
+            修改信息
           </el-button>
           <el-button
               @click.prevent="deleteRow(scope.$index, tableData)"
               type="text"
               size="small">
-            联系卖家
+            删除商品
+          </el-button>
+          <el-button
+              @click.prevent="deleteRow(scope.$index, tableData)"
+              type="text"
+              size="small">
+            联系买家
           </el-button>
         </template>
       </el-table-column>
