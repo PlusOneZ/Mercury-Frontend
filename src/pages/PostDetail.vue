@@ -14,13 +14,13 @@
                 <el-avatar src="https://inews.gtimg.com/newsapp_bt/0/13217980331/1000"></el-avatar>
                 <p class="text-xl py-2">用户名</p>
               </div>
-              <div class="text-xl row-start-1 col-start-2 py-2">
-                <a href="" class="text-blue-500">举报</a>
+              <div class="ml-10 flex justify-start row-start-1 col-start-2">
+                <report ></report>
               </div>
-              <div class="text-xl row-start-2 col-start-1">
+              <div class="text-xl  ml-10 row-start-2 col-start-1">
                 浏览：12
               </div>
-              <div class="text-xl row-start-2 col-start-2">
+              <div class="text-xl  ml-10 row-start-2 col-start-2">
                 收藏：2
               </div>
             </div>
@@ -65,8 +65,13 @@
 </template>
 
 <script>
+import report from "@/components/Public/report";
+
 export default {
-  name: "PostDetail"
+  name: "PostDetail",
+  components: {
+    report
+  }
 }
 </script>
 
