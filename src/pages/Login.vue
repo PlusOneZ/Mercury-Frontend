@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     postTestInfo() {
-      let data = {
+      let obj = {
         "SchoolId": "122223",
         "Nickname": "软院之光光光光",
         "RealName": "rcw",
@@ -94,16 +94,19 @@ export default {
         "Grade": 2,
         "Brief": "I_AM_THE_BEST",
       }
+      let data = new FormData()
+      for (let attr in obj) {
+        data.append(attr, obj[attr])
+      }
       console.log(data)
       const a = axios.create({
-        baseURL: "https://localhost:5001/api",
+        baseURL: "https://139.196.20.137:5001/api/",
         timeout: 5000,
       })
       a("user", {
-        method: "GET",
+        method: "POST",
       }).then((response) => {
         console.log(response)
-
       }, (err) => {
         console.log(err)
       })
@@ -241,3 +244,4 @@ button:hover {
   border-radius: 50%;
 }
 </style>
+
