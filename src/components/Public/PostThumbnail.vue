@@ -17,7 +17,7 @@
         <p class="pl-2 text-sm leading-7"> {{ user ? User : "我是ljs" }} </p>
       </div>
       <div class="pr-6">
-        <el-button type="text" class="float-right">查看详情</el-button>
+        <el-button type="text" class="float-right" @click="viewDetail">查看详情</el-button>
       </div>
     </div>
   </div>
@@ -31,6 +31,11 @@ export default {
     avatar: String,
     user: String,
     intro: String,
+  },
+  methods: {
+    viewDetail() {
+      this.$router.push("/postDetail") // TODO: Missing parameter.
+    }
   }
 }
 </script>
