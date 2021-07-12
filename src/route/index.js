@@ -52,12 +52,12 @@ const routes = [
         component: Chat
     },
     {
-        path: "/OrderDetail",
+        path: "/orderDetail",
         name: "OrderDetail",
         component: OrderDetail
     },
     {
-        path: "/PostDetail",
+        path: "/postDetail",
         name: "PostDetail",
         component: PostDetail
     }

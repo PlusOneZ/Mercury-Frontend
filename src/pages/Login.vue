@@ -75,8 +75,8 @@ export default {
   methods: {
     postTestInfo() {
       let data = {
-        "SchoolId": "122222",
-        "Nickname": "软院之光光",
+        "SchoolId": "122223",
+        "Nickname": "软院之光光光光",
         "RealName": "rcw",
         "Phone": "1111111112 ",
         "Password": "WHO_CODE_HARDER_THAN_ME",
@@ -88,13 +88,16 @@ export default {
       }
       console.log(data)
       const a = axios.create({
-        baseURL: "haha",
+        baseURL: "https://139.196.20.137:5001/api",
         timeout: 5000,
-        responseType: "json",
-        withCredentials: true
       })
-      console.log(a)
-      this.$router.push("/")
+      a("user", {
+        method: "GET",
+      }).then((response) => {
+        console.log(response)
+      }, (err) => {
+        console.log(err)
+      })
     }
   }
 }
