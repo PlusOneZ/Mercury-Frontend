@@ -113,7 +113,7 @@ export default {
     }
   },
   mounted() {
-    console.log("in loginpanel, next: ", this.next)
+    console.log("in login panel, next: ", this.next)
     let token = CookieManager.get("token")
     if (token) {
       let formData = new FormData()
