@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+/src/request/index.js
+package-lock.json
 
 # local env files
 .env.local

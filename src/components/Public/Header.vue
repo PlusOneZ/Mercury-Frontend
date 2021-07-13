@@ -2,7 +2,7 @@
   <div class="block" style="width: 100%">
     <el-dropdown>
       <div style="text-align: right;">
-        <router-link to="/">
+        <router-link to="/login/">
           <div style="line-height: 60px; float: left" class="inline-flex">
             <div class="pt-2 pr-5">
               <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
@@ -32,8 +32,12 @@
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item><router-link to="/">首页</router-link></el-dropdown-item>
-          <el-dropdown-item><router-link to="/posts">求物帖</router-link></el-dropdown-item>
+          <el-dropdown-item>
+            <router-link to="/">首页</router-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <router-link to="/posts">求物帖</router-link>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -48,22 +52,41 @@
     >
       <el-menu-item index="/notification"><i class="el-icon-message-solid"></i>消息</el-menu-item>
       <el-menu-item index="/shoppingCart"><i class="el-icon-shopping-cart-2"></i> 购物车</el-menu-item>
-      <el-menu-item index="/likes"><i class="el-icon-star-on"></i> 收藏夹</el-menu-item>
-      <el-menu-item index="/me">
-        <el-avatar src="https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png">
+      <el-menu-item index="/likes"><i class="el-icon-star-on"></i>收藏夹</el-menu-item>
+      <el-menu-item index="/me" class="hover:text-blue-500">
+        <el-avatar :src="user.avatar ? user.avatar : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'">
           <i class="el-icon-user-solid"></i>
         </el-avatar>
+        <span class="user-name pl-5 ">{{ user.name ? user.name : "未命名牛逼人" }}</span>
       </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
+import {useStore} from 'vuex'
+
 export default {
   name: "Header",
-  props: {
-    user: Object,
-    active: String
+  props: {},
+  data() {
+    return {
+      store: null
+    }
+  },
+  computed: {
+    user() {
+      return this.store.getters['user/userInfo']
+    }
+
+  },
+  setup() {
+    console.log("in header.setup", useStore())
+    const store = useStore()
+    console.log("user", store.getters['user/userInfo'])
+    return {
+      store
+    }
   }
 }
 

@@ -5,13 +5,15 @@
         <img src="https://img.icons8.com/material-outlined/24/000000/error--v1.png" alt=""/>
       </el-button>
     </el-tooltip>
+
     <el-dialog title="举报信息" v-model="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="请填写举报理由" :label-width="formLabelWidth">
+
+      <el-form :model="form" ref="reportForm" :rules="rules">
+        <el-form-item prop="reason" label="请填写举报理由" :label-width="formLabelWidth">
           <el-input v-model="form.reason"></el-input>
         </el-form-item>
 
-        <el-form-item label="请选择举报原因" :label-width="formLabelWidth">
+        <el-form-item prop="selectReason" label="请选择举报原因" :label-width="formLabelWidth">
           <el-select v-model="form.selectReason" placeholder="请选择举报原因">
             <el-option label="涉黄" value="涉黄"></el-option>
             <el-option label="暴力" value="暴力"></el-option>
@@ -26,7 +28,7 @@
       <template #footer>
                 <span class="dialog-footer">
                   <el-button @click="dialogFormVisible = false">取 消 举 报</el-button>
-                  <el-button type="primary" @click="report()">确 定 举 报</el-button>
+                  <el-button type="primary" @click="report('reportForm')">确 定 举 报</el-button>
                 </span>
       </template>
     </el-dialog>
@@ -44,27 +46,37 @@ export default {
         reason: '',
         selectReason: '',
       },
-      formLabelWidth: '120px',
-      dialogFormVisible: false
+      formLabelWidth: '150px',
+      dialogFormVisible: false,
+      rules: {
+        reason: [{required: true, message: '请填写举报理由', trigger: 'change'}],
+        selectReason: [{required: true, message: '请选择举报原因', trigger: 'change'}]
+      }
     }
   },
   methods: {
-    report: function () {
-      let temp = this.form.reason.replace(' ', '')
-      if (temp.length === 0) {
-        ElMessage.warning({
-          message: '举报理由不能为空',
-          type: 'warning'
-        });
-        return
-      } else if (this.form.selectReason.length === 0) {
-        ElMessage.warning({
-          message: '请选择举报原因',
-          type: 'warning'
-        });
+
+    report: function (formName) {
+      let isValid = true;
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          isValid = true
+        } else {
+          console.log('error submit!!');
+          isValid = false
+          return false;
+        }
+      });
+      if(isValid === false)
+      {
         return
       }
+      //发送举报请求
       this.dialogFormVisible = false
+      ElMessage.success({
+        message: '举报成功',
+        type: 'success'
+      });
     }
   }
 }

@@ -9,9 +9,11 @@
       <div></div>
     </el-container>
     <div class="grid grid-cols-2 ">
-      <div class="ml-32">
+
+      <div class="ml-32 rounded-lg border-gray-300 border ">
+
         <div>
-          <el-carousel indicator-position="outside" :interval="4000" :autoplay=isAutoChange>
+          <el-carousel indicator-position="outside" :interval="4000" :autoplay=isAutoChange class="rounded-lg ">
             <el-carousel-item>
               <video controls="controls" @click="clickVideo()">
                 <source :src=video type="video/mp4"/>
@@ -22,66 +24,192 @@
             </el-carousel-item>
           </el-carousel>
         </div>
-        <div class="grid grid-cols-2 mt-12 ml-24 ">
-          <div class="mr-12 flex justify-start ">
-            <el-avatar :src=ownerAvatar @error="errorHandler" :size="40">
-              <img :src=ownerAvatar v-if="isOwnerAvatarSuccess===true" alt=""/>
-              <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" alt=""/>
-            </el-avatar>
-            <div class="ml-8 flex justify-around items-center ">{{ ownerName }}</div>
+
+        <br/>
+
+        <div class="bg-blue-100 text-center grid justify-items-center items-center">
+          <div class="mr-16 mt-6 flex items-center justify-start pl-16">
+            <div><font class="mb-8 pl-16 ">价格：</font></div>
+            <div>
+              <font class="text-2xl font-bold mt-4 text-red-600 pr-16 ">
+                ￥{{ price ? price : "9999" }}
+              </font>
+            </div>
           </div>
-          <div class="ml-12 ">
-            <report ></report>
+
+          <div class="mr-8 mt-6 flex items-center justify-start ">
+            <div class="mb-4"><font class="mb-8 pl-16 ">商品分类：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
+            <div>
+              <div v-show="tags.length===0" class="mr-8 mb-4">无</div>
+              <div v-for="i in (Math.floor(tags.length/4) + 1)" :key=i class="mr-4">
+                <el-tag v-for="(item, index) in tags.slice(4*(i-1),Math.min(4*(i-1)+4,tags.length))" :key=item
+                        :type=tagTypes[((i-1)*4+index)%5] class="mr-4 mb-4">
+                  {{ item }}
+                </el-tag>
+              </div>
+            </div>
           </div>
-          <div class="mr-12 mt-6 ">人气按键</div>
-          <div class="ml-12 mt-6 ">收藏按键</div>
+        </div>
+
+      </div>
+
+      <div class="border-red-300 ml-12 grid justify-items-center ">
+
+        <div class="mt-8">
+          <p class="text-center px-3 py-3 text-3xl font-bold "> {{ name ? name : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }} </p>
+        </div>
+
+        <div class="rounded-lg border-2 border-blue-200">
+          <div class="grid grid-cols-2 pt-8 pr-8 pl-12 pr-12">
+            <div>
+              <user-and-avatar :is-owner-avatar-success="isOwnerAvatarSuccess"
+                               :owner-avatar="ownerAvatar" :owner-name="ownerName"
+                               class="flex items-center"></user-and-avatar>
+            </div>
+            <div class="ml-12 ">
+              <report class="ml-2"></report>
+            </div>
+
+            <div class="mr-12 mt-6 flex items-center justify-start">
+              <div><font class="mb-8  ">热度：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
+              <div>
+                <font class="text-2xl font-bold mt-4 text-red-600 ">
+                  {{ popularity ? popularity : "9999" }}
+                </font>
+              </div>
+            </div>
+            <div class="ml-12 mt-6 flex items-center justify-start ">
+              <img v-show="isLike===true" @click="star()" src="https://img.icons8.com/android/24/000000/star.png"/>
+              <img v-show="isLike===false" @click="star()"
+                   src="https://img.icons8.com/material-rounded/24/000000/star--v1.png"/>
+              <div><font class="mb-8 "> ：&nbsp;</font></div>
+              <div>
+                <font class="text-2xl font-bold mt-4 text-red-600 ">
+                  {{ likes ? likes : "9999" }}
+                </font>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div>
+          <el-tabs type="border-card" stretch="true" class="w-96 text-center ">
+            <el-tab-pane label="商品状况">{{ status === '' ? '不详' : status }}</el-tab-pane>
+            <el-tab-pane label="存货量">{{ stock === '' ? '不详' : stock }}</el-tab-pane>
+            <el-tab-pane label="是否为出租物">{{ for_rent === true ? '是' : '否' }}</el-tab-pane>
+          </el-tabs>
+        </div>
+
+        <div class="flex justify-around mt-8">
+          <div class="mr-8 ml-8">
+            <rent-commodity :buyer="userName" :commodity-name="name" :price="price"
+                            :for_rent="for_rent"></rent-commodity>
+          </div>
+
+          <div class="mr-8 ml-8">
+            <buy-commodity :buyer="userName" :commodity-name="name" :price="price"
+                           :for_rent="for_rent"></buy-commodity>
+          </div>
+
+          <div class="mr-8 ml-8">
+            <el-button type="danger" @click="addShoppingCart()">加入购物车</el-button>
+          </div>
         </div>
       </div>
 
-      <div class="border-red-300 ml-12 ">购买区</div>
-
-      <div class="border-green-300 col-span-2 ml-32 mt-12 ">评论区</div>
+      <div class="border-green-300 col-span-2 ml-32 mr-16 mt-12 w-2/3 justify-self-center">
+        <el-tabs type="border-card" class="rounded-lg" @tab-click="handleClick">
+          <el-tab-pane @click="canLoad=false" label="商品描述" class="ml-4 mr-2">{{ description }}</el-tab-pane>
+          <el-tab-pane @click="canLoad=true" label="用户评论">
+            <CommodityCommentList :comments="comments" :can-load="canLoad"></CommodityCommentList>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+      <br/>
+      <br/>
     </div>
   </div>
 </template>
 
 <script>
 import report from "@/components/Public/report";
+import {ElMessage} from "element-plus";
+import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
+import RentCommodity from "@/components/CommodityDetail/RentCommodity";
+import UserAndAvatar from "@/components/Public/UserAndAvatar";
+import CommodityCommentList from "@/components/Public/CommodityCommentList";
+
 
 export default {
   name: "CommodityDetail",
   components: {
-    report
+    report,
+    BuyCommodity,
+    RentCommodity,
+    UserAndAvatar,
+    CommodityCommentList,
   },
   data: function () {
     return {
       commodityId: 0,
+      userId: 0,
+      userName: 'rzc',
       ownerId: 0,
       ownerName: 'rzc',
       ownerAvatar: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png",
-      name: "高性能拖把",
+      name: "自动编程机",
       former_price: 100,
       price: 66.66,
-      likes: 134,
+      likes: 1,
+      description: '  ' + '自动编程机，只要点击就可以通过你的意念进行编程。如果你不会编程也没事，你可以通过' +
+          '意念来指定编程目标，然后该机器就会自动帮你生成代码。有了它，后端开发无需为调不来数据库而烦恼，前端不必为' +
+          '网格对其而烦心',
       stock: 12,
       isAutoChange: true,
+      for_rent: true,
       images: [
         "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png",
         "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
       ],
       video: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-      liked: 999,
       status: "九成新",
       popularity: 55,
       clicks: 666,
       tags: [
-        "好用"
+        "好用", "牛逼", '我是你爹', '你是我儿', '写网页好累', '啦啦啦'
       ],
+      comments: [{
+        userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
+        , userId: 0, comment: 'rnm,退钱', rating: 3
+      },
+        {
+          userName: '猴哥', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
+          , userId: 0, comment: 'nmsl，完全不靠谱', rating: 5
+        },
+        {
+          userName: 'ysj', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
+          , userId: 0, comment: '很好的商品呢，已经把来买的同学记录下来了呢，亲', rating: 9
+        }, {
+          userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
+          , userId: 0, comment: 'rnm,退钱', rating: 3
+        },
+        {
+          userName: '猴哥', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
+          , userId: 0, comment: 'nmsl，完全不靠谱', rating: 5
+        },
+        {
+          userName: 'ysj', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
+          , userId: 0, comment: '很好的商品呢，已经把来买的同学记录下来了呢，亲', rating: 9
+        },],
       category: "课程用品",
       isLike: true,
       isOwnerAvatarSuccess: true,
       dialogFormVisible: false,
       isAlert: true,
+      tagTypes: ['success', '', 'info', 'warning', 'danger'],
+      canLoad: false
 
     }
   },
@@ -94,6 +222,7 @@ export default {
       } else {
         this.commodityId = 123456789098
       }
+      // 发送请求
     })
   },
   methods: {
@@ -104,12 +233,33 @@ export default {
         return i
       }
     },
+    handleClick: function (tab) {
+      this.canLoad = tab['props']['label'] !== '商品描述';
+    },
     clickVideo: function () {
       this.isAutoChange = !this.isAutoChange
     },
-    errorHandler: function () {
-      this.isOwnerAvatarSuccess = false
+    star: function () {
+      this.isLike = !this.isLike
+      if (this.isLike === true) {
+        this.likes -= 1
+      } else {
+        this.likes += 1
+      }
+      //发送请求
     },
+    addShoppingCart: function () {
+      //发送请求
+      let i = 1
+      if (i === 1) {
+        ElMessage.success({
+          message: '加入购物车成功',
+          type: 'success'
+        });
+      } else {
+        ElMessage.error('加入购物车失败');
+      }
+    }
 
   }
 }
