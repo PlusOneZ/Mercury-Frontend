@@ -1,4 +1,6 @@
 import {createRouter, createWebHashHistory} from "vue-router";
+import {CookieManager} from "@/cookie";
+import {api} from "@/request";
 
 const Home = () =>
     import ("../pages/Home")
@@ -45,13 +47,30 @@ const ShoppingCart = () =>
 
 function loginGuard(to, from, next) {
     console.log("from", from, "to", to)
-    if (from.params.noCheck) {
-        next()
+    let token = CookieManager.get("token")
+    console.log(token)
+    let formData = new FormData()
+    formData.append("token", token)
+    if (token) {
+        api({
+            method: "POST",
+            url: "user/autoLogin",
+            data: formData
+        }).then((response) => {
+            console.log("autoLogin", response)
+            if (response.data['Code'] === '200') {
+                next()
+            } else {
+                if (from.fullPath === '/login') {
+                    next()
+                }
+                next({name: "LoginPanel", params: {next: to.fullPath}})
+            }
+        }, error => {
+            console.log(error)
+            next({name: "LoginPanel", params: {next: to.fullPath}})
+        })
     }
-    if (from.fullPath === '/login') {
-        next()
-    }
-    next({name: "LoginPanel", params: {next: to.fullPath}})
 }
 
 const routes = [
