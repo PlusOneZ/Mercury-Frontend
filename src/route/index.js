@@ -1,31 +1,40 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-const home = () =>
-    import ("../components/com")
-const login = () =>
-    import ("../components/login")
-const about = () =>
-    import ("../components/about")
 const Home = () =>
     import ("../pages/Home")
-const Login = () =>
-    import ("../pages/Login")
-const Me = () =>
-    import ("../pages/Me")
-const Chat = () =>
-    import ("../pages/Chat")
-const PostDetail = () =>
-    import ("../pages/PostDetail")
-const OrderDetail = () =>
-    import ("../pages/OrderDetail")
 const CommoditySearch = () =>
     import ("../pages/CommoditySearch")
 const CommodityDetail = () =>
     import ("../pages/CommodityDetail")
+
+const Login = () =>
+    import ("../pages/Login")
+const LoginPanel = () =>
+    import ("../components/LoginPage/LoginPanel")
+const RegisterPanel = () =>
+    import ("../components/LoginPage/RegisterPanel")
+
+const Me = () =>
+    import ("../pages/Me")
 const EditInfo = () =>
     import ("../pages/EditInfo")
+const MyRelease = () =>
+    import ("../pages/MyRelease")
 const MyOrders = () =>
     import ("../pages/MyOrders")
+const OrderDetail = () =>
+    import ("../pages/OrderDetail")
+
+const Chat = () =>
+    import ("../pages/Chat")
+
+const Posts = () =>
+    import ("../pages/Posts")
+const PostDetail = () =>
+    import ("../pages/PostDetail")
+const PostEdit = () =>
+    import ("../pages/PostEdit")
+
 const Others = () =>
     import ("../pages/Others")
 const likes = () =>
@@ -34,24 +43,20 @@ const ShoppingCart = () =>
     import ("../pages/ShoppingCart")
 
 const routes = [{
-        path: "/home",
-        name: "home",
-        component: home
-    },
-    {
         path: "/login",
         name: "login",
-        component: login
-    },
-    {
-        path: "/about",
-        name: 'about',
-        component: about
-    },
-    {
-        path: "/login",
-        name: 'login',
-        component: Login
+        component: Login,
+        children: [{
+                path: "",
+                name: "LoginPanel",
+                component: LoginPanel,
+            },
+            {
+                path: "register",
+                name: "RegisterPanel",
+                component: RegisterPanel,
+            }
+        ]
     },
     {
         path: "/",
@@ -113,6 +118,21 @@ const routes = [{
         name: "ShoppingCart",
         component: ShoppingCart
     },
+    {
+        path: "/posts",
+        name: "Posts",
+        component: Posts
+    },
+    {
+        path: "/myRelease",
+        name: "myRelease",
+        component: MyRelease
+    },
+    {
+        path: "/postEdit",
+        name: "PostEdit",
+        component: PostEdit
+    }
 ]
 
 export const router = createRouter({
