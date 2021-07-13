@@ -15,6 +15,7 @@ const EditInfo = () => import("../pages/EditInfo")
 const MyOrders = () => import("../pages/MyOrders")
 const Posts = () => import("../pages/Posts")
 const MyRelease = () => import("../pages/MyRelease")
+const PostEdit = () => import("../pages/PostEdit")
 
 
 const routes = [
@@ -89,6 +90,11 @@ const routes = [
         path: "/myRelease",
         name: "myRelease",
         component: MyRelease
+    },
+    {
+        path: "/postEdit",
+        name: "PostEdit",
+        component: PostEdit
     }
 ]
 
