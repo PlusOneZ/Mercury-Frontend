@@ -1,34 +1,52 @@
-import { createRouter,createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
-const Home = () => import("../pages/Home")
-const CommoditySearch = () => import("../pages/CommoditySearch")
-const CommodityDetail = () =>import("../pages/CommodityDetail")
+const Home = () =>
+    import ("../pages/Home")
+const CommoditySearch = () =>
+    import ("../pages/CommoditySearch")
+const CommodityDetail = () =>
+    import ("../pages/CommodityDetail")
 
-const Login = () => import("../pages/Login")
-const LoginPanel = () => import("../components/LoginPage/LoginPanel")
-const RegisterPanel = () => import("../components/LoginPage/RegisterPanel")
+const Login = () =>
+    import ("../pages/Login")
+const LoginPanel = () =>
+    import ("../components/LoginPage/LoginPanel")
+const RegisterPanel = () =>
+    import ("../components/LoginPage/RegisterPanel")
 
-const Me = () => import("../pages/Me")
-const EditInfo = () => import("../pages/EditInfo")
-const MyRelease = () => import("../pages/MyRelease")
-const MyOrders = () => import("../pages/MyOrders")
-const OrderDetail = () => import("../pages/OrderDetail")
+const Me = () =>
+    import ("../pages/Me")
+const EditInfo = () =>
+    import ("../pages/EditInfo")
+const MyRelease = () =>
+    import ("../pages/MyRelease")
+const MyOrders = () =>
+    import ("../pages/MyOrders")
+const OrderDetail = () =>
+    import ("../pages/OrderDetail")
 
-const Chat = () => import("../pages/Chat")
+const Chat = () =>
+    import ("../pages/Chat")
 
-const Posts = () => import("../pages/Posts")
-const PostDetail = () => import("../pages/PostDetail")
-const PostEdit = () => import("../pages/PostEdit")
+const Posts = () =>
+    import ("../pages/Posts")
+const PostDetail = () =>
+    import ("../pages/PostDetail")
+const PostEdit = () =>
+    import ("../pages/PostEdit")
 
+const Others = () =>
+    import ("../pages/Others")
+const likes = () =>
+    import ("../pages/likes")
+const ShoppingCart = () =>
+    import ("../pages/ShoppingCart")
 
-
-const routes = [
-    {
+const routes = [{
         path: "/login",
         name: "login",
         component: Login,
-        children: [
-            {
+        children: [{
                 path: "",
                 name: "LoginPanel",
                 component: LoginPanel,
@@ -84,6 +102,21 @@ const routes = [
         path: "/myOrders",
         name: "myOrders",
         component: MyOrders
+    },
+    {
+        path: "/Others",
+        name: "Others",
+        component: Others
+    },
+    {
+        path: "/likes",
+        name: "likes",
+        component: likes
+    },
+    {
+        path: "/ShoppingCart",
+        name: "ShoppingCart",
+        component: ShoppingCart
     },
     {
         path: "/posts",
