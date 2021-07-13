@@ -1,7 +1,8 @@
 <template>
-  <el-container class="page">
-    <el-main class="mx-36">
-      <el-form ref="form" :model="form" label-width="80px" class="mx-36 border-4 rounded-xl border-opacity-100 pt-6 pr-6">
+  <el-container>
+    <el-main class="bg-no-repeat bg-cover" style="background-image: url('https://img.tukuppt.com/bg_grid/00/19/83/O93nS0cqmF.jpg')">
+      <center>
+      <el-form ref="form" :model="form" label-width="80px" class="bg-white w-3/5 border-4 rounded-xl border-opacity-100 pt-6 pr-6">
         <el-form-item label="标题">
           <el-input v-model="form.name" placeholder="请输入标题" maxlength="30" show-word-limit></el-input>
         </el-form-item>
@@ -12,6 +13,7 @@
           <el-button class="float-right" type="primary" @click="onSubmit">创建</el-button>
         </el-form-item>
       </el-form>
+      </center>
     </el-main>
   </el-container>
 </template>
