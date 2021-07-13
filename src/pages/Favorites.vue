@@ -119,33 +119,33 @@
         }
     </script>
 
-    
-    
-    
-    
+
+
+
+
 <style>
     * {
         margin: 0;
         padding: 0;
         list-style-type: none;
     }
-    
+
     a {
         color: #666;
         text-decoration: none;
     }
-    
+
     table {
         border-collapse: collapse;
         border-spacing: 0;
         border: 0;
     }
-    
+
     body {
         color: #666;
         font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
     }
-    
+
     clearfix:after {
         content: ".";
         display: block;
@@ -153,91 +153,91 @@
         clear: both;
         visibility: hidden
     }
-    
+
     .clearfix {
         display: inline-table
     }
-    
+
     *html .clearfix {
         height: 1%
     }
-    
+
     .clearfix {
         display: block
     }
-    
+
     *+html .clearfix {
         min-height: 1%
     }
-    
+
     .fl {
         float: left;
     }
-    
+
     .fr {
         float: right;
     }
-    
+
     .catbox {
         width: 940px;
         margin: 0 auto;
     }
-    
+
     .catbox table {
         text-align: center;
         width: 100%;
     }
-    
+
     .catbox table th,
     .catbox table td {
         border: 1px solid #CADEFF;
     }
-    
+
     .catbox table th {
         background: #e2f2ff;
         border-top: 3px solid #a7cbff;
         height: 30px;
     }
-    
+
     .catbox table td {
         padding: 10px;
         color: #444;
     }
-    
+
     .catbox table tbody tr:hover {
         background: RGB(238, 246, 255);
     }
-    
+
     .checkbox {
         width: 60px;
     }
-    
+
     .goods {
         width: 300px;
     }
-    
+
     .goods span {
         width: 180px;
         margin-top: 20px;
         text-align: left;
         float: left;
     }
-    
+
     .goods img {
         width: 100px;
         height: 80px;
         margin-right: 10px;
         float: left;
     }
-    
+
     .price {
         width: 130px;
     }
-    
+
     .count {
         width: 90px;
     }
-    
+
     .count .add,
     .count input,
     .count .reduce {
@@ -246,7 +246,7 @@
         position: relative;
         z-index: 0;
     }
-    
+
     .count .add,
     .count .reduce {
         height: 23px;
@@ -257,7 +257,7 @@
         line-height: 23px;
         color: #444;
     }
-    
+
     .count .add:hover,
     .count .reduce:hover {
         color: #f50;
@@ -265,7 +265,7 @@
         border-color: #f60;
         cursor: pointer;
     }
-    
+
     .count input {
         width: 50px;
         height: 15px;
@@ -277,20 +277,20 @@
         background-color: #fff;
         z-index: 2;
     }
-    
+
     .subtotal {
         width: 150px;
         color: red;
         font-weight: bold;
     }
-    
+
     .operation span:hover,
     a:hover {
         cursor: pointer;
         color: red;
         text-decoration: underline;
     }
-    
+
     .foot {
         margin-top: 10px;
         color: #666;
@@ -301,13 +301,13 @@
         position: relative;
         z-index: 8;
     }
-    
+
     .foot div,
     .foot a {
         line-height: 48px;
         height: 48px;
     }
-    
+
     .foot .select-all {
         width: 100px;
         height: 48px;
@@ -315,7 +315,7 @@
         padding-left: 5px;
         color: #666;
     }
-    
+
     .foot .closing {
         border-left: 1px solid #c8c8c8;
         width: 100px;
@@ -325,47 +325,47 @@
         background: RGB(238, 238, 238);
         cursor: pointer;
     }
-    
+
     .foot .total {
         margin: 0 20px;
         cursor: pointer;
     }
-    
+
     .foot #priceTotal,
     .foot #selectedTotal {
         color: red;
         font-family: "Microsoft Yahei";
         font-weight: bold;
     }
-    
+
     .foot .selected {
         cursor: pointer;
     }
-    
+
     .foot .selected .arrow {
         position: relative;
         top: -3px;
         margin-left: 3px;
     }
-    
+
     .foot .selected .down {
         position: relative;
         top: 3px;
         display: none;
     }
-    
+
     .show .selected .down {
         display: inline;
     }
-    
+
     .show .selected .up {
         display: none;
     }
-    
+
     .foot .selected:hover .arrow {
         color: red;
     }
-    
+
     .foot .selected-view {
         width: 935px;
         border: 1px solid #c8c8c8;
@@ -377,15 +377,15 @@
         left: -1px;
         display: none;
     }
-    
+
     .show .selected-view {
         display: block;
     }
-    
+
     .foot .selected-view div {
         height: auto;
     }
-    
+
     .foot .selected-view .arrow {
         font-size: 16px;
         line-height: 100%;
@@ -394,18 +394,18 @@
         right: 330px;
         bottom: -9px;
     }
-    
+
     .foot .selected-view .arrow span {
         color: #ffffff;
         position: absolute;
         left: 0px;
         bottom: 1px;
     }
-    
+
     #selectedViewList {
         padding: 10px 20px 10px 20px;
     }
-    
+
     #selectedViewList div {
         display: inline-block;
         position: relative;
@@ -415,14 +415,14 @@
         margin: 10px;
         float: left;
     }
-    
+
     #selectedViewList div img {
         width: 100px;
         height: 80px;
         margin-right: 10px;
         float: left;
     }
-    
+
     #selectedViewList div span {
         display: none;
         color: #ffffff;
@@ -437,7 +437,7 @@
         background: #000;
         cursor: pointer;
     }
-    
+
     #selectedViewList div:hover span {
         display: block;
     }

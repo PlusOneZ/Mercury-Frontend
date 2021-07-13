@@ -1,20 +1,25 @@
 import { createRouter,createWebHashHistory } from "vue-router";
 
 const Home = () => import("../pages/Home")
+const CommoditySearch = () => import("../pages/CommoditySearch")
+const CommodityDetail = () =>import("../pages/CommodityDetail")
+
 const Login = () => import("../pages/Login")
 const LoginPanel = () => import("../components/LoginPage/LoginPanel")
 const RegisterPanel = () => import("../components/LoginPage/RegisterPanel")
 
 const Me = () => import("../pages/Me")
-const Chat = () => import("../pages/Chat")
-const PostDetail = () => import("../pages/PostDetail")
-const OrderDetail = () => import("../pages/OrderDetail")
-const CommoditySearch = () => import("../pages/CommoditySearch")
-const CommodityDetail = () =>import("../pages/CommodityDetail")
 const EditInfo = () => import("../pages/EditInfo")
-const MyOrders = () => import("../pages/MyOrders")
-const Posts = () => import("../pages/Posts")
 const MyRelease = () => import("../pages/MyRelease")
+const MyOrders = () => import("../pages/MyOrders")
+const OrderDetail = () => import("../pages/OrderDetail")
+
+const Chat = () => import("../pages/Chat")
+
+const Posts = () => import("../pages/Posts")
+const PostDetail = () => import("../pages/PostDetail")
+
+
 
 
 const routes = [
