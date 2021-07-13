@@ -25,7 +25,9 @@
     </div>
 
     <transition name="slide-fade">
-      <router-view></router-view>
+      <router-view
+
+      ></router-view>
     </transition>
 
   </section>
@@ -34,6 +36,9 @@
 <script>
 export default {
   name: "Login",
+  props: {
+    next: String
+  },
   data() {
     return {
       response: "",

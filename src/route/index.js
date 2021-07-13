@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 
 const Home = () =>
     import ("../pages/Home")
@@ -42,14 +42,29 @@ const likes = () =>
 const ShoppingCart = () =>
     import ("../pages/ShoppingCart")
 
-const routes = [{
+
+function loginGuard(to, from, next) {
+    console.log("from", from, "to", to)
+    if (from.params.noCheck) {
+        next()
+    }
+    if (from.fullPath === '/login') {
+        next()
+    }
+    next({name: "LoginPanel", params: {next: to.fullPath}})
+}
+
+const routes = [
+    {
         path: "/login",
-        name: "login",
+        name: "Login",
         component: Login,
-        children: [{
+        children: [
+            {
                 path: "",
                 name: "LoginPanel",
                 component: LoginPanel,
+                props: true
             },
             {
                 path: "register",
@@ -67,21 +82,25 @@ const routes = [{
         path: "/me",
         name: "me",
         component: Me,
+        beforeEnter: loginGuard
     },
     {
         path: "/editInfo",
         name: "editPersonalInfo",
-        component: EditInfo
+        component: EditInfo,
+        beforeEnter: loginGuard
     },
     {
         path: "/chat",
         name: "chat",
-        component: Chat
+        component: Chat,
+        beforeEnter: loginGuard
     },
     {
         path: "/orderDetail",
         name: "OrderDetail",
-        component: OrderDetail
+        component: OrderDetail,
+        beforeEnter: loginGuard
     },
     {
         path: "/postDetail",
@@ -101,7 +120,8 @@ const routes = [{
     {
         path: "/myOrders",
         name: "myOrders",
-        component: MyOrders
+        component: MyOrders,
+        beforeEnter: loginGuard
     },
     {
         path: "/Others",
@@ -111,12 +131,14 @@ const routes = [{
     {
         path: "/likes",
         name: "likes",
-        component: likes
+        component: likes,
+        beforeEnter: loginGuard
     },
     {
         path: "/ShoppingCart",
         name: "ShoppingCart",
-        component: ShoppingCart
+        component: ShoppingCart,
+        beforeEnter: loginGuard
     },
     {
         path: "/posts",
@@ -126,12 +148,14 @@ const routes = [{
     {
         path: "/myRelease",
         name: "myRelease",
-        component: MyRelease
+        component: MyRelease,
+        beforeEnter: loginGuard
     },
     {
         path: "/postEdit",
         name: "PostEdit",
-        component: PostEdit
+        component: PostEdit,
+        beforeEnter: loginGuard
     }
 ]
 

@@ -44,6 +44,7 @@
 import {api} from "@/request";
 import {useStore} from "vuex"
 import {ElMessage} from "element-plus";
+import {CookieManager} from "@/cookie";
 
 export default {
   name: "LoginPanel",
@@ -55,6 +56,7 @@ export default {
     }
   },
   props: {
+    next: String
   },
   methods: {
     tryLogin() {
@@ -78,6 +80,8 @@ export default {
                 message: '欢迎回来，' + user.Nickname,
                 type: 'success'
               })
+              console.log(response.data._token)
+              CookieManager.set("token", response.data._token, 3600*1000)
               this.store.commit("user/userLogin", user)
               this.$router.push("/")
             }
@@ -106,6 +110,44 @@ export default {
     const store = useStore()
     return {
       store
+    }
+  },
+  mounted() {
+    console.log("in login panel, next: ", this.next)
+    let token = CookieManager.get("token")
+    if (token) {
+      let formData = new FormData()
+      formData.append('token', token)
+      api({
+        method: "POST",
+        data: formData,
+        url: "user/autoLogin"
+      }).then((response) => {
+        if (response.data.status === "success") {
+          let user = response.data.user[0]  // TODO: if changes
+          this.store.commit("user/userLogin", user)
+          ElMessage.success({
+            message: '欢迎回来，' + user.Nickname,
+            type: 'success'
+          })
+          if (this.next) {
+            this.$router.push(this.next)
+          } else {
+            this.$router.push("/")
+          }
+        } else {
+          ElMessage.warning({
+            message: "登陆过期，请重新登陆",
+            type: 'success'
+          })
+        }
+      }, (error) => {
+        console.log(error)
+        ElMessage.error({
+          message: '服务器在开小差...',
+          type: 'error'
+        })
+      })
     }
   }
 }
