@@ -18,7 +18,7 @@ const Chat = () => import("../pages/Chat")
 
 const Posts = () => import("../pages/Posts")
 const PostDetail = () => import("../pages/PostDetail")
-
+const PostEdit = () => import("../pages/PostEdit")
 
 
 
@@ -94,6 +94,11 @@ const routes = [
         path: "/myRelease",
         name: "myRelease",
         component: MyRelease
+    },
+    {
+        path: "/postEdit",
+        name: "PostEdit",
+        component: PostEdit
     }
 ]
 
