@@ -42,6 +42,7 @@
 
 <script>
 import {api} from "@/request";
+import {useStore} from "vuex"
 import {ElMessage} from "element-plus";
 
 export default {
@@ -52,6 +53,8 @@ export default {
       password: "",
       requestSender: undefined
     }
+  },
+  props: {
   },
   methods: {
     tryLogin() {
@@ -70,11 +73,12 @@ export default {
 
             // Success login
             if (response.data.status === 'success') {
-              let user = response.data.user[0];  // TODO: if backend changes, modify this
+              let user = response.data.user;  // TODO: if backend changes, modify this
               ElMessage.success({
                 message: '欢迎回来，' + user.Nickname,
                 type: 'success'
               })
+              this.store.commit("user/userLogin", user)
               this.$router.push("/")
             }
             // Wrong user id or password
@@ -96,8 +100,13 @@ export default {
           })
     }
   },
-  mounted() {
-
+  setup() {
+    console.log("in setup")
+    console.log(useStore())
+    const store = useStore()
+    return {
+      store
+    }
   }
 }
 </script>
