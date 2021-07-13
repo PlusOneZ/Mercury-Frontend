@@ -43,21 +43,21 @@ const ShoppingCart = () =>
     import ("../pages/ShoppingCart")
 
 const routes = [{
-    path: "/login",
-    name: "login",
-    component: Login,
-    children: [{
-        path: "",
-        name: "LoginPanel",
-        component: LoginPanel,
+        path: "/login",
+        name: "login",
+        component: Login,
+        children: [{
+                path: "",
+                name: "LoginPanel",
+                component: LoginPanel,
+            },
+            {
+                path: "register",
+                name: "RegisterPanel",
+                component: RegisterPanel,
+            }
+        ]
     },
-        {
-            path: "register",
-            name: "RegisterPanel",
-            component: RegisterPanel,
-        }
-    ]
-},
     {
         path: "/",
         name: "HomePage",
