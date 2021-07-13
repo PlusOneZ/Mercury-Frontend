@@ -20,7 +20,7 @@ const mutations = {
     userLogin(state, user) {
         state.loggedIn = true
         state.id = user.SchoolId
-        state.nickname = user.Nickname
+        state.nickname = user.NickName
         state.avatarPath = user.avatarPath
         state.realName = user.RealName
     },
