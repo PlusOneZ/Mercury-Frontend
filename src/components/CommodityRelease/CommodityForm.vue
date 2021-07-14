@@ -37,10 +37,54 @@
       <el-form-item label="商品简介" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
+
+      <el-form-item>
+        <el-upload
+            action="#"
+            list-type="picture-card"
+            :auto-upload="false"
+        >
+          <template #default>
+            <i class="el-icon-plus"></i>
+          </template>
+          <template #file="{file}">
+            <div>
+              <img class="el-upload-list__item-thumbnail" :src="file.url" alt=""/>
+              <span class="el-upload-list__item-actions">
+          <span
+              class="el-upload-list__item-preview"
+              @click="handlePictureCardPreview(file)"
+          >
+            <i class="el-icon-zoom-in"></i>
+          </span>
+          <span
+              v-if="!disabled"
+              class="el-upload-list__item-delete"
+              @click="handleDownload(file)"
+          >
+            <i class="el-icon-download"></i>
+          </span>
+          <span
+              v-if="!disabled"
+              class="el-upload-list__item-delete"
+              @click="handleRemove(file)"
+          >
+            <i class="el-icon-delete"></i>
+          </span>
+        </span>
+            </div>
+          </template>
+        </el-upload>
+        <el-dialog v-model="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
+
     </el-form>
   </div>
 </template>

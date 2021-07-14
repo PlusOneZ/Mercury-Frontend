@@ -22,7 +22,7 @@ export default {
 .commodity-form {
   height: 100%;
   background-image: linear-gradient(#5698c3, #d1c2d3);
-  padding-top: 20vh;
+  @apply p-10;
 }
 
 .bg-blur {

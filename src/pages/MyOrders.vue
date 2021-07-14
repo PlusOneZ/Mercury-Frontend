@@ -73,13 +73,13 @@
 
 <script>
 import {useStore} from "vuex";
+import {api} from "@/request";
 export default {
   data() {
     return {
       orderList: [],
       fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
       // url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      url: 'https://localhost:5001/Media/Image/Default.png',
       type: String,
       itemKey: 0
     }
@@ -97,27 +97,29 @@ export default {
   methods: {
     getOrders() {
       console.log("Loading orders...");
-      var axios = require('axios');
-      var FormData = require('form-data');
-      var data = new FormData();
+      let data = new FormData();
       data.append('userId', '1850061');
       data.append('maxNumber', '5');
       data.append('pageNumber', '1');
       data.append('status', this.type);
 
-      var config = {
-        method: 'get',
-        url: 'https://localhost:5001/api/order',
-        data : data
-      };
+      // var config = {
+      //   method: 'get',
+      //   url: 'https://localhost:5001/api/order',
+      //   data : data
+      // };
 
-      axios(config)
+      api({
+        method: 'get',
+        data : data,
+        url: "order"
+      })
       .then( (response) => {
         var orders = response.data.OrderList;
         console.log(orders);
         this.orderList = [];
         for(let i=0;i<orders.length;++i){
-          if(orders[i].Status != this.type){
+          if(orders[i].Status !== this.type){
             continue;
           }
           var order = {};
@@ -125,7 +127,7 @@ export default {
           order.name = orders[i].CommodityName;
           order.price = orders[i].Price;
           order.count = orders[i].Count;
-          order.totalPrice = orders.price*order.count;
+          order.totalPrice = orders.price * order.count;
           order.Id = orders[i].Id;
           this.orderList.push(order);
         }
@@ -134,19 +136,22 @@ export default {
         console.log(error);
       });
     },
+
     cancelOrder(index){
-      var axios = require('axios');
-      var FormData = require('form-data');
-      var data = new FormData();
+      let data = new FormData();
       data.append('newStatus', 'CANCELLED');
 
-      var config = {
-        method: 'put',
-        url: 'https://localhost:5001/api/order/' + this.orderList[index].Id,
-        data : data
-      };
+      // var config = {
+      //   method: 'put',
+      //   url: 'https://localhost:5001/api/order/' + this.orderList[index].Id,
+      //   data : data
+      // };
 
-      axios(config)
+      api({
+        method: 'put',
+        url: 'order/' + this.orderList[index].Id,
+        data: data
+      })
       .then((response) => {
         console.log(JSON.stringify(response.data));
         this.getOrders();
