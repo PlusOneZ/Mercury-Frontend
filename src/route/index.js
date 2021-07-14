@@ -70,6 +70,8 @@ function loginGuard(to, from, next) {
             console.log(error)
             next({name: "LoginPanel", params: {next: to.fullPath}})
         })
+    } else {
+        next({name: "LoginPanel", params: {next: to.fullPath}})
     }
 }
 
@@ -127,14 +129,15 @@ const routes = [
         component: PostDetail
     },
     {
-        path: "/CommoditySearch",
+        path: "/commoditySearch",
         name: "CommoditySearch",
         component: CommoditySearch
     },
     {
-        path: "/CommodityDetail",
+        path: "/commodityDetail/:commodityId",
         name: "CommodityDetail",
-        component: CommodityDetail
+        component: CommodityDetail,
+        props: true
     },
     {
         path: "/myOrders",
@@ -143,9 +146,10 @@ const routes = [
         beforeEnter: loginGuard
     },
     {
-        path: "/Others",
-        name: "Others",
-        component: Others
+        path: "/user/:id",
+        name: "User",
+        component: Others,
+        props: true
     },
     {
         path: "/likes",
@@ -154,7 +158,7 @@ const routes = [
         beforeEnter: loginGuard
     },
     {
-        path: "/ShoppingCart",
+        path: "/shoppingCart",
         name: "ShoppingCart",
         component: ShoppingCart,
         beforeEnter: loginGuard

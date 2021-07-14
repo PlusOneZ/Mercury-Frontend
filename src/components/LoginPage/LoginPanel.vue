@@ -30,8 +30,8 @@
 
     <input type="text" placeholder="学号 / 工号" v-model="sid">
     <input type="password" placeholder="密码" v-model="password">
-    <router-link to="/login/register" class="hover:text-green-200"> 新用户？去注册</router-link>
-    <router-link to="#" class="float-right pb-4 hover:text-green-200"> 忘记密码</router-link>
+    <router-link to="/login/register" class="hover:text-green-200"> 新用户？去注册 </router-link>
+    <router-link to="#" class="float-right pb-4 hover:text-green-200"> 忘记密码 </router-link>
     <button type="submit"
             class="h-12 bg-gradient-to-r from-blue-400 to-green-300 hover:from-green-200 hover:to-blue-300"
     > 登陆
