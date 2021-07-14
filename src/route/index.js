@@ -20,10 +20,6 @@ const Me = () =>
     import ("../pages/Me")
 const EditInfo = () =>
     import ("../pages/EditInfo")
-const MyRelease = () =>
-    import ("../pages/MyRelease")
-const MyOrders = () =>
-    import ("../pages/MyOrders")
 const OrderDetail = () =>
     import ("../pages/OrderDetail")
 
