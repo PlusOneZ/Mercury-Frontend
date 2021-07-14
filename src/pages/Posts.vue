@@ -67,6 +67,7 @@ export default {
         url: "post",
         method: "GET",
         data: data,
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}
       }).then(
           (response) => {
             console.log(response);

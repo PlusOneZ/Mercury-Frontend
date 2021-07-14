@@ -247,6 +247,7 @@ export default {
   min-width: 600px;
   height: 50vh;
   min-height: 400px;
+  overflow: scroll;
 }
 
 </style>

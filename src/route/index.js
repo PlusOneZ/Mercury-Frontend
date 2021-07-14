@@ -8,6 +8,8 @@ const CommoditySearch = () =>
     import ("../pages/CommoditySearch")
 const CommodityDetail = () =>
     import ("../pages/CommodityDetail")
+const PublishCommodity = () =>
+    import("../pages/PublishCommodity")
 
 const Login = () =>
     import ("../pages/Login")
@@ -134,6 +136,11 @@ const routes = [
         name: "CommodityDetail",
         component: CommodityDetail,
         props: true
+    },
+    {
+      path: "/publishCommodity",
+      name: "PublishCommodity",
+      component: PublishCommodity
     },
     {
         path: "/user/:id",

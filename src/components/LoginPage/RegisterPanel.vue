@@ -29,7 +29,7 @@
 
     <div class="input-box">
       <label for="Sid">学工号<b class="text-red-500">*</b></label>
-      <input type="text" placeholder="不多于10位" id="Sid" v-model="form.SchoolId" @change="idChange">
+      <input type="text" placeholder="不多于10位" id="Sid" v-model="form.SchoolId" @input="idChange">
       <span v-if="show.id">
         <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.id"></i>
         <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.id"></i>
@@ -38,7 +38,7 @@
 
     <div class="input-box">
       <label for="name">真实姓名<b class="text-red-500">*</b></label>
-      <input type="text" placeholder="用于实人认证" id="name" v-model="form.RealName" @change="nameChange">
+      <input type="text" placeholder="用于实人认证" id="name" v-model="form.RealName" @input="nameChange">
       <span v-if="show.rm">
         <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.rm"></i>
         <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.rm"></i>
@@ -47,7 +47,7 @@
 
     <div class="input-box">
       <label for="nick">昵称<b class="text-red-500">*</b></label>
-      <input type="text" placeholder="4-12个字符" id="nick" v-model="form.Nickname" @change="nickChange">
+      <input type="text" placeholder="4-12个字符" id="nick" v-model="form.Nickname" @input="nickChange">
       <span v-if="show.nm">
         <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.nm"></i>
         <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.nm"></i>
@@ -56,7 +56,7 @@
 
     <div class="input-box">
       <label for="pw">密码<b class="text-red-500">*</b></label>
-      <input type="password" placeholder="6-16位，包含数字和字母" id="pw" v-model="form.Password" @change="pwChange">
+      <input type="password" placeholder="6-16位，包含数字和字母" id="pw" v-model="form.Password" @input="pwChange">
       <span v-if="show.pw">
         <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.pw"></i>
         <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.pw"></i>
@@ -65,7 +65,7 @@
 
     <div class="input-box">
       <label for="checkPw">确认密码<b class="text-red-500">*</b></label>
-      <input type="password" placeholder="与密码一致" id="checkPw" v-model="checkPass" @change="chpwChange">
+      <input type="password" placeholder="与密码一致" id="checkPw" v-model="checkPass" @input="chpwChange">
       <span v-if="show.chpw">
         <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.chpw"></i>
         <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.chpw"></i>
@@ -74,7 +74,7 @@
 
     <div class="input-box">
       <label for="phone">手机号<b class="text-red-500">*</b></label>
-      <input type="tel" placeholder="11位手机号" id="phone" v-model="form.Phone" @change="phoneChange">
+      <input type="tel" placeholder="11位手机号" id="phone" v-model="form.Phone" @input="phoneChange">
       <span v-if="show.phone">
         <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.phone"></i>
         <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.phone"></i>
@@ -200,13 +200,15 @@ export default {
     },
 
     nameChange() {
+      let p = /([^a-zA-Z0-9\u4e00-\u9fa5 ])/
       this.show.rm = true
-      this.ok.rm = this.form.RealName.length >= 2 && this.form.RealName.length <= 15;
+      this.ok.rm = (this.form.RealName.length >= 2 && this.form.RealName.length <= 15) && !p.test(this.form.RealName);
     },
 
     nickChange() {
+      let p = /([\s])/
       this.show.nm = true
-      this.ok.nm = this.form.Nickname.length >= 4 && this.form.Nickname.length <= 12;
+      this.ok.nm = (this.form.Nickname.length >= 4 && this.form.Nickname.length <= 12) && !p.test(this.form.Nickname);
     },
 
     pwChange() {

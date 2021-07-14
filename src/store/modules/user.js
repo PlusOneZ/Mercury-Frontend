@@ -27,6 +27,7 @@ const mutations = {
         state.avatarPath = user.avatarPath
         state.realName = user.RealName
         state.role = user.Role
+        console.log("in mutation", state)
     },
 
     userLogout(state) {
