@@ -63,6 +63,8 @@
 
 <script>
 import {useStore} from 'vuex'
+import {CookieManager} from "@/cookie";
+import {api} from "@/request";
 
 export default {
   name: "Header",
@@ -79,11 +81,26 @@ export default {
 
   },
   setup() {
-    console.log("in header.setup", useStore())
     const store = useStore()
-    console.log("user", store.getters['user/userInfo'])
     return {
       store
+    }
+  },
+  mounted() {
+    if (!this.user.loggedIn) {
+      let token = CookieManager.get("token")
+      let formData = new FormData()
+      formData.append("token", token)
+      api({
+        method: "POST",
+        url: "user/autoLogin",
+        data: formData
+      }).then( response => {
+        if (response.data.Code === '200') {
+          let user = response.data.User
+          this.store.commit("user/userLogin", user)
+        }
+      })
     }
   }
 }
