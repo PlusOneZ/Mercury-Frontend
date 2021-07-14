@@ -74,14 +74,14 @@ export default {
             console.log(response)
 
             // Success login
-            if (response.data.status === 'success') {
-              let user = response.data.user;  // TODO: if backend changes, modify this
+            if (response.data['Code'] === '200') {
+              let user = response.data.User;  // TODO: if backend changes, modify this
               ElMessage.success({
-                message: '欢迎回来，' + user.Nickname,
+                message: '欢迎回来，' + user.NickName,
                 type: 'success'
               })
-              console.log(response.data._token)
-              CookieManager.set("token", response.data._token, 3600*1000)
+              console.log(response.data.Token)
+              CookieManager.set("token", response.data.Token, 3600*1000)
               this.store.commit("user/userLogin", user)
               this.$router.push("/")
             }
@@ -123,11 +123,11 @@ export default {
         data: formData,
         url: "user/autoLogin"
       }).then((response) => {
-        if (response.data.status === "success") {
-          let user = response.data.user[0]  // TODO: if changes
+        if (response.data["Code"] === "200") {
+          let user = response.data.User  // TODO: if changes
           this.store.commit("user/userLogin", user)
           ElMessage.success({
-            message: '欢迎回来，' + user.Nickname,
+            message: '欢迎回来，' + user.NickName,
             type: 'success'
           })
           if (this.next) {

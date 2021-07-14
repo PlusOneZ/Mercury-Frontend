@@ -119,6 +119,8 @@
 import { toRaw } from '@vue/reactivity'
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
+import {useStore} from "vuex";
+import {CookieManager} from "@/cookie";
 
 export default {
   name: "RegisterPanel",
@@ -223,15 +225,24 @@ export default {
       if (this.ableToSubmit) {
         console.log("youre able to submit")
         let data = toRaw(this.form)
-        console.log(data)
         api({
           method: "POST",
           url: "user/register",
           data: data,
         }).then((response) => {
-          if (response.status === 200 && response.data.Status === "OK") {
+          console.log(response)
+          if (response.data["Code"] === '200') {
+            this.store.commit("user/userLogin", data)
+            if (response.data.token) {
+              CookieManager.set("token", response.data.Token)
+            }
             ElMessage.success({
               message: "注册成功！"
+            })
+            this.$router.push("/")
+          } else {
+            ElMessage.error({
+              message: "失败原因: " + response.data["Description"]
             })
           }
         }, (error) => {
@@ -277,13 +288,19 @@ export default {
       if (pw.length > 16 && pw. length < 6) {
         return false
       }
-      let p = /([^A-Za-z1-9@#$%^&*\-=+])/
+      let p = /([^A-Za-z0-9@#$%^&*\-=+])/
       return !p.test(pw);
     }
   },
   computed: {
     ableToSubmit() {
       return (this.ok.id && this.ok.rm && this.ok.nm && this.ok.pw && this.ok.chpw && this.ok.phone)
+    }
+  },
+  setup() {
+    const store = useStore()
+    return {
+      store
     }
   }
 }
