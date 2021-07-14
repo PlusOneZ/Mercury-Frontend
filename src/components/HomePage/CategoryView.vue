@@ -36,7 +36,8 @@
         <div class="category-window grid md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-6 lg:grid-cols-5">
           <CommodityThumbnail
               v-for="i in commodities"
-              :key="i"
+              :key="i.Id"
+              :commodity="i"
           >
           </CommodityThumbnail>
 

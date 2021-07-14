@@ -52,7 +52,7 @@
       <el-menu-item index="/shoppingCart"><i class="el-icon-shopping-cart-2"></i> 购物车</el-menu-item>
       <el-menu-item index="/likes"><i class="el-icon-star-on"></i>收藏夹</el-menu-item>
       <el-menu-item index="/me" class="hover:text-blue-500">
-        <el-avatar :src="user.avatar ? user.avatar : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'">
+        <el-avatar :src="user.avatar ? user.avatar : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'">
           <i class="el-icon-user-solid"></i>
         </el-avatar>
         <span class="user-name pl-5 ">{{ user.name ? user.name : "去登陆" }}</span>

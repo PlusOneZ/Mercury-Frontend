@@ -5,7 +5,10 @@
       <el-col :span="5" :offset="1">
         <el-card class="avatar-card" :body-style="{ padding: '35px' }">
           <div id="wrap">
-            <div id="box"><img id="circleImg" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/></div>
+            <div id="box">
+              <img id="circleImg" onerror='this.src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"'
+                   :src="user.AvatarPath">
+            </div>
           </div>
         </el-card>
       </el-col>
@@ -14,23 +17,33 @@
           <template #header>
             <div class="card-header">
               <span>用户信息</span>
-              <router-link to="/editInfo"><el-button class="button" type="text">修改信息</el-button></router-link>
+              <router-link to="/editInfo">
+                <el-button class="button" type="text">修改信息</el-button>
+              </router-link>
             </div>
           </template>
           <div class="text item">
-            用户昵称：{{user.Nickname}}
+            用户昵称：{{ user.Nickname }}
           </div>
           <div class="text item">
-            真实姓名：{{user.RealName}}
+            真实姓名：{{ user.RealName }}
           </div>
           <div class="text item">
-            专业：{{ majors }} <span></span> 年级：{{ }}
+            专业：{{
+              majors.find((i) => {
+                return i.value === user.Major
+              }).label
+            }} <span class="w-4"></span> 年级：{{
+              grades.find((i) => {
+                return i.value === String(user.Grade)
+              }).label
+            }}
           </div>
           <div class="text item">
-            {{'用户信用值：666'}}
+            用户信用值：{{ user.Credit }}
           </div>
           <div class="text item">
-            {{'用户个性签名：稳的一批'}}
+            用户个性签名：{{ user.Brief }}
           </div>
         </el-card>
       </el-col>
@@ -43,23 +56,23 @@
             </div>
           </template>
           <div class="text item">
-            {{'待支付订单数量：0'}}
+            {{ '待支付订单数量：0' }}
           </div>
           <div class="text item">
-            {{'待交易订单数量：0'}}
+            {{ '待交易订单数量：0' }}
           </div>
           <div class="text item">
-            {{'已发布订单数量：0'}}
+            {{ '已发布订单数量：0' }}
           </div>
           <div class="text item">
-            {{'收藏夹商品数量：0'}}
+            {{ '收藏夹商品数量：0' }}
           </div>
         </el-card>
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg" justify="space-around">
       <el-tabs type="border-card">
-        <el-tab-pane>
+        <el-tab-pane class="order-box">
           <template #label>
             <span><i class="el-icon-s-goods"></i> 我购买的</span>
           </template>
@@ -106,11 +119,22 @@ import {staticData} from "@/assets/js/static";
 
 export default {
   name: "Home",
-  data () {
+  data() {
     return {
       activeName: 'second',
       fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
-      user: undefined,
+      user: {
+        "SchoolId": "null",
+        "Nickname": "null",
+        "RealName": "null",
+        "Phone": "0000000000",
+        "Major": "OT",
+        "Credit": 0,
+        "Role": "null",
+        "Grade": 1,
+        "Brief": "null",
+        "AvatarPath": "null"
+      },
       simpleUser: undefined
     }
   },
@@ -129,14 +153,15 @@ export default {
     api({
       method: "GET",
       url: "user/" + id,
-    }).then( response => {
-      if (response.data.Code === '200') {
+    }).then(response => {
+      console.log(response)
+      if (1 || response.data.Code === '200') { // TODO: delete 1 after API modification
         this.user = response.data.User
       } else {
-          ElMessage.error({
-            message: "出了点小问题..." + (response.data.Description ? response.data.Description : "")
-          })
-          this.$router.push("/")
+        ElMessage.error({
+          message: "出了点小问题..." + (response.data.Description ? response.data.Description : "")
+        })
+        this.$router.push("/")
       }
     }, error => {
       console.log(error)
@@ -150,6 +175,7 @@ export default {
     let store = useStore()
     const grades = staticData.grades
     const majors = staticData.majors
+    console.log("in Me setup")
     return {
       store,
       grades,
@@ -161,6 +187,7 @@ export default {
 
 <style scoped>
 @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -175,28 +202,36 @@ export default {
   margin-bottom: 18px;
 }
 
-.avatar-card{
-  min-height:300px;
+.avatar-card {
+  min-height: 300px;
 }
 
-.box-card{
-  min-height:300px;
+.box-card {
+  min-height: 300px;
 }
 
 #wrap {
   width: 100%;
   height: 100%;
 }
+
 #box {
   width: 100%;
   height: 0;
   padding-bottom: 100%;
   position: relative;
-  border-radius:50%;
+  border-radius: 50%;
 }
 
-#circleImg{
+#circleImg {
   width: 100%;
+}
+
+.order-box {
+  width: 70vw;
+  min-width: 600px;
+  height: 50vh;
+  min-height: 400px;
 }
 
 </style>
