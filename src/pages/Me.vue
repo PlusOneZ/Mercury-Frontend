@@ -18,10 +18,13 @@
             </div>
           </template>
           <div class="text item">
-            {{'用户昵称：橘黄黄黄'}}
+            用户昵称：{{user.Nickname}}
           </div>
           <div class="text item">
-            {{'专业：软件工程&emsp;年级：大二'}}
+            真实姓名：{{user.RealName}}
+          </div>
+          <div class="text item">
+            专业：{{ majors }} <span></span> 年级：{{ }}
           </div>
           <div class="text item">
             {{'用户信用值：666'}}
@@ -96,17 +99,61 @@
 </template>
 
 <script>
+import {useStore} from "vuex";
+import {api} from "@/request"
+import {ElMessage} from "element-plus";
+import {staticData} from "@/assets/js/static";
+
 export default {
   name: "Home",
   data () {
     return {
       activeName: 'second',
-      fits: ['fill', 'contain', 'cover', 'none', 'scale-down']
+      fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
+      user: undefined,
+      simpleUser: undefined
     }
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
+    }
+  },
+  mounted() {
+    this.simpleUser = this.store.getters['user/userInfo']
+    if (!this.simpleUser.loggedIn) {
+      this.$router.push("/login")
+      return
+    }
+    let id = this.simpleUser.id
+    api({
+      method: "GET",
+      url: "user/" + id,
+    }).then( response => {
+      if (response.data.Code === '200') {
+        this.user = response.data.User
+      } else {
+          ElMessage.error({
+            message: "出了点小问题..." + (response.data.Description ? response.data.Description : "")
+          })
+          this.$router.push("/")
+      }
+    }, error => {
+      console.log(error)
+      ElMessage.error({
+        message: "出了点小问题..."
+      })
+      this.$router.push("/")
+    })
+  },
+  setup() {
+    let store = useStore()
+    const grades = staticData.grades
+    const majors = staticData.majors
+    return {
+      store,
+      grades,
+      majors
     }
   }
 }
