@@ -9,8 +9,25 @@
         <el-form-item label="内容">
           <el-input type="textarea" v-model="form.desc" placeholder="请输入商品描述" maxlength="1000" show-word-limit rows="10"></el-input>
         </el-form-item>
-        <el-form-item label="预期价格" class="w-1/4 float-left">
+        <el-form-item label="预期价格">
           <el-input v-model="form.price" placeholder="请输入预期价格" maxlength="10"></el-input>
+        </el-form-item>
+        <el-form-item label="商品图片">
+          <el-upload
+              class="w-1/6 float-left"
+              action=""
+              ref="upload"
+              accept=".jpg,.jpeg,.png"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-upload="beforeUpload"
+              :http-request="upLoad"
+              :limit="1"
+              :on-exceed="handleExceed"
+              :auto-upload="false"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-button class="float-right" type="primary" @click="onSubmit">创建</el-button>
@@ -35,22 +52,29 @@ export default {
         name: '',
         desc: '',
         price: '',
-      }
+      },
+      newData: new FormData(),
     }
   },
   methods: {
     onSubmit() {
+      this.$refs.upload.submit();
+
       let id = this.store.getters['user/userInfo'].id;
-      let data = new FormData();
-      data.append("senderId",id);
-      data.append("title",this.form.name);
-      data.append("content",this.form.desc);
-      data.append("price",this.form.price);
+
+      this.newData.append("senderId",id);
+      this.newData.append("title",this.form.name);
+      this.newData.append("content",this.form.desc);
+      this.newData.append("price",this.form.price);
+
+      this.newData.forEach((value, key) => {
+        console.log(`key ${key}: value ${value}`);
+      })
 
       api({
         url: "post",
         method: "POST",
-        data: data,
+        data: this.newData,
       }).then(
           (response) => {
             console.log(response);
@@ -69,6 +93,30 @@ export default {
             }
           }
       )
+
+      this.newData.delete("senderId");
+      this.newData.delete("title");
+      this.newData.delete("content");
+      this.newData.delete("price");
+      this.newData.delete("photos");
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    beforeUpload(file) {
+      this.newData.append("photos",file);
+    },
+    upLoad() {
+      console.log("upload successfully");
+    },
+    handleExceed(){
+      ElMessage.error({
+        message: "只能上传一张图片哦",
+        type: "error",
+      })
     }
   },
   setup() {
