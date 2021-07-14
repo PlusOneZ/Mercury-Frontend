@@ -14,7 +14,7 @@
             class="w-7 h-7 rounded-full"
             :src="avatar ? avatar : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
         >
-        <p class="pl-2 text-sm leading-7"> {{ user ? User : "我是ljs" }} </p>
+        <p class="pl-2 text-sm leading-7"> {{ user ? user : "我是ljs" }} </p>
       </div>
       <div class="pr-6">
         <el-button type="text" class="float-right" @click="viewDetail">查看详情</el-button>
@@ -27,15 +27,26 @@
 export default {
   name: "PostThumbnail",
   props: {
-    title: String,
-    avatar: String,
-    user: String,
-    intro: String,
+    post: Object,
+  },
+  data() {
+    return {
+      title: "",
+      intro: "",
+      user: "",
+      avatar: ""
+    }
   },
   methods: {
     viewDetail() {
       this.$router.push("/postDetail") // TODO: Missing parameter.
     }
+  },
+  mounted() {
+    this.title = this.post.Title;
+    this.intro = this.post.Content;
+    this.user = this.post.Name;
+    this.avatar = this.post.AvatarPath;
   }
 }
 </script>

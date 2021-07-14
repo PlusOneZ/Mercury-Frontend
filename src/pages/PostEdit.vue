@@ -9,6 +9,9 @@
         <el-form-item label="内容">
           <el-input type="textarea" v-model="form.desc" placeholder="请输入商品描述" maxlength="1000" show-word-limit rows="10"></el-input>
         </el-form-item>
+        <el-form-item label="预期价格" class="w-1/4 float-left">
+          <el-input v-model="form.price" placeholder="请输入预期价格" maxlength="10"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button class="float-right" type="primary" @click="onSubmit">创建</el-button>
         </el-form-item>
@@ -20,19 +23,58 @@
 
 
 <script>
+import {api} from "../request";
+import {useStore} from "vuex";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "edit",
   data() {
     return {
       form: {
         name: '',
-        desc: ''
+        desc: '',
+        price: '',
       }
     }
   },
   methods: {
     onSubmit() {
-      console.log('submit!');
+      let id = this.store.getters['user/userInfo'].id;
+      let data = new FormData();
+      data.append("senderId",id);
+      data.append("title",this.form.name);
+      data.append("content",this.form.desc);
+      data.append("price",this.form.price);
+
+      api({
+        url: "post",
+        method: "POST",
+        data: data,
+      }).then(
+          (response) => {
+            console.log(response);
+
+            if (response.data['Code'] === '201') {
+              ElMessage.success({
+                message: "创建成功",
+                type: "success",
+              })
+            }
+            else{
+              ElMessage.error({
+                message: "创建失败",
+                type: "error",
+              })
+            }
+          }
+      )
+    }
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
     }
   }
 }
