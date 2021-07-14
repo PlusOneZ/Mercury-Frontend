@@ -140,7 +140,8 @@ const routes = [
     {
       path: "/publishCommodity",
       name: "PublishCommodity",
-      component: PublishCommodity
+      component: PublishCommodity,
+        beforeEnter: loginGuard
     },
     {
         path: "/user/:id",

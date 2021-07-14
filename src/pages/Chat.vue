@@ -1,7 +1,6 @@
 <template>
   <el-main class="bg-white">
     <ol class="chat">
-      <div class="day">2021/07/10</div>
       <li class="other">
         <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
         <div class="msg">

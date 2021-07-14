@@ -172,8 +172,7 @@ export default {
         }).then((response) => {
           console.log(response)
           if (response.data["Code"] === '200') {
-            this.store.commit("user/userLogin", data)
-            if (response.data.token) {
+            if (response.data.Token) {
               CookieManager.set("token", response.data.Token)
             }
             ElMessage.success({

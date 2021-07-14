@@ -12,6 +12,7 @@
             active-color="#8b2671"
             inactive-text="售卖"
             active-text="出租"
+            @change="forRentChange"
         >
         </el-switch>
       </el-form-item>
@@ -24,6 +25,7 @@
           <el-option label="能用" value="能用"></el-option>
         </el-select>
       </el-form-item>
+
       <el-form-item label="商品价格" prop="price">
         <el-input-number
             v-model="ruleForm.price"
@@ -34,15 +36,35 @@
         ></el-input-number>
       </el-form-item>
 
+      <el-form-item label="单位" prop="unit">
+        <el-input v-model="ruleForm.unit" placeholder="输入单位" style="width: 200px">
+          <template #prepend>每</template>
+        </el-input>
+      </el-form-item>
+
+      <el-form-item label="商品库存" prop="stock">
+        <el-input-number
+            v-model="ruleForm.stock"
+            :precision="0"
+            :step="1"
+            :max="100"
+            :min="0"
+        ></el-input-number>
+      </el-form-item>
+
       <el-form-item label="商品简介" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item label="商品图片" prop="images">
         <el-upload
-            action="#"
             list-type="picture-card"
             :auto-upload="false"
+            v-model="photoList"
+            accept=".jpg,.jpeg,.png"
+            :on-remove="handleRemove"
+            :on-change="handleChange"
+            :limit="5"
         >
           <template #default>
             <i class="el-icon-plus"></i>
@@ -60,13 +82,6 @@
           <span
               v-if="!disabled"
               class="el-upload-list__item-delete"
-              @click="handleDownload(file)"
-          >
-            <i class="el-icon-download"></i>
-          </span>
-          <span
-              v-if="!disabled"
-              class="el-upload-list__item-delete"
               @click="handleRemove(file)"
           >
             <i class="el-icon-delete"></i>
@@ -76,7 +91,7 @@
           </template>
         </el-upload>
         <el-dialog v-model="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
+          <img :src="dialogImageUrl" alt="opps">
         </el-dialog>
       </el-form-item>
 
@@ -90,6 +105,10 @@
 </template>
 
 <script>
+import {useStore} from "vuex";
+import {api} from "@/request";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "CommodityForm",
   data() {
@@ -101,7 +120,9 @@ export default {
         price: 9.9,
         type: [],
         resource: '',
-        desc: ''
+        desc: '',
+        unit: '件',
+        stock: 1
       },
       rules: {
         name: [
@@ -116,23 +137,101 @@ export default {
         ],
         desc: [
           {required: true, message: '请填写商品简介', trigger: 'blur'}
+        ],
+        images: [
+          {required: false, message: '至少上传一张商品图片', trigger: 'blur'}
+        ],
+        unit: [
+          {required: true, message: '请填写单位', trigger: 'blur'}
+        ],
+        stock: [
+          {required: true, message: '请填写库存', trigger: 'blur'}
         ]
-      }
+      },
+      photoList: [],
+
+
+      dialogImageUrl: "",
+      dialogVisible: false,
+      disabled: false
     };
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          let id = this.store.getters['user/userInfo'].id
+
+          let formData = new FormData()
+          formData.append("Name", this.ruleForm.name)
+          formData.append("OwnerId", id)
+          formData.append("Condition", this.ruleForm.status)
+          formData.append("Price", this.ruleForm.price)
+          formData.append("Stock", this.ruleForm.stock)
+          formData.append("ForRent", this.ruleForm.forRent)
+          formData.append("Unit", this.ruleForm.unit)
+          formData.append("Cover", this.photoList[0])
+
+          api({
+            method: "post",
+            data: formData,
+            url: 'commodity'
+          }).then(response => {
+            if (response.data.Code === '201') {
+              ElMessage.success({
+                message: "上传成功"
+              })
+              this.$router.push('/me')
+            } else {
+              ElMessage.error({
+                message: "上传失败，请检查数据"
+              })
+            }
+          }, error => {
+            console.log(error)
+            ElMessage.error({
+              message: "服务器错误..."
+            })
+          })
         } else {
           console.log('error submit!!');
           return false;
         }
       });
     },
+
+    forRentChange(c) {
+      if (c) {
+        this.ruleForm.unit = "一天"
+      } else {
+        this.ruleForm.unit = "件"
+      }
+    },
+
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+
+    handleRemove(file) {
+      console.log(file)
+    },
+
+    handleChange(file, list) {
+      for (let i = 0; i < list.length; i++) {
+        this.photoList.push(list[i])
+      }
+      console.log(this.photoList)
+    }
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
     }
   }
 }
