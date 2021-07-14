@@ -25,7 +25,7 @@
     </div>
 
     <transition name="slide-fade">
-      <router-view
+      <router-view class="inside"
 
       ></router-view>
     </transition>
@@ -83,7 +83,7 @@ section {
   align-items: center;
   justify-content: center;
   background-image: linear-gradient(#5698c3, #d1c2d3);
-  overflow: hidden;
+  overflow-y: scroll;
 }
 
 section::before {
@@ -116,6 +116,10 @@ section::after {
   border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
   animation: pulse 1.6s infinite;
+}
+
+.inside {
+  overflow-y: scroll;
 }
 
 @keyframes pulse {

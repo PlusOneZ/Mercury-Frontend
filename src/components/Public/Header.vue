@@ -99,10 +99,18 @@ export default {
         if (response.data.Code === '200') {
           let user = response.data.User
           this.store.commit("user/userLogin", user)
+          console.log("in header store values", this.store.getters['user/userInfo'])
+        } else {
+          console.log("Header fail with response", response)
+          console.log("in header store values", this.store.getters['user/userInfo'])
         }
+      }, error => {
+        console.log("header fail with error", error)
       })
+    } else {
+      console.log("in header store values", this.store.getters['user/userInfo'])
     }
-  }
+  },
 }
 
 
