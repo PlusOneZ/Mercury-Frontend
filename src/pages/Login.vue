@@ -25,7 +25,7 @@
     </div>
 
     <transition name="slide-fade">
-      <router-view class="inside"
+      <router-view
 
       ></router-view>
     </transition>
@@ -116,10 +116,6 @@ section::after {
   border-radius: 50%;
   box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2);
   animation: pulse 1.6s infinite;
-}
-
-.inside {
-  overflow-y: scroll;
 }
 
 @keyframes pulse {
