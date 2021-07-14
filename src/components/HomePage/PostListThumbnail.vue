@@ -5,17 +5,39 @@
         求物帖动态
       </div>
       <div>
-        <div><a> haha </a></div>
-        <div><a> haha </a></div>
-        <div><a> haha </a></div>
+        <div
+             v-for="p in posts"
+             :key="p.PostId"
+             class="pt-2 text-gray-600"
+        >
+          <span class="hover:text-blue-500 truncate"><router-link to="/postDetail">{{p.Title}} </router-link></span>
+          <span class="float-right hover:text-blue-500"><router-link :to="'/user/' + p.SenderId">{{"@" + p.Name}}</router-link></span>
+        </div>
       </div>
     </div>
   </el-card>
 </template>
 
 <script>
+import {api} from "@/request";
+
 export default {
-  name: "PostListThumbnail"
+  name: "PostListThumbnail",
+  data() {
+    return {
+      posts: []
+    }
+  },
+  mounted() {
+    api({
+      url: 'post',
+      method: "GET"
+    }).then( response => {
+      if (response.data.Code === '200') {
+        this.posts = response.data.PostList.slice(0,6)
+      }
+    })
+  }
 }
 </script>
 
