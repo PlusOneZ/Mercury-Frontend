@@ -70,39 +70,51 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row type="flex" class="row-bg" justify="space-around">
+    <el-row type="flex" class="row-bg pb-20" justify="space-around">
       <el-tabs type="border-card">
         <el-tab-pane class="order-box">
           <template #label>
-            <span><i class="el-icon-s-goods"></i> 我购买的</span>
+            <span><i class="el-icon-s-goods"></i>买入</span>
           </template>
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane>
               <template #label>
-                <span><i class="el-icon-document"></i> 未完成</span>
+                <span><i class="el-icon-document"></i>进行中</span>
               </template>
+              <MyOrders>
+
+              </MyOrders>
             </el-tab-pane>
             <el-tab-pane>
               <template #label>
-                <span><i class="el-icon-document-checked"></i> 已完成</span>
+                <span><i class="el-icon-document-checked"></i>已完成</span>
               </template>
+              <MyOrders>
+
+              </MyOrders>
             </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane class="order-box">
           <template #label>
-            <span><i class="el-icon-date"></i> 我发布的</span>
+            <span><i class="el-icon-date"></i>卖出</span>
           </template>
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane>
               <template #label>
-                <span><i class="el-icon-document"></i> 未完成</span>
+                <span><i class="el-icon-document"></i>进行中</span>
               </template>
+              <MyRelease
+
+              ></MyRelease>
             </el-tab-pane>
             <el-tab-pane>
               <template #label>
-                <span><i class="el-icon-document-checked"></i> 已完成</span>
+                <span><i class="el-icon-document-checked"></i>已完成</span>
               </template>
+              <MyRelease
+
+              ></MyRelease>
             </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
@@ -116,9 +128,12 @@ import {useStore} from "vuex";
 import {api} from "@/request"
 import {ElMessage} from "element-plus";
 import {staticData} from "@/assets/js/static";
+import MyOrders from "@/pages/MyOrders";
+import MyRelease from "@/pages/MyRelease";
 
 export default {
   name: "Home",
+  components: {MyRelease, MyOrders},
   data() {
     return {
       activeName: 'second',

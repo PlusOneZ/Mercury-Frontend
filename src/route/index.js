@@ -140,12 +140,6 @@ const routes = [
         props: true
     },
     {
-        path: "/myOrders",
-        name: "myOrders",
-        component: MyOrders,
-        beforeEnter: loginGuard
-    },
-    {
         path: "/user/:id",
         name: "User",
         component: Others,
@@ -167,12 +161,6 @@ const routes = [
         path: "/posts",
         name: "Posts",
         component: Posts
-    },
-    {
-        path: "/myRelease",
-        name: "myRelease",
-        component: MyRelease,
-        beforeEnter: loginGuard
     },
     {
         path: "/postEdit",

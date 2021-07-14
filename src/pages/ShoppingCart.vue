@@ -1,9 +1,6 @@
 
 <template>
-
-
-<div id="app">
-
+<div>
 
   <el-table
     :data="tableData"
@@ -99,11 +96,7 @@ export default {
 }
 </script>
 
-    
-       
-    
-<style scoped>
-@import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
 
+<style scoped>
 
 </style>

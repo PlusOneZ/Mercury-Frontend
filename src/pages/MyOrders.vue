@@ -1,5 +1,5 @@
 <template>
-  <div class="p-14">
+  <div>
     <el-table
         :data="tableData"
         style="width: 100%">
@@ -11,7 +11,9 @@
         <el-image
             style="width: 100px; height: 100px"
             :src="url"
-            :fit="fit"></el-image>
+        >
+
+        </el-image>
       </el-table-column>
       <el-table-column
           prop="name"
