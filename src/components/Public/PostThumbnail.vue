@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      id: "",
       title: "",
       intro: "",
       user: "",
@@ -39,10 +40,11 @@ export default {
   },
   methods: {
     viewDetail() {
-      this.$router.push("/postDetail") // TODO: Missing parameter.
+      this.$router.push("/postDetail/"+this.id);
     }
   },
   mounted() {
+    this.id = this.post.PostId;
     this.title = this.post.Title;
     this.intro = this.post.Content;
     this.user = this.post.Name;
