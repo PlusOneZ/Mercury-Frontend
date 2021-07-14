@@ -55,7 +55,7 @@
         <el-avatar :src="user.avatar ? user.avatar : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'">
           <i class="el-icon-user-solid"></i>
         </el-avatar>
-        <span class="user-name pl-5 ">{{ user.name ? user.name : "未命名牛逼人" }}</span>
+        <span class="user-name pl-5 ">{{ user.name ? user.name : "去登陆" }}</span>
       </el-menu-item>
     </el-menu>
   </div>
