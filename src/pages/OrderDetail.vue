@@ -159,6 +159,7 @@ export default {
       }).then(response => {
         if (response.data.Code === '200') {
           ElMessage.success("支付成功！")
+          this.$router.go(0)
         }
       })
     },
@@ -173,7 +174,7 @@ export default {
       }).then(response => {
         if (response.data.Code === '200') {
           ElMessage.info("已取消")
-
+          this.$router.go(0)
         }
       })
     },

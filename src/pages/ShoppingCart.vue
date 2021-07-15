@@ -187,13 +187,16 @@ export default {
       method: "get",
       url: "ShoppingCart/"+id,
     }).then( response => {
-      if (response.data.Code == '200') {
-        let data = response.data.ItemList
-        for (let i = 0; i < data.length; i++) {
-          this.tableData[i].commodity = response.data["NameList"][i]
-          this.tableData[i].count = data[i]["Count"]
-          this.tableData[i].price = response.data["PriceList"][i]
-          this.tableData[i].id = data[i]['CommodityId']
+      if (response.data.Code === '200') {
+        for (let i = 0; i < response.data['ItemList'].length; i++) {
+          let temp = {}
+          console.log('count', response.data['ItemList'][i]['Count'])
+          temp['count'] = Number(response.data['ItemList'][i]['Count'])
+          temp['price'] = Number(response.data['PriceList'][i])
+          temp['commodity'] = response.data['NameList'][i]
+          temp['id'] = response.data['ItemList'][i]['CommodityId']
+          temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
+          this.tableData.push(temp)
         }
       } else {
         ElMessage.error("服务器在开小差...")
