@@ -1,9 +1,6 @@
 <template>
 
-
-  <div id="app" class="w-full grid grid-cols-9">
-    <div></div>
-
+    <div>
     <el-table
         :data="tableData"
         height="700"
@@ -126,7 +123,5 @@ export default {
 
 
 <style scoped>
-@import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
-
 
 </style>
