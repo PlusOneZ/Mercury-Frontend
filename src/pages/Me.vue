@@ -4,18 +4,20 @@
     <el-row class="p-14">
       <el-col :span="5" :offset="1">
         <el-card class="avatar-card" :body-style="{ padding: '35px' }">
-          <div id="wrap">
-            <div id="box">
-              <el-upload
-                  class="avatar-uploader"
-                  :before-upload="beforeAvatarUpload"
-                  :show-file-list="false"
-              >
+
+          <el-upload
+              class="avatar-uploader"
+              :before-upload="beforeAvatarUpload"
+              :show-file-list="false"
+          >
+            <div id="wrap">
+              <div id="box">
                 <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+              </div>
             </div>
-          </div>
+          </el-upload>
+
         </el-card>
       </el-col>
       <el-col :span="10" :offset="1">
@@ -87,7 +89,9 @@
               <template #label>
                 <span><i class="el-icon-document"></i>进行中</span>
               </template>
-              <MyOrders>
+              <MyOrders
+                  :type="'UNPAID'"
+              >
 
               </MyOrders>
             </el-tab-pane>
@@ -95,7 +99,9 @@
               <template #label>
                 <span><i class="el-icon-document-checked"></i>已完成</span>
               </template>
-              <MyOrders>
+              <MyOrders
+                  :type="'PAID'"
+              >
 
               </MyOrders>
             </el-tab-pane>
@@ -157,14 +163,14 @@ export default {
         method: "put",
         url: "user/" + id,
         data: formData
-      }).then( response => {
+      }).then(response => {
         console.log(response)
         if (response.data.Code === '200') {
           ElMessage.success("上传成功！")
           api({
             method: "get",
             url: "user/" + id,
-          }).then( res => {
+          }).then(res => {
             if (response.data.Code === '200') {
               this.imageUrl = res.data.User.AvatarPath
               this.store.commit("user/uerAvatarChange", this.imageUrl)
@@ -241,6 +247,10 @@ export default {
 
 .box-card {
   min-height: 300px;
+}
+
+.avatar {
+  min-height: 15vw;
 }
 
 #wrap {

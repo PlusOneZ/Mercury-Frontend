@@ -24,13 +24,15 @@
           </p>
         </div>
       </div>
-      <div class="flex pl-3 pt-1 pb-2 rounded-xl rounded-t-none ">
+      <router-link :to="'/user/' + commodity.SellerId">
+      <div class="flex pl-3 pt-1 pb-2 rounded-xl rounded-t-none hover:text-blue-500">
         <img
             class="w-7 h-7 rounded-full"
             :src="commodity.SellerAvatar ? ('https://139.196.20.137:5001/' + commodity.SellerAvatar) : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
         >
         <p class="pl-2 text-sm leading-7"> {{ commodity.SellerName ? commodity.SellerName : "神秘人" }} </p>
       </div>
+      </router-link>
     </div>
   </router-link>
 </template>
