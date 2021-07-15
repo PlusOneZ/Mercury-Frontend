@@ -126,7 +126,8 @@ const routes = [
     {
         path: "/postDetail/:ID",
         name: "PostDetail",
-        component: PostDetail
+        component: PostDetail,
+        props: true
     },
     {
         path: "/commoditySearch",
