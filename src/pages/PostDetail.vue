@@ -1,7 +1,7 @@
 <template>
 
     <el-main >
-      <div class="bg-white  justify-center divide-y divide-black">
+      <div class="justify-center divide-y divide-black">
         <div class="flex flex-row space-x-8">
           <div class="container w-1/3 space-y-6">    
             <el-carousel :autoplay	= "false" indicator-position = "outside"> 
@@ -37,10 +37,10 @@
                     <p >嘉定校区20号楼宿舍</p>
                 </div>
                 <div class="text-xl">
-                  <div class="rounded-md bg-gray-200 max-w-max flex justify-start space-x-12 w-auto"> 商品标签：
-                    <a class= "rounded-md border-2 border-black" href="">C语言</a>
-                    <a class= "rounded-md border-2 border-black" href="">谭浩强</a>
-                    <a class= "rounded-md border-2 border-black" href="">教辅</a>
+                  <div class="rounded-md max-w-max flex justify-start space-x-12 w-auto"> 商品标签：
+                    <el-tag>C语言</el-tag>
+                    <el-tag>谭浩强</el-tag>
+                    <el-tag>教辅</el-tag>
                   </div>
                 </div>
                 <p class="text-2xl flex justify-start">商品数量：1 </p>           
