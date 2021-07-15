@@ -30,6 +30,10 @@ const mutations = {
         console.log("in mutation", state)
     },
 
+    uerAvatarChange(state, path) {
+        state.avatarPath = path
+    },
+
     userLogout(state) {
         state.loggedIn = false
         state.id = ""

@@ -8,7 +8,7 @@
             <div id="box">
               <el-upload
                   class="avatar-uploader"
-                  :http-request="beforeAvatarUpload"
+                  :before-upload="beforeAvatarUpload"
                   :show-file-list="false"
               >
                 <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
@@ -167,6 +167,7 @@ export default {
           }).then( res => {
             if (response.data.Code === '200') {
               this.imageUrl = res.data.User.AvatarPath
+              this.store.commit("user/uerAvatarChange", this.imageUrl)
             }
           })
         }
