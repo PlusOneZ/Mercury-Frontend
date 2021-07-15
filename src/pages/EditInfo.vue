@@ -31,11 +31,11 @@ export default {
       rules: {
         name: [
           { required: false, message: '请输入用户昵称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 ？ 到 ？ 个字符', trigger: 'blur' }
+          { min: 3, max: 20, message: '长度在3？ 到 20 个字符', trigger: 'blur' }
         ],
         personal: [
           { required: false, message: '请输入个性签名', trigger: 'blur' },
-          { min: 0, max: 50, message: '长度在 ？ 到 ？ 个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
         ]
       }
     };

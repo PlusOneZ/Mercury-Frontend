@@ -213,9 +213,12 @@ export default {
           formData.append("Stock", this.ruleForm.stock)
           formData.append("ForRent", this.ruleForm.forRent)
           formData.append("Unit", this.ruleForm.unit)
-          formData.append("Cover", this.photoList[0])
+          for (let i = 0; i < this.photoList.length; i++) {
+            console.log("file", this.photoList[i])
+            formData.append("Files", this.photoList[i].raw)
+          }
           formData.append("Classification", this.ruleForm.category)
-          formData.append("Tags", this.dynamicTags)
+          formData.append("Tag", this.dynamicTags[0])
 
           api({
             method: "post",
