@@ -59,4 +59,12 @@ export const staticData = {
             label: "其他"
         }
     ],
+    categories: [
+        ["书籍", "book"],
+        ["教材", "textbook"],
+        ["课程用具", "forCourse"],
+        ["电器", "electronic"],
+        ["日用品", "daily"],
+        ["食物", "food"],
+    ]
 }

@@ -37,7 +37,7 @@
                     <p >嘉定校区20号楼宿舍</p>
                 </div>
                 <div class="text-xl">
-                  <div class="rounded-md max-w-max flex justify-start space-x-12 w-auto"> 商品标签：
+                  <div class="rounded-md max-w-max flex justify-start space-x-12 w-auto"> 标签：
                     <el-tag>C语言</el-tag>
                     <el-tag>谭浩强</el-tag>
                     <el-tag>教辅</el-tag>
@@ -45,7 +45,6 @@
                 </div>
                 <p class="text-2xl flex justify-start">商品数量：1 </p>           
                 <div class="flex justify-start space-x-16 mb-6 mt-6">
-                    <el-button type="primary" icon="el-icon-star-off" width = "100px" >收藏</el-button>
                     <el-button type="primary" icon="el-icon-chat-dot-square">联系买家</el-button>          
                 </div>
               </div>
@@ -65,7 +64,7 @@
 </template>
 
 <script>
-import report from "@/components/Public/report";
+import report from "@/components/Public/Report";
 
 export default {
   name: "PostDetail",

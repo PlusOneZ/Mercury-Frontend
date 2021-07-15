@@ -1,18 +1,22 @@
 <template>
-  <li class="other">
-    <div class="avatar"><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+  <li :class="{'other': !me, 'self': me}">
+    <div class="avatar"><img src="" alt=""></div>
     <div class="msg">
-      <p>你好
-        <emoji class="pizza"/>
+      <p>
+        {{ data.Content }}
       </p>
-      <time>20:17</time>
+      <time>{{ Date(data.Time) }}</time>
     </div>
   </li>
 </template>
 
 <script>
 export default {
-  name: "Bubble"
+  name: "Bubble",
+  props: {
+    me: Boolean,
+    data: Object
+  }
 }
 </script>
 

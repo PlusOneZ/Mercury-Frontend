@@ -52,20 +52,13 @@
 import CommodityThumbnail from "@/components/Public/CommodityThumbnail";
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
+import {staticData} from "@/assets/js/static";
 
 export default {
   name: "CategoryView",
   components: {CommodityThumbnail},
   data() {
     return {
-      categories: [
-        ["书籍", "book"],
-        ["教材", "textbook"],
-        ["课程用具", "forCourse"],
-        ["电器", "electronic"],
-        ["日用品", "daily"],
-        ["食物", "food"],
-      ],
       list: [],
       defaultActive: '0',
       commodities: []
@@ -92,6 +85,12 @@ export default {
       })
       console.log(error)
     })
+  },
+  setup() {
+    let categories = staticData.categories
+    return {
+      categories
+    }
   }
 }
 </script>

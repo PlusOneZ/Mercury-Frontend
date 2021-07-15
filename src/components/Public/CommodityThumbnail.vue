@@ -1,9 +1,9 @@
 <template>
-  <router-link :to="'/commodityDetail/' + commodity.Id ? commodity.Id : ''">
+  <router-link :to="'/commodityDetail/' + (commodity.Id ? commodity.Id : '')">
     <div class="rounded-xl comm mx-3 my-3 bg-white divide-y divide-gray-200 bg-opacity-50 bg-blur hover:shadow-xl">
       <img
           class="w-56 rounded-b-none rounded-xl image"
-          :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
+          :src="commodity.Cover ? ('https://139.196.20.137:5001/' + commodity.Cover) : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
       >
       <div>
         <p class="text-left px-3 py-3 text-l font-bold "> {{ commodity.Name ? commodity.Name : "未命名商品" }} </p>
@@ -27,9 +27,9 @@
       <div class="flex pl-3 pt-1 pb-2 rounded-xl rounded-t-none ">
         <img
             class="w-7 h-7 rounded-full"
-            :src="commodity.SellerAvatar ? commodity.SellerAvatar : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
+            :src="commodity.SellerAvatar ? ('https://139.196.20.137:5001/' + commodity.SellerAvatar) : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
         >
-        <p class="pl-2 text-sm leading-7"> {{ commodity.Seller ? commodity.Seller : "神秘人" }} </p>
+        <p class="pl-2 text-sm leading-7"> {{ commodity.SellerName ? commodity.SellerName : "神秘人" }} </p>
       </div>
     </div>
   </router-link>
