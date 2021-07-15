@@ -34,10 +34,13 @@
             </div>
             <div class="main border-solid border-2 border-yellow-300 rounded-md mt-4 ...">
               <div class="h-full grid-cols-4 grid ">
-                <div v-for="i in currentList" :key="i">
-                  <CommodityThumbnail></CommodityThumbnail>
+                <CommodityThumbnail
+                    v-for="i in currentList"
+                    :key="i.Id"
+                    :commodity="i"
+                >
+                </CommodityThumbnail>
 
-                </div>
               </div>
             </div>
           </div>
@@ -49,9 +52,13 @@
               热卖商品
             </div>
             <div class="bg-yellow-200 h-full rounded-md h-full grid-cols-1 grid mt-3 ">
-              <div v-for="i in currentPopularList" :key="i" class="ml-2 bg-yellow-200 ">
-                <HotGoodThumbnail class="bg-blue-200 "></HotGoodThumbnail>
-              </div>
+
+              <HotGoodThumbnail class="bg-blue-200 " v-for="i in popularList"
+                                :key="i.Id"
+                                :commodity="i">
+
+              </HotGoodThumbnail>
+
             </div>
           </div>
         </el-aside>
@@ -87,13 +94,14 @@ export default {
     return {
       input: '',
       totalPage: 100,
-      commodityList: [0],
+      commodityList: [],
       currentList: [],
       popularList: [],
       currentPopularList: [],
       currentPage: 1,
       selectType: '宝贝',
       selectTypeList: ['宝贝', '卖家名', '标签'],
+      formData: ['keyword', 'owner', 'tag'],
       selectId: 1,
       isAlert: false,
       isShow: false,
@@ -111,25 +119,27 @@ export default {
         this.selectType = temp['selectType']
       }
       let canDis = this.isDis()
-      if(canDis) {
+      if (canDis) {
         this.setList()
-        this.setPopularList()
-        this.setCurrentList()
       }
     })
   },
 
   watch: {
     $route() {
-      console.log(this.$route.query)
-      let temp = this.$route.query
-      this.input = temp['key']
-      this.selectType = temp['selectType']
-      let canDis = this.isDis()
-      if(canDis) {
-        this.setList()
-        this.setPopularList()
-        this.setCurrentList()
+      console.log('watch')
+      let fir = this.$route.fullPath.split('/')[1]
+      if (fir.indexOf('CommoditySearch') === 0) {
+        console.log('********************************************')
+        let temp = this.$route.query
+        this.input = temp['key']
+        this.selectType = temp['selectType']
+        let canDis = this.isDis()
+        if (canDis) {
+          this.setList()
+        }
+      } else {
+        this.$router.go(0)
       }
     }
   },
@@ -137,24 +147,45 @@ export default {
     setList: function () {
       var FormData = require('form-data');
       var data = new FormData();
-      data.append('keyword', this.input);
-      data.append('tag', this.selectType);
-      console.log('keyword' + data.get('keyword'))
-      console.log('tag' + data.get('tag'))
+      data.append(this.getFormData(), this.input);
+      console.log('commodity?' + this.getFormData() + '=' + data.get(this.getFormData()))
+      console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+      const that = this
       api({
-        url: 'commodity',
+        url: 'commodity/?' + this.getFormData() + '=' + data.get(this.getFormData()),
         method: 'get',
-        data: data,
       })
           .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            console.log(JSON.stringify(response.data))
+            if (response.data.Code === "200") {
+              console.log('接收成功');
+              that.totalPage = Number(response.data["totalPage"])
+              that.commodityList = response.data["commodityList"]
+              console.log(that.commodityList[0])
+              that.setPopularList()
+              that.setCurrentList()
+            } else {
+              ElMessage.error({
+                message: "输入数据有误，请重新输入"
+              })
+            }
           })
           .catch(function (error) {
             console.log(error);
+            ElMessage.error({
+              message: "服务器似乎在开小差..."
+            })
           });
-      for (let i = 0; i < 100; i++) {
-        this.commodityList[i] = {index: i, popularity: i}
+    },
+    getFormData: function () {
+      if (this.selectType === '宝贝') {
+        return 'keyword'
+      } else if (this.selectType === '卖家名') {
+        return 'ownerName'
+      } else if (this.selectType === '标签') {
+        return 'tag'
       }
+      return 'id'
     },
     pageJump: function () {
       let str = this.input.replace(' ', '');
@@ -198,29 +229,18 @@ export default {
         return value2 - value1;
       }
     },
-    getList: function (arr) {
-      let newArr = arr.constructor === Array ? [] : {};
-      for (let i in arr) {
-        if (arr[i].constructor === Object || arr[i].constructor === Array) {
-          newArr[i] = this.getList(arr[i])
-        } else {
-          newArr[i] = arr[i]
-        }
-      }
-      return newArr;
-    },
+
     setPopularList: function () {
-      this.popularList = this.getList(this.commodityList)
-      this.popularList.sort(this.compare('popularity'))
+      this.popularList = this.commodityList.slice(0)
+      console.log(this.popularList)
+      this.popularList.sort(this.compare('Likes'))
     },
     isDis: function () {
       if (this.input === '') {
         this.topMargin = 'mt-48'
         this.isShow = false
         return false
-      }
-      else
-      {
+      } else {
         this.topMargin = ''
         this.isShow = true
         return true

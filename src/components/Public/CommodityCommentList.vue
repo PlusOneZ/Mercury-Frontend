@@ -3,7 +3,7 @@
     <ul class="infinite-list" v-infinite-scroll="load">
       <li v-for="i in count" :key=i class="infinite-list-item">
         <commodity-comment :owner-name="comments[i-1].userName"
-                           :is-owner-avatar-success=true
+                           :is-owner-avatar-success= true
                            :owner-avatar="comments[i-1].userImage" :comment="comments[i-1].comment"
                            :rating="comments[i-1].rating"></commodity-comment>
       </li>
@@ -28,7 +28,7 @@ export default {
     comments: Array,
     canLoad: Boolean
   },
-  mounted() {
+  created() {
     this.count = Math.min(6, this.comments.length)
   },
   methods: {
