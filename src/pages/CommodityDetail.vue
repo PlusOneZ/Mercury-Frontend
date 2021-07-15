@@ -184,29 +184,7 @@ export default {
       tags: [
         "好用", "牛逼", '我是你爹', '你是我儿', '写网页好累', '啦啦啦'
       ],
-      comments: [{
-        userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-        , userId: 0, comment: 'rnm,退钱', rating: 3
-      },
-        {
-          userName: '猴哥', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-          , userId: 0, comment: 'nmsl，完全不靠谱', rating: 5
-        },
-        {
-          userName: 'ysj', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-          , userId: 0, comment: '很好的商品呢，已经把来买的同学记录下来了呢，亲', rating: 9
-        }, {
-          userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-          , userId: 0, comment: 'rnm,退钱', rating: 3
-        },
-        {
-          userName: '猴哥', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-          , userId: 0, comment: 'nmsl，完全不靠谱', rating: 5
-        },
-        {
-          userName: 'ysj', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-          , userId: 0, comment: '很好的商品呢，已经把来买的同学记录下来了呢，亲', rating: 9
-        },],
+      comments: [],
       category: "课程用品",
       isLike: true,
       isOwnerAvatarSuccess: true,

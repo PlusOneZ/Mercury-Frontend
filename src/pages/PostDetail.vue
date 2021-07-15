@@ -126,7 +126,7 @@ export default {
             data.Comments.forEach(element => {
               let temp={
                 userName: element.SenderName,
-                userImage: element.AvatarPath,
+                userImage: 'https://139.196.20.137:5001/'+element.AvatarPath,
                 userId: element.SenderId,
                 comment: element.Content,
                 rating: -1
