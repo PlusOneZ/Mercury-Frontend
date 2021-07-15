@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-xl border-2 w-full mx-3 bg-white divide-y divide-gray-200 hover:shadow-xl">
+  <div class="rounded-xl border-2 mx-3 bg-white divide-y divide-gray-200 hover:shadow-xl" style="width: 40vw">
     <div>
       <p class="text-left px-3 py-3 text-l font-bold "> {{ title ? title : "急需四六级英语听力收音机一台" }} </p>
     </div>
@@ -48,7 +48,7 @@ export default {
     this.title = this.post.Title;
     this.intro = this.post.Content;
     this.user = this.post.Name;
-    this.avatar = this.post.AvatarPath;
+    this.avatar = "https://139.196.20.137:5001/"+this.post.AvatarPath;
   }
 }
 </script>
