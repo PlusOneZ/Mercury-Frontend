@@ -4,10 +4,10 @@
       <center>
       <el-form ref="form" :model="form" label-width="80px" class="bg-white w-3/5 border-4 rounded-xl border-opacity-100 pt-6 pr-6">
         <el-form-item label="标题">
-          <el-input v-model="form.name" placeholder="请输入标题" maxlength="30" show-word-limit></el-input>
+          <el-input v-model="form.name" placeholder="请输入标题" maxlength="30" show-word-limit @input="titleChange"></el-input>
         </el-form-item>
         <el-form-item label="内容">
-          <el-input type="textarea" v-model="form.desc" placeholder="请输入商品描述" maxlength="1000" show-word-limit rows="10"></el-input>
+          <el-input type="textarea" v-model="form.desc" placeholder="请输入商品描述" maxlength="1000" show-word-limit rows="10" @input="contentChange"></el-input>
         </el-form-item>
         <el-form-item label="预期价格">
           <el-input v-model="form.price" placeholder="请输入预期价格" maxlength="10"></el-input>
@@ -54,49 +54,59 @@ export default {
         price: '',
       },
       file: undefined,
+      ifTitle: false,
+      ifContent: false,
     }
   },
   methods: {
     onSubmit() {
-      this.$refs.upload.submit();
+      if(this.ifTitle && this.ifContent) {
+        this.$refs.upload.submit();
 
-      let id = this.store.getters['user/userInfo'].id;
+        let id = this.store.getters['user/userInfo'].id;
 
-      let data = new FormData();
+        let data = new FormData();
 
-      data.append("senderId",id);
-      data.append("title",this.form.name);
-      data.append("content",this.form.desc);
-      data.append("price",this.form.price);
-      data.append("photos",this.file);
+        data.append("senderId",id);
+        data.append("title",this.form.name);
+        data.append("content",this.form.desc);
+        data.append("price",this.form.price);
+        data.append("photos",this.file);
 
-      data.forEach((value, key) => {
-        console.log(`key ${key}: value ${value}`);
-      })
+        data.forEach((value, key) => {
+          console.log(`key ${key}: value ${value}`);
+        })
 
-      api({
-        url: "post",
-        method: "POST",
-        data: data,
-      }).then(
-          (response) => {
-            console.log(response);
+        api({
+          url: "post",
+          method: "POST",
+          data: data,
+        }).then(
+            (response) => {
+              console.log(response);
 
-            if (response.data['Code'] === '201') {
-              ElMessage.success({
-                message: "创建成功",
-                type: "success",
-              })
-              this.$router.push("/postDetail/"+response.data['PostId']);
+              if (response.data['Code'] === '201') {
+                ElMessage.success({
+                  message: "创建成功",
+                  type: "success",
+                })
+                this.$router.push("/postDetail/"+response.data['PostId']);
+              }
+              else{
+                ElMessage.error({
+                  message: "创建失败",
+                  type: "error",
+                })
+              }
             }
-            else{
-              ElMessage.error({
-                message: "创建失败",
-                type: "error",
-              })
-            }
-          }
-      )
+        )
+      }
+      else {
+        ElMessage.error({
+          message: "标题或内容为空",
+          type: "error",
+        })
+      }
     },
     handlePreview(file) {
       console.log(file);
@@ -115,7 +125,13 @@ export default {
         message: "只能上传一张图片哦",
         type: "error",
       })
-    }
+    },
+    titleChange(){
+      this.ifTitle = (this.form.name.length >= 1);
+    },
+    contentChange(){
+      this.ifContent = (this.form.desc.length >= 1);
+    },
   },
   setup() {
     let store = useStore()

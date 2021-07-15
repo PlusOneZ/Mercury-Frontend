@@ -60,11 +60,11 @@ export const staticData = {
         }
     ],
     categories: [
-        ["书籍", "book"],
-        ["教材", "textbook"],
-        ["课程用具", "forCourse"],
-        ["电器", "electronic"],
-        ["日用品", "daily"],
-        ["食物", "food"],
+        ["书籍", 1, "el-icon-reading"],
+        ["教材", 2, 'el-icon-notebook-1'],
+        ["课程用具", 3, 'el-icon-receiving'],
+        ["电器", 4, 'el-icon-mobile-phone'],
+        ["日用品", 5, 'el-icon-discount'],
+        ["食物", 6, 'el-icon-fork-spoon'],
     ]
 }

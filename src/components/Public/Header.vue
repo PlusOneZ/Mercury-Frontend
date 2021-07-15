@@ -48,6 +48,7 @@
         active-text-color="#5dbe8a"
         :router="true"
     >
+      <el-menu-item index="/publishCommodity"><i class="el-icon-upload"></i>发布新商品</el-menu-item>
       <el-menu-item index="/notification"><i class="el-icon-message-solid"></i>消息</el-menu-item>
       <el-menu-item index="/shoppingCart"><i class="el-icon-shopping-cart-2"></i> 购物车</el-menu-item>
       <el-menu-item index="/likes"><i class="el-icon-star-on"></i>收藏夹</el-menu-item>

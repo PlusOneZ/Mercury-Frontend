@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tooltip class="item" effect="dark" content="举报" placement="top">
-      <el-button type="info" circle @click="dialogFormVisible = true" size="mini">
+      <el-button type="text" circle @click="dialogFormVisible = true" size="mini">
         <img src="https://img.icons8.com/material-outlined/24/000000/error--v1.png" alt=""/>
       </el-button>
     </el-tooltip>

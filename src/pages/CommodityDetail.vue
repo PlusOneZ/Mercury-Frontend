@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-container class="h-24 flex justify-around items-center ">
-      <div class="font-bold text-blue-600 ">Mercury</div>
       <div></div>
       <div></div>
       <div></div>
@@ -38,7 +37,7 @@
           </div>
 
           <div class="mr-8 mt-6 flex items-center justify-start ">
-            <div class="mb-4"><font class="mb-8 pl-16 ">商品标签：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
+            <div class="mb-4"><font class="mb-8 pl-16 ">商品分类：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
             <div>
               <div v-show="tags.length===0" class="mr-8 mb-4">无</div>
               <div v-for="i in (Math.floor(tags.length/4) + 1)" :key=i class="mr-4">
@@ -67,14 +66,14 @@
                                class="flex items-center"></user-and-avatar>
             </div>
             <div class="ml-12 ">
-              <Report class="ml-2"></Report>
+              <report class="ml-2"></report>
             </div>
 
             <div class="mr-12 mt-6 flex items-center justify-start">
               <div><font class="mb-8  ">热度：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
               <div>
                 <font class="text-2xl font-bold mt-4 text-red-600 ">
-                  {{ popularity ? popularity : "9999" }}
+                  {{ likes * 10 + 3 * clicks + 3 }}
                 </font>
               </div>
             </div>
@@ -138,7 +137,6 @@
 </template>
 
 <script>
-
 import {ElMessage} from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 import report from "@/components/Public/Report";
@@ -152,19 +150,15 @@ import {useStore} from "vuex";
 export default {
   name: "CommodityDetail",
   components: {
-    Report,
+    report,
     BuyCommodity,
     RentCommodity,
     UserAndAvatar,
     CommodityCommentList,
   },
-  props: {
-    commodityId: String,
-  },
   data: function () {
     return {
-      status404: false,
-
+      commodityId: '1',
       userId: '1850061',
       userName: 'rzc',
       ownerId: '1850061',
@@ -226,7 +220,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-
       let user = this.store.getters['user/userInfo']
       this.userId = user.id
       this.userName = user.name
@@ -259,21 +252,30 @@ export default {
             that.name = commo['Name']
             that.price = Number(commo["Price"])
             that.likes = Number(commo["Likes"])
-            that.description = commo["Description"]
-            that.stock = Number(commo['For_rent']),
-                that.for_rent = Number(commo['For_rent'])
-            if (that.for_rent === 1) {
-              that.for_rent = true
-            } else if (that.for_rent === 0) {
-              that.for_rent = false
-            }
-            that.images = commo['Images']
-            that.video = commo['Video_path']
+            that.description = commo["Description"]//生成
+            that.stock = Number(commo['Stock'])
+            that.for_rent = Boolean(commo['ForRent'])
+            that.images = response.data['ImgList']
+            that.video = commo['VidePath']
             that.status = commo['Condition']
             that.popularity = 3 * Number(commo['Clicks']) + 10 * that.likes
             that.clicks = Number(commo['Clicks'])
             that.tags = commo['CommodityTag']
-            that.comments = commo['Comments']
+            let comments = response.data["Comments"]
+            console.log('----------------------------------------')
+            console.log(comments)
+            for (let i = 0; i < response.data["Comments"].length; i++) {
+              let temp = {}
+              temp['userName'] = comments[i]['UserName']
+              temp['userImage'] = 'https://139.196.20.137:5001/' + comments[i]['UserImage']
+              temp['userId'] = Number(comments[i]['UserId'])
+              temp['comment'] = comments[i]['Comment']
+              temp['rating'] = comments[i]['Rating']
+              console.log(temp)
+              that.comments.unshift(temp)
+            }
+            console.log('++++++++++++++++++++++++++++++++++++++')
+            console.log(that.comments[0]['userName'])
           })
           .catch(function (error) {
             console.log(error);
