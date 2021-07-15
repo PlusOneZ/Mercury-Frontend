@@ -1,6 +1,6 @@
 <template>
   <li :class="{'other': !me, 'self': me}">
-    <div class="avatar"><img src="https://139.196.20.137:5001/Media/Image/Default.png" alt=""></div>
+    <div class="avatar"><img :src="aPath ? 'https://139.196.20.137:5001/' + aPath : 'https://139.196.20.137:5001/Media/Image/Default.png'" alt=""></div>
     <div class="msg">
       <p>
         {{ data.Content }}

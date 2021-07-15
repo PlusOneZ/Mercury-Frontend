@@ -86,7 +86,7 @@ export default {
     },
 
     resetList() {
-      for (let i = 0; i < this.selectedChat; i++) {
+      for (let i = 0; i < this.selectedChat.length; i++) {
         this.selectedChat[i] = false
       }
     }

@@ -6,6 +6,7 @@
             :data="c"
             :key="c.Time"
             :me="c.SenderId === me"
+            :a-path="c.SenderId === me ? meAvatar : otherAvatar"
         ></Bubble>
       </ol>
       <input class="textarea" type="text" placeholder="Type here!" v-model="content">
@@ -21,7 +22,9 @@ export default {
   name: "Chat",
   data() {
     return {
-      content: ""
+      content: "",
+      meAvatar: "",
+      otherAvatar: ""
     }
   },
   props: {
@@ -56,6 +59,25 @@ export default {
         })
       }
     }
+  },
+  mounted() {
+    api({
+      method: "get",
+      url: 'user/' + this.me,
+    }).then( response => {
+      if (response.data.Code === '200') {
+        this.meAvatar = response.data.User.AvatarPath
+      }
+    })
+
+    api({
+      method: "get",
+      url: 'user/' + this.other,
+    }).then( response => {
+      if (response.data.Code === '200') {
+        this.otherAvatar = response.data.User.AvatarPath
+      }
+    })
   }
 }
 </script>
