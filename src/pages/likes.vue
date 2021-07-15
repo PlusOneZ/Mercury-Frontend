@@ -1,107 +1,185 @@
-
 <template>
 
 
-<div id="app">
+  <div id="app" class="w-full grid grid-cols-9">
+    <div></div>
+
+    <el-table
+        :data="tableData"
+        height="700"
+        show-summary
+        :summary-method="getSummaries"
+        stripe="true"
+        style="width: 100%" class="col-span-7 mt-16 rounded-lg border border-grey-200">
 
 
-  <el-table
-    :data="tableData"
-    border
-    height="700"
-    
-    style="width: 100%; margin-top: 20px; ">
-    
-    
-    <el-table-column
-     prop="commodity"
-     label="商品">
-      <img
-            class="w-44 h-44 rounded-b-none rounded-xl image"
-            :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
-        ><span> {{ title ? title : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }}</span>
-    </el-table-column>
-    <el-table-column
-      prop="amount1"
-      label="单价">
-    </el-table-column>
-    
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="120">
-      <template #default="scope">
-        <el-button
-          @click.prevent="deleteRow(scope.$index, tableData)"
-          type="text"
-          size="small">
-          移除
-        </el-button>
-        <router-link to="/CommodityDetail"><el-button
-         
-          type="text"
-          size="small">
-          商品详情
-        </el-button>
-        </router-link>
-       
-      </template>
-    </el-table-column>
-  </el-table>
-</div>
-    
+      <el-table-column
+          prop="image"
+          label="商品图片" width="300" align="center">
+
+        <template #default="scope">
+          <span style="margin-left: 10px" class="text-xl font-semibold ">
+            <center><img
+                class="w-44 h-44 rounded-b-none rounded-xl"
+                :src="scope.row.image ? scope.row.image : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
+            ></center>
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+          prop="commodity"
+          label="商品名" width="250" align="center">
+        <template #default="scope">
+          <span style="margin-left: 10px" class="text-xl font-semibold ">
+            {{ scope.row.commodity }}
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+          prop="price"
+          label="单价" width="200" class="col-span-1" align="center">
+      </el-table-column>
+
+      <el-table-column
+          fixed="right"
+          label="操作"
+          class="col-span-3" align="center">
+        <template #default="scope">
+          <el-button
+              @click.prevent="deleteRow(scope.$index, tableData)"
+              type="primary" class="mr-8">
+            取消收藏
+          </el-button>
+
+          <el-button type="primary" class="ml-8"
+                     @click.prevent="buyCommodity(scope.$index, tableData)">
+            商品详情
+          </el-button>
+
+
+        </template>
+      </el-table-column>
+
+    </el-table>
+
+  </div>
+
 </template>
 <script>
+import {useStore} from "vuex";
+import {api} from "@/request";
+import {ElMessage} from "element-plus";
+
 export default {
-  name: "HeatedThumbnail",
+  name: "likes",
   props: {
     title: String,
     img: String,
   },
+  data() {
+    return {
+      tableData: [],
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      let user = this.store.getters['user/userInfo']
+      let userId = user.id
+      console.log("Likes/" + userId.replaceAll('"', ''))
+      const that = this
+      api({
+        url: "Likes/" + userId.replaceAll('"', ''),
+        method: "get",
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            that.tableData = []
+            for (let i = 0; i < response.data['ItemList'].length; i++) {
+              let temp = {}
+              temp['price'] = Number(response.data['ItemList'][i]['CommodityPrice'])
+              temp['commodity'] = response.data['ItemList'][i]['CommodityName']
+              temp['id'] = response.data['ItemList'][i]['CommodityId']
+              temp['image'] = 'https://139.196.20.137:5001/' + response.data['ItemList'][i]["CommodityCover"]
+              that.tableData.push(temp)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
+    })
+  },
+  methods: {
+    deleteRow(index, rows) {
+      let commodityId = rows[index]['id']
+      let user = this.store.getters['user/userInfo']
+      let userId = user.id
 
- data() {
-      return {
-        tableData: [{
-          commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '234',
-        
-
-        }, {
-         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '165',
-         
-
-        }, {
-         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '324',
-         
-        }, {
-         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '621',
-          
-
-        }, {
-         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-          amount1: '539',
-         
-
-        }],
-      
-      };
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('userId', userId);
+      data.append('commodityId', commodityId);
+      console.log(data.get('userId'))
+      console.log(data.get('commodityId'))
+      api({
+        url: 'Likes',
+        method: 'post',
+        data: data
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            rows.splice(index, 1);
+            ElMessage.success({
+              message: '取消收藏成功',
+              type: 'success'
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
     },
-    methods: {
-      
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
-      }
-      
+    buyCommodity(index, rows) {
+      console.log(rows[index]);
+    },
+    getSummaries(param) {
+      const {columns, data} = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '总价';
+          return;
+        }
+        if (index === 3) {
+          sums[index] = 0
+          for (let i = 0; i < this.tableData.length; i++) {
+            sums[index] += Number(data[i]["price"]) * Number(data[i]["count"])
+          }
+          sums[index] += ' 元';
+        }
+      });
+      console.log(sums)
+      return sums;
+    },
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
     }
+  }
 }
 </script>
 
-    
-       
-    
+
 <style scoped>
 @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
 

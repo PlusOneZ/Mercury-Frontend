@@ -54,6 +54,7 @@ export default {
     comment: function () {
       if(this.form.content){      
         this.dialogFormVisible = false
+
         if(this.isRating){
           var url="order/"+this.id+"/rating"
           let data = new FormData()
@@ -94,6 +95,7 @@ export default {
           api({
             method: "POST",
             url: url,
+
             data: data,
           }).then((res) => {
             console.log(res)
@@ -103,6 +105,7 @@ export default {
                 message: "评论成功！"
               })}else{
                 console.log(res.data["Description"])
+
                 ElMessage.error({
                 message: "失败原因: " + res.data["Description"]
               })
@@ -116,6 +119,7 @@ export default {
         }
         this.form.content=""
         this.form.rating =0
+
       }else{
           ElMessage.error({
             message: '评论内容不可为空',

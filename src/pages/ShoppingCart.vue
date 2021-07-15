@@ -1,6 +1,9 @@
 <template>
 
-    <div>
+
+  <div class="w-full grid grid-cols-9">
+    <div></div>
+
     <el-table
         :data="tableData"
         show-summary
@@ -10,18 +13,27 @@
 
 
       <el-table-column
-          prop="commodity"
+          prop="image"
           label="商品图片" width="275" align="center">
-        <center><img
-            class="w-44 h-44 rounded-b-none rounded-xl image"
-            :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
-        ></center>
+
+        <template #default="scope">
+          <span style="margin-left: 10px" class="text-xl font-semibold ">
+            <center><img
+                class="w-44 h-44 rounded-b-none rounded-xl"
+                :src="scope.row.image ? scope.row.image : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
+            ></center>
+          </span>
+        </template>
       </el-table-column>
 
       <el-table-column
           prop="commodity"
           label="商品名" width="225" align="center">
-        <span class="text-xl font-semibold ">{{ title ? title : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }}</span>
+        <template #default="scope">
+          <span style="margin-left: 10px" class="text-xl font-semibold ">
+            {{ scope.row.commodity }}
+          </span>
+        </template>
       </el-table-column>
 
       <el-table-column
@@ -72,32 +84,76 @@ export default {
   },
   data() {
     return {
-      tableData: [{
-        commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-        price: '234', count: 3
-      }],
+      tableData: [],
     };
   },
-  methods: {
-
-    deleteRow(index, rows) {
-      let id = this.tableData[index].id
-      var data = new FormData();
-      data.append('commodityId', id);
-      data.append('userId', this.store.getters['user/userInfo'].id);
+  mounted() {
+    this.$nextTick(() => {
+      let user = this.store.getters['user/userInfo']
+      let userId = user.id
+      console.log("shoppingCart/" + userId.replaceAll('"', ''))
+      const that = this
       api({
-        method: 'delete',
-        url: "ShoppingCart",
-        data: data
-      }).then( response => {
-        if (response.data.Code === '200') {
-          ElMessage.success("已删除")
-          rows.splice(index, 1);
-        } else {
-          console.log(response)
-          ElMessage.warning("有点小问题")
-        }
+        url: "shoppingCart/" + userId.replaceAll('"', ''),
+        method: "get",
       })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            that.tableData = []
+            for (let i = 0; i < response.data['ItemList'].length; i++) {
+              let temp = {}
+              console.log('count', response.data['ItemList'][i]['Count'])
+              temp['count'] = Number(response.data['ItemList'][i]['Count'])
+              temp['price'] = Number(response.data['PriceList'][i])
+              temp['commodity'] = response.data['NameList'][i]
+              temp['id'] = response.data['ItemList'][i]['CommodityId']
+              temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
+              that.tableData.push(temp)
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
+    })
+  },
+  methods: {
+    deleteRow(index, rows) {
+
+      let commodityId = rows[index]['id']
+      let user = this.store.getters['user/userInfo']
+      let userId = user.id
+
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('commodityId', commodityId);
+      data.append('userId', userId);
+
+      api({
+        url: "shoppingCart",
+        method: "delete",
+        data : data
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            if(String(response.data['Code']) === '200') {
+              rows.splice(index, 1);
+              ElMessage.success({
+                message: '删除成功',
+                type: 'success'
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
     },
     buyCommodity(index, rows) {
       console.log(rows[index]);
@@ -105,8 +161,6 @@ export default {
     getSummaries(param) {
       const {columns, data} = param;
       const sums = [];
-      console.log(data)
-      console.log(data[3])
       columns.forEach((column, index) => {
         if (index === 0) {
           sums[index] = '总价';
@@ -120,30 +174,29 @@ export default {
           sums[index] += ' 元';
         }
       });
-      console.log(sums)
       return sums;
     },
 
   },
-  mounted() {
-    let id = this.store.getters['user/userInfo'].id
-    api({
-      method: "get",
-      url: "ShoppingCart/"+id,
-    }).then( response => {
-      if (response.data.Code == '200') {
-        let data = response.data.ItemList
-        for (let i = 0; i < data.length; i++) {
-          this.tableData[i].commodity = response.data["NameList"][i]
-          this.tableData[i].count = data[i]["Count"]
-          this.tableData[i].price = response.data["PriceList"][i]
-          this.tableData[i].id = data[i]['CommodityId']
-        }
-      } else {
-        ElMessage.error("服务器在开小差...")
-      }
-    })
-  },
+  // mounted() {
+  //   let id = this.store.getters['user/userInfo'].id
+  //   api({
+  //     method: "get",
+  //     url: "ShoppingCart/"+id,
+  //   }).then( response => {
+  //     if (response.data.Code == '200') {
+  //       let data = response.data.ItemList
+  //       for (let i = 0; i < data.length; i++) {
+  //         this.tableData[i].commodity = response.data["NameList"][i]
+  //         this.tableData[i].count = data[i]["Count"]
+  //         this.tableData[i].price = response.data["PriceList"][i]
+  //         this.tableData[i].id = data[i]['CommodityId']
+  //       }
+  //     } else {
+  //       ElMessage.error("服务器在开小差...")
+  //     }
+  //   })
+  // },
   setup() {
     let store = useStore()
     return {
@@ -155,5 +208,7 @@ export default {
 
 
 <style scoped>
+@import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
+
 
 </style>
