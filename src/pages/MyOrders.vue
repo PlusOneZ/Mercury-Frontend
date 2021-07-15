@@ -10,23 +10,24 @@
           label="商品图片"
           width="160"
           align="center">
-        <el-image
-            style="width: 100px; height: 100px"
-            :src="url"
-        >
-
-        </el-image>
+        <template #default="scope">        
+          <el-image
+              style="width: 100px; height: 100px"
+              :src="'https://139.196.20.137:5001/'+orderList[scope.$index].picture"
+          >
+          </el-image>
+        </template>
       </el-table-column>
       <el-table-column
           prop="name"
           label="商品名称"
-          width="180"
+          width="160"
           align="center">
       </el-table-column>
       <el-table-column
           prop="price"
           label="商品价格"
-          width="100"
+          width="80"
           align="center">
       </el-table-column>
       <el-table-column
@@ -81,11 +82,17 @@ export default {
       fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
       // url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
       type: String,
-      itemKey: 0
+      itemKey: 0,
+      simpleUser: {}
     }
   },
   mounted() {
     this.type = 'UNPAID';
+    this.simpleUser = this.store.getters['user/userInfo']
+    if (!this.simpleUser.loggedIn) {
+      this.$router.push("/login")
+      return
+    }
     this.getOrders();
   },
   setup() {
@@ -98,7 +105,7 @@ export default {
     getOrders() {
       console.log("Loading orders...");
       let data = new FormData();
-      data.append('userId', '1850061');
+      data.append('userId', this.simpleUser.Id);
       data.append('maxNumber', '5');
       data.append('pageNumber', '1');
       data.append('status', this.type);
@@ -131,6 +138,7 @@ export default {
           order.Id = orders[i].Id;
           this.orderList.push(order);
         }
+        console.log(this.orderList);
       })
       .catch(function (error) {
         console.log(error);
