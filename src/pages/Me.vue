@@ -8,11 +8,10 @@
             <div id="box">
               <el-upload
                   class="avatar-uploader"
-                  action=""
                   :http-request="beforeAvatarUpload"
                   :show-file-list="false"
               >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
@@ -139,7 +138,8 @@ export default {
         "AvatarPath": "null"
       },
       simpleUser: undefined,
-      imageUrl: ''
+      imageUrl: '',
+      file: undefined
     }
   },
   methods: {
@@ -151,7 +151,8 @@ export default {
       console.log("file", file)
       let id = this.store.getters['user/userInfo'].id
       let formData = new FormData()
-      formData.append("Avatar", file.raw)
+      this.file = file
+      formData.append("Avatar", this.file)
       api({
         method: "put",
         url: "user/" + id,
@@ -160,7 +161,14 @@ export default {
         console.log(response)
         if (response.data.Code === '200') {
           ElMessage.success("上传成功！")
-          this.imageUrl = URL.createObjectURL(file.raw)
+          api({
+            method: "get",
+            url: "user/" + id,
+          }).then( res => {
+            if (response.data.Code === '200') {
+              this.imageUrl = res.data.User.AvatarPath
+            }
+          })
         }
       })
     },
@@ -180,7 +188,7 @@ export default {
       console.log(response)
       if (response.data.Code === '200') {
         this.user = response.data.User
-        this.imageUrl = "https://139.196.20.137:5001/" + this.user.AvatarPath
+        this.imageUrl = this.user.AvatarPath
       } else {
         ElMessage.error({
           message: "出了点小问题..." + (response.data.Description ? response.data.Description : "")
