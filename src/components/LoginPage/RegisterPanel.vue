@@ -1,5 +1,5 @@
 <template>
-  <el-form @submit.prevent="">
+  <el-form @submit.prevent="submitRegister" :model="form">
     <div class="middle" style="padding-bottom: 1rem !important;">
       <div class="text-center">
         <svg class="inline-block" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
@@ -29,37 +29,61 @@
 
     <div class="input-box">
       <label for="Sid">学工号<b class="text-red-500">*</b></label>
-      <input type="text" placeholder="不多于10位" id="Sid">
+      <input type="text" placeholder="不多于10位" id="Sid" v-model="form.SchoolId" @input="idChange">
+      <span v-if="show.id">
+        <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.id"></i>
+        <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.id"></i>
+      </span>
     </div>
 
     <div class="input-box">
       <label for="name">真实姓名<b class="text-red-500">*</b></label>
-      <input type="text" placeholder="用于实人认证" id="name">
+      <input type="text" placeholder="用于实人认证" id="name" v-model="form.RealName" @input="nameChange">
+      <span v-if="show.rm">
+        <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.rm"></i>
+        <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.rm"></i>
+      </span>
     </div>
 
     <div class="input-box">
       <label for="nick">昵称<b class="text-red-500">*</b></label>
-      <input type="text" placeholder="4-12个字符" id="nick">
+      <input type="text" placeholder="4-12个字符" id="nick" v-model="form.Nickname" @input="nickChange">
+      <span v-if="show.nm">
+        <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.nm"></i>
+        <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.nm"></i>
+      </span>
     </div>
 
     <div class="input-box">
       <label for="pw">密码<b class="text-red-500">*</b></label>
-      <input type="password" placeholder="6-16位，包含数字和字母" id="pw">
+      <input type="password" placeholder="6-16位，包含数字和字母" id="pw" v-model="form.Password" @input="pwChange">
+      <span v-if="show.pw">
+        <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.pw"></i>
+        <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.pw"></i>
+      </span>
     </div>
 
     <div class="input-box">
       <label for="checkPw">确认密码<b class="text-red-500">*</b></label>
-      <input type="password" placeholder="与密码一致" id="checkPw">
+      <input type="password" placeholder="与密码一致" id="checkPw" v-model="checkPass" @input="chpwChange">
+      <span v-if="show.chpw">
+        <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.chpw"></i>
+        <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.chpw"></i>
+      </span>
     </div>
 
     <div class="input-box">
       <label for="phone">手机号<b class="text-red-500">*</b></label>
-      <input type="password" placeholder="11位手机号" id="phone">
+      <input type="tel" placeholder="11位手机号" id="phone" v-model="form.Phone" @input="phoneChange">
+      <span v-if="show.phone">
+        <i class="el-icon-success text-green-500 text-2xl pl-2" v-if="ok.phone"></i>
+        <i class="el-icon-error text-red-500 text-2xl pl-2" v-if="!ok.phone"></i>
+      </span>
     </div>
 
     <div class="input-box">
       <label for="ma">专业</label>
-      <el-select v-model="major" placeholder="选择专业" class="select" id="ma">
+      <el-select v-model="form.Major" placeholder="选择专业" class="select" id="ma">
         <el-option
             v-for="item in majors"
             :key="item.value"
@@ -71,7 +95,7 @@
 
     <div class="input-box">
       <label for="ma">年级</label>
-      <el-select v-model="grade" placeholder="选择年级" class="select" id="grade">
+      <el-select v-model="form.Grade" placeholder="选择年级" class="select" id="grade">
         <el-option
             v-for="item in grades"
             :key="item.value"
@@ -86,80 +110,142 @@
     <button type="submit"
             class="h-12 bg-gradient-to-r from-blue-400 to-green-300 hover:from-green-200 hover:to-blue-300"> 注册
     </button>
-    <!--      <div class="h-2"></div>-->
-    <!--      <button type="button" class="my-2 h-8 border-2 border-indigo-400 hover:border-indigo-600"> 统一认证登陆</button>-->
+
   </el-form>
 </template>
 
 <script>
+
+import { toRaw } from '@vue/reactivity'
+import {api} from "@/request";
+import {ElMessage} from "element-plus";
+import {useStore} from "vuex";
+import {CookieManager} from "@/cookie";
+import {staticData} from "@/assets/js/static"
+
 export default {
   name: "RegisterPanel",
   data() {
     return {
-      majors: [
-        {
-          value: 'SE',
-          label: "软件工程"
-        },
-        {
-          value: 'AU',
-          label: "车辆工程"
-        },
-        {
-          value: 'EI',
-          label: "电子信息"
-        },
-        {
-          value: 'CE',
-          label: "通信工程"
-        },
-        {
-          value: 'CS',
-          label: "计算机科学"
-        },
-        {
-          value: 'OT',
-          label: "其他"
-        }
-      ],
-      grades: [
-        {
-          value: "1",
-          label: "大一"
-        },
-        {
-          value: "2",
-          label: "大二"
-        },
-        {
-          value: "3",
-          label: "大三"
-        },
-        {
-          value: "4",
-          label: "大四"
-        },
-        {
-          value: "5",
-          label: "五年级"
-        },
-        {
-          value: "6",
-          label: "研究生"
-        },
-        {
-          value: "7",
-          label: "博士生"
-        },
-        {
-          value: "0",
-          label: "其他"
-        }
-      ],
+      show: {
+        id: false,
+        rm: false,
+        nm: false,
+        pw: false,
+        chpw: false,
+        phone: false
+      },
 
+      ok: {
+        id: false,
+        rm: false,
+        nm: false,
+        pw: false,
+        chpw: false,
+        phone: false
+      },
 
       grade: "",
       major: "",
+      form: {
+        SchoolId: "",
+        RealName: "",
+        Nickname: "",
+        Phone: "",
+        Password: "",
+        Major: "",
+        Grade: ""
+      },
+      checkPass: "",
+    }
+  },
+  methods: {
+    submitRegister() {
+      console.log(this.form)
+      if (this.ableToSubmit) {
+        console.log("youre able to submit")
+        let data = toRaw(this.form)
+        api({
+          method: "POST",
+          url: "user/register",
+          data: data,
+        }).then((response) => {
+          console.log(response)
+          if (response.data["Code"] === '200') {
+            if (response.data.Token) {
+              CookieManager.set("token", response.data.Token)
+            }
+            ElMessage.success({
+              message: "注册成功！"
+            })
+            this.$router.push("/")
+          } else {
+            ElMessage.error({
+              message: "失败原因: " + response.data["Description"]
+            })
+          }
+        }, (error) => {
+          console.log(error)
+          ElMessage.error({
+            message: "出了点问题...一会儿再试吧"
+          })
+        })
+      }
+    },
+
+    idChange() {
+      this.show.id = true
+      this.ok.id = this.form.SchoolId.length >= 4 && this.form.SchoolId.length <= 10;
+    },
+
+    nameChange() {
+      let p = /([^a-zA-Z0-9\u4e00-\u9fa5 ])/
+      this.show.rm = true
+      this.ok.rm = (this.form.RealName.length >= 2 && this.form.RealName.length <= 15) && !p.test(this.form.RealName);
+    },
+
+    nickChange() {
+      let p = /([\s])/
+      this.show.nm = true
+      this.ok.nm = (this.form.Nickname.length >= 4 && this.form.Nickname.length <= 12) && !p.test(this.form.Nickname);
+    },
+
+    pwChange() {
+      this.show.pw = true
+      this.ok.pw = this.isPasswordLegal(this.form.Password)
+    },
+
+    chpwChange() {
+      this.show.chpw = true
+      this.ok.chpw = (this.ok.pw && this.form.Password === this.checkPass)
+    },
+
+    phoneChange() {
+      this.show.phone = true
+      this.ok.phone = this.form.Phone.length === 11
+    },
+
+    isPasswordLegal(pw) {
+      if (pw.length > 16 && pw. length < 6) {
+        return false
+      }
+      let p = /([^A-Za-z0-9@#$%^&*\-=+])/
+      return !p.test(pw);
+    }
+  },
+  computed: {
+    ableToSubmit() {
+      return (this.ok.id && this.ok.rm && this.ok.nm && this.ok.pw && this.ok.chpw && this.ok.phone)
+    }
+  },
+  setup() {
+    const store = useStore()
+    const grades = staticData.grades
+    const majors = staticData.majors
+    return {
+      store,
+      grades,
+      majors
     }
   }
 }
@@ -167,8 +253,13 @@ export default {
 
 <style scoped>
 
+i {
+  transition: ease .4s;
+}
+
 form {
-  width: 30vw;
+  width: 31vw;
+  min-width: 330px;
   position: relative;
   z-index: 3;
   background-color: rgba(255, 255, 255, .1);
@@ -182,9 +273,9 @@ form {
 }
 
 input {
-//width: 80%; height: 50px; width: 20vw; border-radius: 8px;
-  background-color: transparent;
+//width: 80%; height: 50px; width: 20vw; border-radius: 8px; background-color: transparent;
   border: 1px solid rgba(255, 255, 255, .5);
+  min-width: 200px;
   transition: ease .4s;
   margin-bottom: 15px;
   padding-left: 15px;
@@ -194,22 +285,23 @@ input {
 
 .select {
   width: 20vw;
+  min-width: 200px;
   background-color: transparent;
   height: 55px;
 }
 
 /deep/ .el-select,
 /deep/ .el-input,
-/deep/ .el-input__inner{
-  background-color:transparent ;
-  color:#fff;
+/deep/ .el-input__inner {
+  background-color: transparent;
+  color: #fff;
 }
 
 /deep/ input::-webkit-input-placeholder {
   color: #fff;
 }
 
-/deep/  input::-ms-input-placeholder {
+/deep/ input::-ms-input-placeholder {
   color: #fff;
 }
 

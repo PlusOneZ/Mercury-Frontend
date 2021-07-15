@@ -3,15 +3,18 @@ const state = {
     id: "",
     nickname: "",
     avatarPath: "",
-    realName: ""
+    realName: "",
+    role: ""
 }
 
 const getters = {
     userInfo: (state) => {
         return {
+            loggedIn: state.loggedIn,
             name: state.nickname,
             avatar: state.avatarPath,
             id: state.id,
+            role: state.role
         }
     },
 }
@@ -19,10 +22,12 @@ const getters = {
 const mutations = {
     userLogin(state, user) {
         state.loggedIn = true
-        state.id = user.SchoolId
-        state.nickname = user.Nickname
+        state.id = user.Id
+        state.nickname = user.NickName
         state.avatarPath = user.avatarPath
         state.realName = user.RealName
+        state.role = user.Role
+        console.log("in mutation", state)
     },
 
     userLogout(state) {

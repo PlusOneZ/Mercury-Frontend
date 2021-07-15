@@ -30,8 +30,8 @@
 
     <input type="text" placeholder="学号 / 工号" v-model="sid">
     <input type="password" placeholder="密码" v-model="password">
-    <router-link to="/login/register" class="hover:text-green-200"> 新用户？去注册</router-link>
-    <router-link to="#" class="float-right pb-4 hover:text-green-200"> 忘记密码</router-link>
+    <router-link to="/login/register" class="hover:text-green-200"> 新用户？去注册 </router-link>
+    <router-link to="#" class="float-right pb-4 hover:text-green-200"> 忘记密码 </router-link>
     <button type="submit"
             class="h-12 bg-gradient-to-r from-blue-400 to-green-300 hover:from-green-200 hover:to-blue-300"
     > 登陆
@@ -44,6 +44,7 @@
 import {api} from "@/request";
 import {useStore} from "vuex"
 import {ElMessage} from "element-plus";
+import {CookieManager} from "@/cookie";
 
 export default {
   name: "LoginPanel",
@@ -55,6 +56,7 @@ export default {
     }
   },
   props: {
+    next: String
   },
   methods: {
     tryLogin() {
@@ -72,12 +74,14 @@ export default {
             console.log(response)
 
             // Success login
-            if (response.data.status === 'success') {
-              let user = response.data.user;  // TODO: if backend changes, modify this
+            if (response.data['Code'] === '200') {
+              let user = response.data.User;  // TODO: if backend changes, modify this
               ElMessage.success({
-                message: '欢迎回来，' + user.Nickname,
+                message: '欢迎回来，' + user.NickName,
                 type: 'success'
               })
+              console.log(response.data.Token)
+              CookieManager.set("token", response.data.Token, 3600*1000)
               this.store.commit("user/userLogin", user)
               this.$router.push("/")
             }
@@ -106,6 +110,44 @@ export default {
     const store = useStore()
     return {
       store
+    }
+  },
+  mounted() {
+    console.log("in login panel, next: ", this.next)
+    let token = CookieManager.get("token")
+    if (token) {
+      let formData = new FormData()
+      formData.append('token', token)
+      api({
+        method: "POST",
+        data: formData,
+        url: "user/autoLogin"
+      }).then((response) => {
+        if (response.data["Code"] === "200") {
+          let user = response.data.User  // TODO: if changes
+          this.store.commit("user/userLogin", user)
+          ElMessage.success({
+            message: '欢迎回来，' + user.NickName,
+            type: 'success'
+          })
+          if (this.next) {
+            this.$router.push(this.next)
+          } else {
+            this.$router.push("/")
+          }
+        } else {
+          ElMessage.warning({
+            message: "登陆过期，请重新登陆",
+            type: 'success'
+          })
+        }
+      }, (error) => {
+        console.log(error)
+        ElMessage.error({
+          message: '服务器在开小差...',
+          type: 'error'
+        })
+      })
     }
   }
 }

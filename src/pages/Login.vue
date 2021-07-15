@@ -25,7 +25,9 @@
     </div>
 
     <transition name="slide-fade">
-      <router-view></router-view>
+      <router-view
+
+      ></router-view>
     </transition>
 
   </section>
@@ -34,6 +36,9 @@
 <script>
 export default {
   name: "Login",
+  props: {
+    next: String
+  },
   data() {
     return {
       response: "",
@@ -78,7 +83,7 @@ section {
   align-items: center;
   justify-content: center;
   background-image: linear-gradient(#5698c3, #d1c2d3);
-  overflow: hidden;
+  overflow-y: scroll;
 }
 
 section::before {

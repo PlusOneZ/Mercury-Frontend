@@ -7,12 +7,13 @@
         <!--        TODO: Stick this to top -->
         <el-menu
             :uniqueOpened="true"
-            default-active="0"
+            :default-active="defaultActive"
             class="rounded-xl"
             background-color="rgba(255,255,255,0.3)"
             text-color="#000"
             active-color="#fff"
             style="width: 15vw"
+            @select="handleSelect"
         >
 
           <el-menu-item
@@ -25,7 +26,7 @@
               :key="count"
               :index="String(count)"
           >
-            <i class="el-icon-camera-solid"></i>{{ cat }}
+            <i class="el-icon-camera-solid"></i>{{ cat[0] }}
           </el-menu-item>
 
         </el-menu>
@@ -34,8 +35,9 @@
       <el-main class="col-span-3">
         <div class="category-window grid md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-6 lg:grid-cols-5">
           <CommodityThumbnail
-              v-for="i in 15"
-              :key="i"
+              v-for="i in commodities"
+              :key="i.Id"
+              :commodity="i"
           >
           </CommodityThumbnail>
 
@@ -48,6 +50,8 @@
 
 <script>
 import CommodityThumbnail from "@/components/Public/CommodityThumbnail";
+import {api} from "@/request";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "CategoryView",
@@ -55,14 +59,39 @@ export default {
   data() {
     return {
       categories: [
-        "书籍",
-        "教材",
-        "课程用具",
-        "电器",
-        "日用品",
-        "食物",
-      ]
+        ["书籍", "book"],
+        ["教材", "textbook"],
+        ["课程用具", "forCourse"],
+        ["电器", "electronic"],
+        ["日用品", "daily"],
+        ["食物", "food"],
+      ],
+      list: [],
+      defaultActive: '0',
+      commodities: []
     }
+  },
+  methods: {
+    handleSelect() {
+
+    }
+  },
+  mounted() {
+    // let defaultCat = this.categories[this.defaultActive][1]
+    api({
+      method: "GET",
+      url: "commodity",
+    }).then( (response) => {
+      console.log(response)
+      if (response.data.Code === "200") {
+        this.commodities = response.data["commodityList"]
+      }
+    }, (error) => {
+      ElMessage.error({
+        message: "服务器似乎在开小差..."
+      })
+      console.log(error)
+    })
   }
 }
 </script>

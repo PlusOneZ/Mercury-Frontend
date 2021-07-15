@@ -20,11 +20,13 @@
       <div class="py-6 rounded-bl-2xl rounded-br-2xl w-3/4 bg-gradient-to-r from-blue-200 to-blue-400 bg-opacity-100 grid grid-cols-1 justify-items-center border-4">
         <div>
           <PostThumbnail
-              v-for="i in 20"
-              :key="i">
+              v-for="item in postList"
+              :key="item"
+              :post="item">
           </PostThumbnail>
-          <center><el-pagination layout="prev,pager,next" :total="20">
-          </el-pagination></center>
+          <center>
+            <el-pagination @size-change="pageSizeChange" @current-change="currentPageChange" layout="prev,pager,next" :current-page="currentPage" :page-size="pageSize" :total="totalPage"></el-pagination>
+          </center>
         </div>
       </div>
       </center>
@@ -34,13 +36,72 @@
 
 <script>
 import PostThumbnail from "../components/Public/PostThumbnail";
+import {api} from "@/request";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "Posts",
   components: {PostThumbnail},
+  data() {
+    return {
+      currentPage: 1,
+      pageSize: 2,
+      postList: undefined,
+      totalPage: undefined,
+    }
+  },
   methods: {
     createPost() {
       this.$router.push("/postEdit")
+    },
+    pageSizeChange(val) {
+      this.pageSize = val;
+    },
+    currentPageChange(val) {
+      this.currentPage = val;
+
+      let data = new FormData();
+      data.append("maxNumber", String(this.pageSize));
+      data.append("pageNumber", String(this.currentPage));
+      api({
+        url: "post",
+        method: "GET",
+        data: data,
+        headers:{'Content-Type':'application/x-www-form-urlencoded'}
+      }).then(
+          (response) => {
+            console.log(response);
+
+            if(response.data["Code"] === "200") {
+              this.postList = response.data["PostList"];
+            }
+          },
+
+          (error) => {
+            console.log(error)
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          }
+      )
     }
+  },
+  mounted() {
+    api({
+      url: "post/postNumber",
+      method: "GET",
+    }).then(
+        (response) => {
+          console.log(response);
+
+          if(response.data["Code"] === "200") {
+            this.totalPage = response.data["PostNumber"];
+          }
+        },
+    )
+
+    this.currentPageChange(this.currentPage);
   }
 }
 </script>

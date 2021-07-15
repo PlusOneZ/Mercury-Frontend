@@ -9,6 +9,26 @@
         <el-form-item label="内容">
           <el-input type="textarea" v-model="form.desc" placeholder="请输入商品描述" maxlength="1000" show-word-limit rows="10"></el-input>
         </el-form-item>
+        <el-form-item label="预期价格">
+          <el-input v-model="form.price" placeholder="请输入预期价格" maxlength="10"></el-input>
+        </el-form-item>
+        <el-form-item label="商品图片">
+          <el-upload
+              class="w-1/6 float-left"
+              action=""
+              ref="upload"
+              accept=".jpg,.jpeg,.png"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-upload="beforeUpload"
+              :http-request="upLoad"
+              :limit="1"
+              :on-exceed="handleExceed"
+              :auto-upload="false"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
         <el-form-item>
           <el-button class="float-right" type="primary" @click="onSubmit">创建</el-button>
         </el-form-item>
@@ -20,19 +40,89 @@
 
 
 <script>
+import {api} from "../request";
+import {useStore} from "vuex";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "edit",
   data() {
     return {
       form: {
         name: '',
-        desc: ''
-      }
+        desc: '',
+        price: '',
+      },
+      newData: new FormData(),
     }
   },
   methods: {
     onSubmit() {
-      console.log('submit!');
+      this.$refs.upload.submit();
+
+      let id = this.store.getters['user/userInfo'].id;
+
+      this.newData.append("senderId",id);
+      this.newData.append("title",this.form.name);
+      this.newData.append("content",this.form.desc);
+      this.newData.append("price",this.form.price);
+
+      this.newData.forEach((value, key) => {
+        console.log(`key ${key}: value ${value}`);
+      })
+
+      api({
+        url: "post",
+        method: "POST",
+        data: this.newData,
+      }).then(
+          (response) => {
+            console.log(response);
+
+            if (response.data['Code'] === '201') {
+              ElMessage.success({
+                message: "创建成功",
+                type: "success",
+              })
+            }
+            else{
+              ElMessage.error({
+                message: "创建失败",
+                type: "error",
+              })
+            }
+          }
+      )
+
+      this.newData.delete("senderId");
+      this.newData.delete("title");
+      this.newData.delete("content");
+      this.newData.delete("price");
+      this.newData.delete("photos");
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    beforeUpload(file) {
+      this.newData.append("photos",file);
+    },
+    upLoad() {
+      console.log("upload successfully");
+    },
+    handleExceed(){
+      ElMessage.error({
+        message: "只能上传一张图片哦",
+        type: "error",
+      })
+    }
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
     }
   }
 }
