@@ -24,6 +24,8 @@ const EditInfo = () =>
     import ("../pages/EditInfo")
 const OrderDetail = () =>
     import ("../pages/OrderDetail")
+const OrderDetermine = () =>
+    import ("../pages/OrderDetermine")
 
 const Chat = () =>
     import ("../pages/Chat")
@@ -140,7 +142,8 @@ const routes = [
     {
       path: "/publishCommodity",
       name: "PublishCommodity",
-      component: PublishCommodity
+      component: PublishCommodity,
+        beforeEnter: loginGuard
     },
     {
         path: "/user/:id",
@@ -169,6 +172,12 @@ const routes = [
         path: "/postEdit",
         name: "PostEdit",
         component: PostEdit,
+        beforeEnter: loginGuard
+    },
+    {
+        path: "/OrderDetermine",
+        name: "OrderDetermine",
+        component: OrderDetermine,
         beforeEnter: loginGuard
     }
 ]
