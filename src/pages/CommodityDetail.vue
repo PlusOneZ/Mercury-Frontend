@@ -13,7 +13,7 @@
         <div class="ml-32 rounded-lg border-gray-300 border ">
 
           <div>
-            <el-carousel indicator-position="outside" :interval="4000" :autoplay=isAutoChange class="rounded-lg ">
+            <el-carousel indicator-position="outside" :interval="4000" :autoplay="true" class="rounded-lg ">
               <el-carousel-item v-if="video!==undefined && video!=='' ">
                 <video controls="controls" @click="clickVideo()">
                   <source :src=video type="video/mp4"/>
@@ -176,7 +176,7 @@ export default {
       stock: 12,
       isAutoChange: true,
       for_rent: false,
-      images: [
+      images: ["https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
       ],
       video: "",
       status: "九成新",
@@ -234,16 +234,17 @@ export default {
             that.price = Number(commo["Price"])
             that.likes = Number(commo["Likes"])
             that.description = commo["Description"]//生成
-            if(that.description === undefined)
+            if(that.description === undefined || that.description === null)
             {
               that.description = '这个用户很懒，没有填写商品介绍'
             }
+            console.log('*********************************************')
+            console.log(that.description)
             that.stock = Number(commo['Stock'])
             that.for_rent = Boolean(commo['ForRent'])
-            that.images = response.data['ImgList']
-            that.images = []
-            for (let i = 0; i < that.images.length; i++) {
-              that.images.push('https://139.196.20.137:5001/' + that.images[i])
+            let temp = response.data['ImgList']
+            for (let i = 0; i < temp.length; i++) {
+              that.images.push('https://139.196.20.137:5001/' + temp[i])
             }
             if (commo['Cover'] !== undefined) {
               that.images.push('https://139.196.20.137:5001/' + commo['Cover'])
