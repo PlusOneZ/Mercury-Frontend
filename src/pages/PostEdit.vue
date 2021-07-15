@@ -22,7 +22,7 @@
               :on-remove="handleRemove"
               :before-upload="beforeUpload"
               :http-request="upLoad"
-              :limit="1"
+              :limit="5"
               :on-exceed="handleExceed"
               :auto-upload="false"
           >
@@ -53,7 +53,7 @@ export default {
         desc: '',
         price: '',
       },
-      file: undefined,
+      file: [],
       ifTitle: false,
       ifContent: false,
     }
@@ -71,7 +71,10 @@ export default {
         data.append("title",this.form.name);
         data.append("content",this.form.desc);
         data.append("price",this.form.price);
-        data.append("photos",this.file);
+
+        for(let i = 0;i < this.file.length;i++) {
+          data.append("photos",this.file[i]);
+        }
 
         data.forEach((value, key) => {
           console.log(`key ${key}: value ${value}`);
@@ -115,14 +118,14 @@ export default {
       console.log(file, fileList);
     },
     beforeUpload(file) {
-      this.file=file;
+      this.file.push(file);
     },
     upLoad() {
       console.log("upload successfully");
     },
     handleExceed(){
       ElMessage.error({
-        message: "只能上传一张图片哦",
+        message: "只能上传最多五张图片哦",
         type: "error",
       })
     },
