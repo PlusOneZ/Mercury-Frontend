@@ -13,7 +13,7 @@
               <template #default="scope">
               <el-image
                   style="width: 100px; height: 100px"
-                  :src='"https://139.196.20.137:5001/api"+commodities[scope.$index].Cover'></el-image>
+                  :src='"https://139.196.20.137:5001/"+commodities[scope.$index].Cover'></el-image>
               </template>
             </el-table-column>
             <el-table-column
