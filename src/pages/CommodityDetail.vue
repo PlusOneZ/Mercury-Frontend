@@ -138,9 +138,9 @@
 </template>
 
 <script>
-import report from "@/components/Public/report";
 import {ElMessage} from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
+import report from "@/components/Public/Report";
 import RentCommodity from "@/components/CommodityDetail/RentCommodity";
 import UserAndAvatar from "@/components/Public/UserAndAvatar";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
@@ -221,10 +221,16 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(this.$route.params)
-      let temp = this.$route.params;
-      if (temp['commodityId'] !== undefined) {
-        this.commodityId = temp['commodityId']
+      let user = this.store.getters['user/userInfo']
+      this.userId = user.id
+      this.userName = user.name
+      console.log(this.$route.fullPath)
+      let temp = this.$route.fullPath.split('/');
+      temp = temp[temp.length - 1]
+      console.log(temp)
+      console.log('-----------------------------------')
+      if (temp !== undefined) {
+        this.commodityId = temp
       } else {
         this.commodityId = 1
       }
@@ -235,15 +241,40 @@ export default {
       data.append('id', this.commodityId);
       console.log('commodityId:' + data.get('id'))
       api({
-        url: 'commodity',
+        url: 'commodity?id=' + data.get('id'),
         method: 'get',
-        data: data,
       })
           .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            console.log(JSON.stringify(response.data['commodityList'][0]));
+            let commo = response.data['commodityList'][0]
+            that.ownerId = commo['SellerId']
+            that.ownerName = commo['SellerName']
+            that.ownerAvatar = 'https://139.196.20.137:5001/' + commo['SellerAvatar']
+            that.name = commo['Name']
+            that.price = Number(commo["Price"])
+            that.likes = Number(commo["Likes"])
+            that.description = commo["Description"]
+            that.stock = Number(commo['For_rent']),
+                that.for_rent = Number(commo['For_rent'])
+            if (that.for_rent === 1) {
+              that.for_rent = true
+            } else if (that.for_rent === 0) {
+              that.for_rent = false
+            }
+            that.images = commo['Images']
+            that.video = commo['Video_path']
+            that.status = commo['Condition']
+            that.popularity = 3 * Number(commo['Clicks']) + 10 * that.likes
+            that.clicks = Number(commo['Clicks'])
+            that.tags = commo['CommodityTag']
+            that.comments = commo['Comments']
           })
           .catch(function (error) {
             console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
           });
 
       var data2 = new FormData();
@@ -258,12 +289,9 @@ export default {
           .then(function (response) {
             console.log(JSON.stringify(response.data));
             that.isLike = response.data["Result"]
-            if(that.isLike === 'True')
-            {
+            if (that.isLike === 'True') {
               that.isLike = true
-            }
-            else
-            {
+            } else {
               that.isLike = false
             }
             that.isLike = !that.isLike
@@ -334,13 +362,13 @@ export default {
         ElMessage.error('加入购物车失败');
       }
     },
-    setup() {
-      let store = useStore()
-      return {
-        store
-      }
-    }
 
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
+    }
   }
 }
 </script>

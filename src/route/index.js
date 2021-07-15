@@ -27,8 +27,8 @@ const OrderDetail = () =>
 const OrderDetermine = () =>
     import ("../pages/OrderDetermine")
 
-const Chat = () =>
-    import ("../pages/Chat")
+const Notification = () =>
+    import ("../pages/Notification")
 
 const Posts = () =>
     import ("../pages/Posts")
@@ -112,9 +112,9 @@ const routes = [
         beforeEnter: loginGuard
     },
     {
-        path: "/chat",
-        name: "chat",
-        component: Chat,
+        path: "/notification",
+        name: "Notification",
+        component: Notification,
         beforeEnter: loginGuard
     },
     {
@@ -124,7 +124,7 @@ const routes = [
         beforeEnter: loginGuard
     },
     {
-        path: "/postDetail",
+        path: "/postDetail/:ID",
         name: "PostDetail",
         component: PostDetail
     },

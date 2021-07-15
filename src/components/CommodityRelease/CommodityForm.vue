@@ -17,12 +17,24 @@
         </el-switch>
       </el-form-item>
       <el-form-item label="物品状态" prop="status">
-        <el-select v-model="ruleForm.status" placeholder="请选择活动区域">
+        <el-select v-model="ruleForm.status" placeholder="请选择物品状态">
           <el-option label="99新" value="99新"></el-option>
           <el-option label="9成新" value="9成新"></el-option>
           <el-option label="7成新" value="7成新"></el-option>
           <el-option label="5成新" value="5成新"></el-option>
           <el-option label="能用" value="能用"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="分类" prop="category">
+        <el-select v-model="ruleForm.category" placeholder="请选择物品分类">
+          <el-option
+              v-for="(cat, count) in categories"
+              :key="cat[0]"
+              :label="cat[0]"
+              :value="count"
+          >
+          </el-option>
         </el-select>
       </el-form-item>
 
@@ -54,6 +66,28 @@
 
       <el-form-item label="商品简介" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+      </el-form-item>
+
+      <el-form-item label="添加标签">
+        <el-tag
+            :key="tag"
+            v-for="tag in dynamicTags"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)">
+          {{tag}}
+        </el-tag>
+        <el-input
+            class="input-new-tag"
+            v-if="inputVisible"
+            v-model="inputValue"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter="handleInputConfirm"
+            @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新增标签</el-button>
       </el-form-item>
 
       <el-form-item label="商品图片" prop="images">
@@ -108,6 +142,7 @@
 import {useStore} from "vuex";
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
+import {staticData} from "@/assets/js/static";
 
 export default {
   name: "CommodityForm",
@@ -116,6 +151,7 @@ export default {
       ruleForm: {
         name: '',
         status: '',
+        category: '',
         forRent: false,
         price: 9.9,
         type: [],
@@ -126,11 +162,14 @@ export default {
       },
       rules: {
         name: [
-          {required: true, message: '请输入活动名称', trigger: 'blur'},
+          {required: true, message: '请输入商品名', trigger: 'blur'},
           {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
         ],
         status: [
           {required: true, message: '请选择状态', trigger: 'blur'}
+        ],
+        category: [
+          {required: true, message: '请选择分类', trigger: 'blur'}
         ],
         price: [
           {required: true, message: '请输入价格', trigger: 'blur'}
@@ -153,7 +192,11 @@ export default {
 
       dialogImageUrl: "",
       dialogVisible: false,
-      disabled: false
+      disabled: false,
+      dynamicTags: [],
+      inputVisible: false,
+      inputValue: '',
+
     };
   },
   methods: {
@@ -171,12 +214,15 @@ export default {
           formData.append("ForRent", this.ruleForm.forRent)
           formData.append("Unit", this.ruleForm.unit)
           formData.append("Cover", this.photoList[0])
+          formData.append("Classification", this.ruleForm.category)
+          formData.append("Tags", this.dynamicTags)
 
           api({
             method: "post",
             data: formData,
             url: 'commodity'
           }).then(response => {
+            console.log(response)
             if (response.data.Code === '201') {
               ElMessage.success({
                 message: "上传成功"
@@ -198,6 +244,27 @@ export default {
           return false;
         }
       });
+    },
+
+    handleClose(tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+    },
+
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(_ => {
+        console.log(_)
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+
+    handleInputConfirm() {
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        this.dynamicTags.push(inputValue);
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
     },
 
     forRentChange(c) {
@@ -230,8 +297,10 @@ export default {
   },
   setup() {
     let store = useStore()
+    let categories = staticData.categories
     return {
-      store
+      store,
+      categories
     }
   }
 }
@@ -246,6 +315,11 @@ export default {
   min-width: 420px;
   margin: auto;
   text-align: left;
+}
+
+.input-new-tag {
+  max-width: 4rem;
+  width: 9vw;
 }
 
 </style>
