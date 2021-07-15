@@ -24,10 +24,14 @@ const mutations = {
         state.loggedIn = true
         state.id = user.Id
         state.nickname = user.NickName
-        state.avatarPath = user.avatarPath
+        state.avatarPath = user.AvatarPath
         state.realName = user.RealName
         state.role = user.Role
         console.log("in mutation", state)
+    },
+
+    uerAvatarChange(state, path) {
+        state.avatarPath = path
     },
 
     userLogout(state) {

@@ -136,5 +136,10 @@ export default {
 </script>
 
 <style scoped>
-
+.el-main {
+  background: -webkit-linear-gradient(left top, #2f90b9 2.5%, #1781b5 7.5%, #93b5cf 20%, #d8e3e7 50%, #93b5cf 70%, #1781b5 92.5%, #2f90b9 97.5%); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(bottom right, #000, #fff); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
+  background-color: #93b5cf;
+}
 </style>

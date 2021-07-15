@@ -60,7 +60,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-header {
   background: #0f1423;
 }

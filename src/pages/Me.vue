@@ -6,8 +6,14 @@
         <el-card class="avatar-card" :body-style="{ padding: '35px' }">
           <div id="wrap">
             <div id="box">
-              <img id="circleImg" onerror='this.src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"'
-                   :src="user.AvatarPath">
+              <el-upload
+                  class="avatar-uploader"
+                  :before-upload="beforeAvatarUpload"
+                  :show-file-list="false"
+              >
+                <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
             </div>
           </div>
         </el-card>
@@ -74,7 +80,7 @@
       <el-tabs type="border-card">
         <el-tab-pane class="order-box">
           <template #label>
-            <span><i class="el-icon-s-goods"></i>买入</span>
+            <span><i class="el-icon-s-goods"></i>订单管理</span>
           </template>
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane>
@@ -95,29 +101,7 @@
             </el-tab-pane>
           </el-tabs>
         </el-tab-pane>
-        <el-tab-pane class="order-box">
-          <template #label>
-            <span><i class="el-icon-date"></i>卖出</span>
-          </template>
-          <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane>
-              <template #label>
-                <span><i class="el-icon-document"></i>进行中</span>
-              </template>
-              <MyRelease
 
-              ></MyRelease>
-            </el-tab-pane>
-            <el-tab-pane>
-              <template #label>
-                <span><i class="el-icon-document-checked"></i>已完成</span>
-              </template>
-              <MyRelease
-
-              ></MyRelease>
-            </el-tab-pane>
-          </el-tabs>
-        </el-tab-pane>
       </el-tabs>
     </el-row>
     <MyCommodityAndPost>
@@ -132,12 +116,11 @@ import {api} from "@/request"
 import {ElMessage} from "element-plus";
 import {staticData} from "@/assets/js/static";
 import MyOrders from "@/pages/MyOrders";
-import MyRelease from "@/pages/MyRelease";
 import MyCommodityAndPost from "../components/Public/MyCommodityAndPost";
 
 export default {
   name: "Home",
-  components: {MyCommodityAndPost, MyRelease, MyOrders},
+  components: {MyCommodityAndPost, MyOrders},
   data() {
     return {
       activeName: 'second',
@@ -154,13 +137,43 @@ export default {
         "Brief": "null",
         "AvatarPath": "null"
       },
-      simpleUser: undefined
+      simpleUser: undefined,
+      imageUrl: '',
+      file: undefined
     }
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
-    }
+    },
+
+    beforeAvatarUpload(file) {
+      console.log("file", file)
+      let id = this.store.getters['user/userInfo'].id
+      let formData = new FormData()
+      this.file = file
+      formData.append("Avatar", this.file)
+      api({
+        method: "put",
+        url: "user/" + id,
+        data: formData
+      }).then( response => {
+        console.log(response)
+        if (response.data.Code === '200') {
+          ElMessage.success("上传成功！")
+          api({
+            method: "get",
+            url: "user/" + id,
+          }).then( res => {
+            if (response.data.Code === '200') {
+              this.imageUrl = res.data.User.AvatarPath
+              this.store.commit("user/uerAvatarChange", this.imageUrl)
+            }
+          })
+        }
+      })
+    },
+
   },
   mounted() {
     this.simpleUser = this.store.getters['user/userInfo']
@@ -174,8 +187,9 @@ export default {
       url: "user/" + id,
     }).then(response => {
       console.log(response)
-      if (1 || response.data.Code === '200') { // TODO: delete 1 after API modification
+      if (response.data.Code === '200') {
         this.user = response.data.User
+        this.imageUrl = this.user.AvatarPath
       } else {
         ElMessage.error({
           message: "出了点小问题..." + (response.data.Description ? response.data.Description : "")

@@ -56,8 +56,7 @@
         <el-dropdown>
           <div>
             <el-avatar
-                :src="user.avatar ? user.avatar : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'">
-              <i class="el-icon-user-solid"></i>
+                :src="user.avatar ? 'https://139.196.20.137:5001/' + user.avatar : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'">
             </el-avatar>
             <span class="user-name pl-5 ">{{ user.name ? user.name : "去登陆" }}</span>
           </div>

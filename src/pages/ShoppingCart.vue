@@ -1,75 +1,76 @@
 <template>
 
+  <el-main>
+    <div class="w-full grid grid-cols-9">
+      <div></div>
 
-  <div class="w-full grid grid-cols-9">
-    <div></div>
-
-    <el-table
-        :data="tableData"
-        show-summary
-        :summary-method="getSummaries"
-        stripe="true"
-        style="width: 100%" class="col-span-7 mt-16 rounded-lg border border-grey-200">
+      <el-table
+          :data="tableData"
+          height="700"
+          show-summary
+          :summary-method="getSummaries"
+          stripe="true"
+          style="width: 100%" class="col-span-7 mt-16 mb-8 rounded-lg border border-grey-200">
 
 
-      <el-table-column
-          prop="image"
-          label="商品图片" width="275" align="center">
+        <el-table-column
+            prop="image"
+            label="商品图片" width="275" align="center">
 
-        <template #default="scope">
+          <template #default="scope">
           <span style="margin-left: 10px" class="text-xl font-semibold ">
             <center><img
                 class="w-44 h-44 rounded-b-none rounded-xl"
                 :src="scope.row.image ? scope.row.image : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
             ></center>
           </span>
-        </template>
-      </el-table-column>
+          </template>
+        </el-table-column>
 
-      <el-table-column
-          prop="commodity"
-          label="商品名" width="225" align="center">
-        <template #default="scope">
+        <el-table-column
+            prop="commodity"
+            label="商品名" width="225" align="center">
+          <template #default="scope">
           <span style="margin-left: 10px" class="text-xl font-semibold ">
             {{ scope.row.commodity }}
           </span>
-        </template>
-      </el-table-column>
+          </template>
+        </el-table-column>
 
-      <el-table-column
-          prop="price"
-          label="单价" width="150" class="col-span-1" align="center">
-      </el-table-column>
+        <el-table-column
+            prop="price"
+            label="单价" width="150" class="col-span-1" align="center">
+        </el-table-column>
 
-      <el-table-column
-          prop="count"
-          label="购物车中数量" width="150" class="col-span-1" align="center">
-      </el-table-column>
+        <el-table-column
+            prop="count"
+            label="购物车中数量" width="150" class="col-span-1" align="center">
+        </el-table-column>
 
-      <el-table-column
-          fixed="right"
-          label="操作"
-          class="col-span-3" align="center">
-        <template #default="scope">
-          <el-button
-              @click.prevent="deleteRow(scope.$index, tableData)"
-              type="primary" class="mr-8">
-            移除
-          </el-button>
+        <el-table-column
+            fixed="right"
+            label="操作"
+            class="col-span-3" align="center">
+          <template #default="scope">
+            <el-button
+                @click.prevent="deleteRow(scope.$index, tableData)"
+                type="primary" class="mr-8">
+              移除
+            </el-button>
 
-          <el-button type="primary" class="ml-8"
-                     @click.prevent="buyCommodity(scope.$index, tableData)">
-            结算
-          </el-button>
+            <el-button type="primary" class="ml-8"
+                       @click.prevent="buyCommodity(scope.$index, tableData)">
+              结算
+            </el-button>
 
 
-        </template>
-      </el-table-column>
+          </template>
+        </el-table-column>
 
-    </el-table>
+      </el-table>
 
-  </div>
-
+    </div>
+  </el-main>
 </template>
 <script>
 import {useStore} from "vuex";
@@ -122,7 +123,6 @@ export default {
   },
   methods: {
     deleteRow(index, rows) {
-
       let commodityId = rows[index]['id']
       let user = this.store.getters['user/userInfo']
       let userId = user.id
@@ -135,11 +135,11 @@ export default {
       api({
         url: "shoppingCart",
         method: "delete",
-        data : data
+        data: data
       })
           .then(function (response) {
             console.log(JSON.stringify(response.data));
-            if(String(response.data['Code']) === '200') {
+            if (String(response.data['Code']) === '200') {
               rows.splice(index, 1);
               ElMessage.success({
                 message: '删除成功',
@@ -179,27 +179,7 @@ export default {
       });
       return sums;
     },
-
   },
-  // mounted() {
-  //   let id = this.store.getters['user/userInfo'].id
-  //   api({
-  //     method: "get",
-  //     url: "ShoppingCart/"+id,
-  //   }).then( response => {
-  //     if (response.data.Code == '200') {
-  //       let data = response.data.ItemList
-  //       for (let i = 0; i < data.length; i++) {
-  //         this.tableData[i].commodity = response.data["NameList"][i]
-  //         this.tableData[i].count = data[i]["Count"]
-  //         this.tableData[i].price = response.data["PriceList"][i]
-  //         this.tableData[i].id = data[i]['CommodityId']
-  //       }
-  //     } else {
-  //       ElMessage.error("服务器在开小差...")
-  //     }
-  //   })
-  // },
   setup() {
     let store = useStore()
     return {
@@ -212,6 +192,11 @@ export default {
 
 <style scoped>
 @import url("//unpkg.com/element-plus/lib/theme-chalk/index.css");
-
+.el-main {
+  background: -webkit-linear-gradient(left top, #2f90b9 2.5%, #1781b5 7.5%, #93b5cf 20%, #d8e3e7 50%, #93b5cf 70%, #1781b5 92.5%, #2f90b9 97.5%); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(bottom right, #000, #fff); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
+  background-color: #93b5cf;
+}
 
 </style>

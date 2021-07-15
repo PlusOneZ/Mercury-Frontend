@@ -67,6 +67,7 @@ export default {
   methods: {
     handleSelect(key) {
       console.log("select ", key)
+      console.log("haha", this.categories[key][1])
       let cat = this.categories[key][1]
       api({
         method: "GET",
