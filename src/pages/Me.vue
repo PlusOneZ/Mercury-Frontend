@@ -120,6 +120,9 @@
         </el-tab-pane>
       </el-tabs>
     </el-row>
+    <MyCommodityAndPost>
+
+    </MyCommodityAndPost>
   </div>
 </template>
 
@@ -130,10 +133,11 @@ import {ElMessage} from "element-plus";
 import {staticData} from "@/assets/js/static";
 import MyOrders from "@/pages/MyOrders";
 import MyRelease from "@/pages/MyRelease";
+import MyCommodityAndPost from "../components/Public/MyCommodityAndPost";
 
 export default {
   name: "Home",
-  components: {MyRelease, MyOrders},
+  components: {MyCommodityAndPost, MyRelease, MyOrders},
   data() {
     return {
       activeName: 'second',
