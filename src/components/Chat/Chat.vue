@@ -101,9 +101,5 @@ input.textarea {
   background: #409eff;
 }
 
-.el-main {
-  background-image: linear-gradient(#5698c3, #d1c2d3);
-}
-
 </style>
 

@@ -125,4 +125,8 @@ export default {
   width: 20vw;
 }
 
+.el-main {
+  background-image: linear-gradient(#5698c3, #d1c2d3);
+}
+
 </style>
