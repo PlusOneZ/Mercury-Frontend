@@ -4,10 +4,11 @@
 
       <div class=" rounded-2xl bg-white border-black divide-y divide-black ml-8  mr-8" >
         <div class="flex flex-row space-x-8">
-          <div class="container w-1/6 h-1/2">    
-            <el-carousel  v-if="Images" indicator-position="outside" :interval="4000" :autoplay=false class="rounded-lg " height="250px"> 
-              <el-carousel-item  v-for="item in Images" :key="item">
-                <img class="window-img" :src = "'https://139.196.20.137:5001/'+item"> 
+          <div class="container w-1/6 h-1/2">
+            <el-carousel  v-if="ImageCount!==0" indicator-position="outside" :interval="4000" :autoplay=false class="rounded-lg " height="250px">
+              <el-carousel-item  v-for="item in ImageCount" :key="item">
+                <img class="window-img" :src = "'https://139.196.20.137:5001/'+item">
+
               </el-carousel-item>
             </el-carousel>
             <div v-else class="mt-8 w-full ">
@@ -19,7 +20,7 @@
               <div class="flex  justify-start flex-row space-x-2 ">
                 <!-- <el-avatar class="" src="https://inews.gtimg.com/newsapp_bt/0/13217980331/1000"></el-avatar> -->
                 <el-avatar :src= "'https://139.196.20.137:5001/'+AvatarPath"></el-avatar>
-                <p class="py-2 text-xl md:text-2xl">{{SenderName}}</p>               
+                <p class="py-2 text-xl md:text-2xl">{{SenderName}}</p>
               </div>
               <div class="ml-20 flex justify-start row-start-1 col-start-2">
                 <report ></report>
@@ -28,7 +29,7 @@
 
             <p class="font-black flex justify-start mt-4 text-xl md:text-2xl">{{Title}}</p>
             <div class="flex flex-nowrap justify-start text-1xl">
-                <p>发布时间：</p> 
+                <p>发布时间：</p>
                 <p >{{Time}}</p>
             </div>
 
@@ -39,7 +40,7 @@
             </div>
 
           </div>
-        </div> 
+        </div>
         <div>
           <el-tabs type="border-card" class="rounded-lg" @tab-click="handleClick">
             <el-tab-pane @click="canLoad=false" label="商品描述" class="ml-4 mr-2">{{ Content }}</el-tab-pane>
@@ -49,7 +50,7 @@
 
             </el-tab-pane>
           </el-tabs>
-        </div> 
+        </div>
       </div>
     </el-main>
 
@@ -92,7 +93,7 @@ export default {
 
       rating:0,
       flag :false,
-      simpleUserId :'' 
+      simpleUserId :''
 
     }
   },
@@ -101,7 +102,7 @@ export default {
       this.canLoad = tab['props']['label'] !== '商品描述';
     },
 
-  
+
     getData(){
       let simpleUser = this.store.getters['user/userInfo']
       if (!simpleUser.loggedIn) {
@@ -129,10 +130,10 @@ export default {
               let t = []
               data.Comments.forEach(element => {
                 let temp={
-                  userName: element.SenderName, 
+                  userName: element.SenderName,
                   userImage: element.AvatarPath,
                   userId: element.SenderId,
-                  comment: element.Content, 
+                  comment: element.Content,
                   rating: -1
                 }
                 t.push(temp)
@@ -143,10 +144,9 @@ export default {
             },
             (error) => {
               console.log(error)
-            })    
+            })
 
             }
-
   },
   created: function() {
     this.firstPlayFlag = false
@@ -157,7 +157,6 @@ export default {
       if (temp['ID'] !== undefined) {
         this.ID = temp['ID']
       } else {
-
         this.ID = "946710726649"
       }
       this.getData()

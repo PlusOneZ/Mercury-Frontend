@@ -29,10 +29,10 @@
       <el-form-item label="分类" prop="category">
         <el-select v-model="ruleForm.category" placeholder="请选择物品分类">
           <el-option
-              v-for="(cat, count) in categories"
+              v-for="cat in categories"
               :key="cat[0]"
               :label="cat[0]"
-              :value="count"
+              :value="cat[1]"
           >
           </el-option>
         </el-select>
