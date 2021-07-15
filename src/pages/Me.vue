@@ -80,12 +80,12 @@
     </el-row>
     <el-row type="flex" class="row-bg pb-20" justify="space-around">
       <el-tabs type="border-card">
-        <el-tab-pane class="order-box">
+        <el-tab-pane class="order-box" >
           <template #label>
             <span><i class="el-icon-s-goods"></i>订单管理</span>
           </template>
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane>
+            <el-tab-pane name="second">
               <template #label>
                 <span><i class="el-icon-document"></i>进行中</span>
               </template>
@@ -95,7 +95,7 @@
 
               </MyOrders>
             </el-tab-pane>
-            <el-tab-pane>
+            <el-tab-pane name="first">
               <template #label>
                 <span><i class="el-icon-document-checked"></i>已完成</span>
               </template>
