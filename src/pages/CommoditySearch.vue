@@ -2,8 +2,7 @@
 
   <div class="common-layout">
     <el-container :class="topMargin">
-      <el-container class="h-24 flex justify-around items-center ">
-        <div class="font-bold text-blue-600 ">Mercury</div>
+      <el-container class="h-24 flex justify-around items-center ml-52">
         <div class="flex justify-center">
           <el-dropdown @command="handleClick">
             <el-button type="primary">
@@ -29,7 +28,7 @@
       <el-container v-if="isShow!==false">
         <el-main>
           <div>
-            <div class="w-20 bg-yellow-400 font-bold text-white text-center rounded-md ">
+            <div class="text-xl w-28 pt-2 pb-2 bg-yellow-400 font-bold text-white text-center rounded-md ">
               所有宝贝
             </div>
             <div class="main border-solid border-2 border-yellow-300 rounded-md mt-4 ...">
@@ -48,20 +47,15 @@
         <el-aside width="400px">
           <br/>
           <div>
-            <div class="w-20 bg-blue-300 font-bold text-white text-center rounded-md ">
+            <div class="text-xl w-28 pt-2 pb-2  bg-blue-300 font-bold text-white text-center rounded-md ">
               热卖商品
             </div>
             <div class="bg-yellow-200 h-full rounded-md h-full grid-cols-1 grid mt-3 ">
-              <div v-for="i in currentPopularList" :key="i" class="ml-2 bg-yellow-200 ">
-                <HotGoodThumbnail
-                    class="bg-blue-200 "
-                    :id="i.Id"
-                    :img="i.Cover"
-                    :popularity="i.Likes * 10"
-                    :price="i.Price"
-                    :title="i.Name"
-                ></HotGoodThumbnail>
-              </div>
+
+              <HotGoodThumbnail class="bg-blue-200 " v-for="i in currentList"
+                                :key="i.Id"
+                                :commodity="i">
+              </HotGoodThumbnail>
             </div>
           </div>
         </el-aside>
@@ -237,9 +231,11 @@ export default {
     },
 
     setPopularList: function () {
-      this.popularList = this.commodityList.slice(0)
+      this.popularList = this.commodityList
       console.log(this.popularList)
-      this.popularList.sort(this.compare('Likes'))
+      this.popularList = this.popularList.sort(this.compare('Likes'))
+      console.log('-------------------------------------------------')
+      console.log(this.popularList[0])
     },
     isDis: function () {
       if (this.input === '') {
