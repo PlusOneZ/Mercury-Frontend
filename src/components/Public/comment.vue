@@ -68,7 +68,7 @@ export default {
           data: data,
         }).then((res) => {
           console.log(res)
-          if (res.data["Code"] === '200') {
+          if (res.data["Code"] === '201'||res.data["Code"] === '200') {
             console.log(res)
             ElMessage.success({
               message: "评论成功！"
@@ -99,7 +99,7 @@ export default {
             data: data,
           }).then((res) => {
             console.log(res)
-            if (res.data["Code"] === '201') {
+            if (res.data["Code"] === '201'||res.data["Code"] === '200') {
               console.log(res)
               ElMessage.success({
                 message: "评论成功！"

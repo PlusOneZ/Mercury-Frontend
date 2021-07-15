@@ -6,7 +6,6 @@
 
     <el-table
         :data="tableData"
-        height="700"
         show-summary
         :summary-method="getSummaries"
         stripe="true"
@@ -123,6 +122,7 @@ export default {
   },
   methods: {
     deleteRow(index, rows) {
+
       let commodityId = rows[index]['id']
       let user = this.store.getters['user/userInfo']
       let userId = user.id
@@ -179,7 +179,27 @@ export default {
       });
       return sums;
     },
+
   },
+  // mounted() {
+  //   let id = this.store.getters['user/userInfo'].id
+  //   api({
+  //     method: "get",
+  //     url: "ShoppingCart/"+id,
+  //   }).then( response => {
+  //     if (response.data.Code == '200') {
+  //       let data = response.data.ItemList
+  //       for (let i = 0; i < data.length; i++) {
+  //         this.tableData[i].commodity = response.data["NameList"][i]
+  //         this.tableData[i].count = data[i]["Count"]
+  //         this.tableData[i].price = response.data["PriceList"][i]
+  //         this.tableData[i].id = data[i]['CommodityId']
+  //       }
+  //     } else {
+  //       ElMessage.error("服务器在开小差...")
+  //     }
+  //   })
+  // },
   setup() {
     let store = useStore()
     return {

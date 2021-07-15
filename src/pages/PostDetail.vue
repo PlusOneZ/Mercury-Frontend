@@ -7,7 +7,7 @@
           <div class="container w-1/6 h-1/2">    
             <el-carousel  v-if="ImageCount!==0" indicator-position="outside" :interval="4000" :autoplay=false class="rounded-lg " height="250px"> 
               <el-carousel-item  v-for="item in ImageCount" :key="item">
-                <img class="window-img" :src = item> 
+                <img class="window-img" :src = "'https://139.196.20.137:5001/'+item"> 
               </el-carousel-item>
             </el-carousel>
             <div v-else class="mt-8 w-full ">
@@ -18,7 +18,7 @@
             <div class="flex flex-row">
               <div class="flex  justify-start flex-row space-x-2 ">
                 <!-- <el-avatar class="" src="https://inews.gtimg.com/newsapp_bt/0/13217980331/1000"></el-avatar> -->
-                <el-avatar :src="AvatarPath"></el-avatar>
+                <el-avatar :src= "'https://139.196.20.137:5001/'+AvatarPath"></el-avatar>
                 <p class="py-2 text-xl md:text-2xl">{{SenderName}}</p>               
               </div>
               <div class="ml-20 flex justify-start row-start-1 col-start-2">
@@ -115,12 +115,14 @@ export default {
         }).then(
             (res) => {
               console.log(res.data)
+              
 
               var data = res.data.Post
               this.Images = data.Images
               this.SenderName = data.SenderName
               this.SenderId = data.SenderId
               this.AvatarPath = data.AvatarPath
+              console.log(this.AvatarPath)
               this.Content = data.Content
               this.Time = data.Time
               this.Time=this.Time.replace("T"," ").substr(0,19);

@@ -56,7 +56,6 @@
                                 :key="i.Id"
                                 :commodity="i">
               </HotGoodThumbnail>
-
             </div>
           </div>
         </el-aside>
@@ -84,6 +83,9 @@ import {api} from "@/request";
 
 export default {
   name: "CommoditySearch",
+  props: {
+    key: String
+  },
   components: {
     CommodityThumbnail,
     HotGoodThumbnail

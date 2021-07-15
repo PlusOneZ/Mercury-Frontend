@@ -13,7 +13,7 @@
               <template #default="scope">
               <el-image
                   style="width: 100px; height: 100px"
-                  :src='"https://139.196.20.137:5001/api"+commodities[scope.$index].Cover'></el-image>
+                  :src='"https://139.196.20.137:5001/"+commodities[scope.$index].Cover'></el-image>
               </template>
             </el-table-column>
             <el-table-column
@@ -30,7 +30,8 @@
                 label="操作"
                 class="w-1/3">
               <template #default="scope">
-                <el-button type="text" @click="viewCommodityDetail(scope.$index)">查看详情</el-button>
+                <el-button type="primary" @click="viewCommodityDetail(scope.$index)">查看详情</el-button>
+                <el-button type="primary" @click="deleteCommodity(scope.$index)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -57,8 +58,8 @@
                 label="操作"
                 class="w-1/4">
               <template #default="scope">
-               <el-button type="text" @click="viewPostDetail(scope.$index)">查看详情</el-button>
-                <el-button type="text" @click="deletePost(scope.$index)">删除</el-button>
+               <el-button type="primary" @click="viewPostDetail(scope.$index)">查看详情</el-button>
+                <el-button type="primary" @click="deletePost(scope.$index)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -112,7 +113,32 @@ export default {
             }
           }
       )
-    }
+
+    },
+    deleteCommodity(index) {
+      api({
+        url: "commodity/"+this.commodities[index].Id,
+        method: "DELETE"
+      }).then(
+          (response) => {
+            console.log(response);
+
+            if (response.data['Code'] === '200') {
+              ElMessage.success({
+                message: "删除成功",
+                type: "success",
+              })
+              location.reload();
+            }
+            else{
+              ElMessage.error({
+                message: "删除失败",
+                type: "error",
+              })
+            }
+          }
+      )
+    },
   },
   mounted() {
     let id = this.store.getters['user/userInfo'].id;

@@ -139,13 +139,12 @@
 <script>
 import {ElMessage} from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
-import report from "@/components/Public/Report";
 import RentCommodity from "@/components/CommodityDetail/RentCommodity";
 import UserAndAvatar from "@/components/Public/UserAndAvatar";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import {api} from "@/request";
 import {useStore} from "vuex";
-
+import report from "@/components/Public/Report"
 
 export default {
   name: "CommodityDetail",
