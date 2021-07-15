@@ -38,7 +38,7 @@
           </div>
 
           <div class="mr-8 mt-6 flex items-center justify-start ">
-            <div class="mb-4"><font class="mb-8 pl-16 ">商品分类：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
+            <div class="mb-4"><font class="mb-8 pl-16 ">商品标签：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
             <div>
               <div v-show="tags.length===0" class="mr-8 mb-4">无</div>
               <div v-for="i in (Math.floor(tags.length/4) + 1)" :key=i class="mr-4">
@@ -67,7 +67,7 @@
                                class="flex items-center"></user-and-avatar>
             </div>
             <div class="ml-12 ">
-              <report class="ml-2"></report>
+              <Report class="ml-2"></Report>
             </div>
 
             <div class="mr-12 mt-6 flex items-center justify-start">
@@ -138,6 +138,7 @@
 </template>
 
 <script>
+
 import {ElMessage} from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 import report from "@/components/Public/Report";
@@ -151,15 +152,19 @@ import {useStore} from "vuex";
 export default {
   name: "CommodityDetail",
   components: {
-    report,
+    Report,
     BuyCommodity,
     RentCommodity,
     UserAndAvatar,
     CommodityCommentList,
   },
+  props: {
+    commodityId: String,
+  },
   data: function () {
     return {
-      commodityId: '1',
+      status404: false,
+
       userId: '1850061',
       userName: 'rzc',
       ownerId: '1850061',
@@ -221,6 +226,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+
       let user = this.store.getters['user/userInfo']
       this.userId = user.id
       this.userName = user.name
