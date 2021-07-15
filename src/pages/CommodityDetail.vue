@@ -271,7 +271,7 @@ export default {
               that.comments.unshift(temp)
             }
             console.log('++++++++++++++++++++++++++++++++++++++')
-            console.log(that.comments[0]['userName'])
+            //console.log(that.comments[0]['userName'])
           })
           .catch(function (error) {
             console.log(error);
