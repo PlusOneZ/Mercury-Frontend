@@ -10,7 +10,7 @@
         <div class="flex px-4">
           <div
               class="rounded-full bg-blue-300 inline-flex px-2 mr-1 bg-opacity-50"
-              v-for="(count, item) in commodity.CommodityTag"
+              v-for="(item, count) in commodity.CommodityTag"
               :key="count"
           >
             <p class="text-sm"> {{ item }} </p>

@@ -87,39 +87,39 @@ export default {
       tableData: [],
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      let user = this.store.getters['user/userInfo']
-      let userId = user.id
-      console.log("shoppingCart/" + userId.replaceAll('"', ''))
-      const that = this
-      api({
-        url: "shoppingCart/" + userId.replaceAll('"', ''),
-        method: "get",
-      })
-          .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            that.tableData = []
-            for (let i = 0; i < response.data['ItemList'].length; i++) {
-              let temp = {}
-              console.log('count', response.data['ItemList'][i]['Count'])
-              temp['count'] = Number(response.data['ItemList'][i]['Count'])
-              temp['price'] = Number(response.data['PriceList'][i])
-              temp['commodity'] = response.data['NameList'][i]
-              temp['id'] = response.data['ItemList'][i]['CommodityId']
-              temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
-              that.tableData.push(temp)
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-            ElMessage.error({
-              message: '服务器在开小差...',
-              type: 'error'
-            })
-          });
-    })
-  },
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     let user = this.store.getters['user/userInfo']
+  //     let userId = user.id
+  //     console.log("shoppingCart/" + userId.replaceAll('"', ''))
+  //     const that = this
+  //     api({
+  //       url: "shoppingCart/" + userId.replaceAll('"', ''),
+  //       method: "get",
+  //     })
+  //         .then(function (response) {
+  //           console.log(JSON.stringify(response.data));
+  //           that.tableData = []
+  //           for (let i = 0; i < response.data['ItemList'].length; i++) {
+  //             let temp = {}
+  //             console.log('count', response.data['ItemList'][i]['Count'])
+  //             temp['count'] = Number(response.data['ItemList'][i]['Count'])
+  //             temp['price'] = Number(response.data['PriceList'][i])
+  //             temp['commodity'] = response.data['NameList'][i]
+  //             temp['id'] = response.data['ItemList'][i]['CommodityId']
+  //             temp['image'] = 'https://139.196.20.137:5001/' + response.data['ImageList'][i]
+  //             that.tableData.push(temp)
+  //           }
+  //         })
+  //         .catch(function (error) {
+  //           console.log(error);
+  //           ElMessage.error({
+  //             message: '服务器在开小差...',
+  //             type: 'error'
+  //           })
+  //         });
+  //   })
+  // },
   methods: {
     deleteRow(index, rows) {
 
@@ -178,25 +178,25 @@ export default {
     },
 
   },
-  // mounted() {
-  //   let id = this.store.getters['user/userInfo'].id
-  //   api({
-  //     method: "get",
-  //     url: "ShoppingCart/"+id,
-  //   }).then( response => {
-  //     if (response.data.Code == '200') {
-  //       let data = response.data.ItemList
-  //       for (let i = 0; i < data.length; i++) {
-  //         this.tableData[i].commodity = response.data["NameList"][i]
-  //         this.tableData[i].count = data[i]["Count"]
-  //         this.tableData[i].price = response.data["PriceList"][i]
-  //         this.tableData[i].id = data[i]['CommodityId']
-  //       }
-  //     } else {
-  //       ElMessage.error("服务器在开小差...")
-  //     }
-  //   })
-  // },
+  mounted() {
+    let id = this.store.getters['user/userInfo'].id
+    api({
+      method: "get",
+      url: "ShoppingCart/"+id,
+    }).then( response => {
+      if (response.data.Code == '200') {
+        let data = response.data.ItemList
+        for (let i = 0; i < data.length; i++) {
+          this.tableData[i].commodity = response.data["NameList"][i]
+          this.tableData[i].count = data[i]["Count"]
+          this.tableData[i].price = response.data["PriceList"][i]
+          this.tableData[i].id = data[i]['CommodityId']
+        }
+      } else {
+        ElMessage.error("服务器在开小差...")
+      }
+    })
+  },
   setup() {
     let store = useStore()
     return {
