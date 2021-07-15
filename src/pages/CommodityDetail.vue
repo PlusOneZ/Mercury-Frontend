@@ -38,7 +38,7 @@
           </div>
 
           <div class="mr-8 mt-6 flex items-center justify-start ">
-            <div class="mb-4"><font class="mb-8 pl-16 ">商品分类：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
+            <div class="mb-4"><font class="mb-8 pl-16 ">商品标签：&nbsp;&nbsp;&nbsp;&nbsp;</font></div>
             <div>
               <div v-show="tags.length===0" class="mr-8 mb-4">无</div>
               <div v-for="i in (Math.floor(tags.length/4) + 1)" :key=i class="mr-4">
@@ -67,7 +67,7 @@
                                class="flex items-center"></user-and-avatar>
             </div>
             <div class="ml-12 ">
-              <report class="ml-2"></report>
+              <Report class="ml-2"></Report>
             </div>
 
             <div class="mr-12 mt-6 flex items-center justify-start">
@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import report from "@/components/Public/report";
+import Report from "@/components/Public/Report";
 import {ElMessage} from "element-plus";
 import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 import RentCommodity from "@/components/CommodityDetail/RentCommodity";
@@ -151,15 +151,19 @@ import {useStore} from "vuex";
 export default {
   name: "CommodityDetail",
   components: {
-    report,
+    Report,
     BuyCommodity,
     RentCommodity,
     UserAndAvatar,
     CommodityCommentList,
   },
+  props: {
+    commodityId: String,
+  },
   data: function () {
     return {
-      commodityId: '1',
+      status404: false,
+
       userId: '1850061',
       userName: 'rzc',
       ownerId: '1850061',
@@ -221,13 +225,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(this.$route.params)
-      let temp = this.$route.params;
-      if (temp['commodityId'] !== undefined) {
-        this.commodityId = temp['commodityId']
-      } else {
-        this.commodityId = 1
-      }
 
       let FormData = require('form-data');
       let data = new FormData();
@@ -238,9 +235,11 @@ export default {
         url: 'commodity',
         method: 'get',
         data: data,
-      })
-          .then(function (response) {
+      }).then((response) => {
             console.log(JSON.stringify(response.data));
+            if (response.data.Code !== '200') {
+              this.status404 = true
+            }
           })
           .catch(function (error) {
             console.log(error);

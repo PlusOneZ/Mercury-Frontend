@@ -1,4 +1,5 @@
 <template>
+
     <el-main class="bg-gradient-to-r from-blue-200 to-blue-400 bg-opacity-100">
       <div class=" rounded-2xl bg-white border-black divide-y divide-black" >
         <div class="flex flex-row space-x-8">
@@ -21,6 +22,7 @@
                 <report ></report>
               </div>
             </div>
+
             <p class="font-black text-2xl flex justify-start mt-4">{{Title}}</p>
             <div class="flex flex-nowrap justify-start text-1xl">
                 <p>发布时间：</p> 
@@ -30,6 +32,7 @@
               <el-button type="primary" icon="el-icon-chat-dot-square" round>联系买家</el-button>
               <comment :isRating="F" :userId="SenderId" :sender="Sender" ></comment>
             </div>
+
           </div>
         </div> 
         <div>
@@ -46,10 +49,12 @@
 </template>
 
 <script>
-import report from "@/components/Public/report";
+
+import report from "@/components/Public/Report";
 import comment from "@/components/Public/comment";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import {api} from "@/request";
+
 
 export default {
   name: "PostDetail",
