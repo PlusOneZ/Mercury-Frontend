@@ -185,10 +185,7 @@ export default {
       tags: [
         "好用", "牛逼", '我是你爹', '你是我儿', '写网页好累', '啦啦啦'
       ],
-      comments: [{
-        userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-        , userId: 0, comment: 'rnm,退钱', rating: 3
-      }],
+      comments: [],
       category: "课程用品",
       isLike: true,
       isOwnerAvatarSuccess: true,
