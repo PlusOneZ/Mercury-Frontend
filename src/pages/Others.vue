@@ -39,18 +39,18 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row type="flex" class="row-bg" justify="space-around">
-
-    </el-row>
+    <MyCommodityAndPost :isMe=false :id=id></MyCommodityAndPost>
   </div>
 </template>
 
 <script>
 import {api} from "@/request";
 import {staticData} from "@/assets/js/static";
+import MyCommodityAndPost from "../components/Public/MyCommodityAndPost";
 
 export default {
   name: "Home",
+  components: {MyCommodityAndPost},
   props: {
     id: String,
   },

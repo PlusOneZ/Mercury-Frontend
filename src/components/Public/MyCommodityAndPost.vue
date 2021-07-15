@@ -3,7 +3,7 @@
     <el-tabs type="border-card" class="w-3/5">
       <el-tab-pane class="order-box">
         <template #label>
-          <span><i class="el-icon-s-goods"></i>我发布的商品</span>
+          <span><i class="el-icon-s-goods"></i>发布的商品</span>
         </template>
         <div>
           <el-table
@@ -31,7 +31,7 @@
                 class="w-1/3">
               <template #default="scope">
                 <el-button type="primary" @click="viewCommodityDetail(scope.$index)">查看详情</el-button>
-                <el-button type="primary" @click="deleteCommodity(scope.$index)">删除</el-button>
+                <el-button type="primary" v-if="isMe" @click="deleteCommodity(scope.$index)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -39,7 +39,7 @@
       </el-tab-pane>
       <el-tab-pane class="order-box">
         <template #label>
-          <span><i class="el-icon-date"></i>我发布的求物帖</span>
+          <span><i class="el-icon-date"></i>发布的求物帖</span>
         </template>
         <div>
           <el-table
@@ -59,7 +59,7 @@
                 class="w-1/4">
               <template #default="scope">
                <el-button type="primary" @click="viewPostDetail(scope.$index)">查看详情</el-button>
-                <el-button type="primary" @click="deletePost(scope.$index)">删除</el-button>
+                <el-button type="primary" v-if="isMe" @click="deletePost(scope.$index)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -70,12 +70,15 @@
 </template>
 
 <script>
-import {useStore} from "vuex";
 import {ElMessage} from "element-plus";
 import {api} from "@/request";
 
 export default {
   name: "MyCommodityAndPost",
+  props: {
+    isMe: Boolean,
+    id: String,
+  },
   data() {
     return {
       commodities: undefined,
@@ -141,13 +144,11 @@ export default {
     },
   },
   mounted() {
-    let id = this.store.getters['user/userInfo'].id;
-
     api({
       url:"commodity",
       method: "GET",
       params: {
-        userId: id,
+        userId: this.id,
       }
     }).then(
         (response) => {
@@ -163,7 +164,7 @@ export default {
       url: "post/postNumber",
       method: "GET",
       params: {
-        userId: id,
+        userId: this.id,
       }
     }).then(
         (response) => {
@@ -176,7 +177,7 @@ export default {
               url: "post",
               method: "GET",
               params: {
-                userId: id,
+                userId: this.id,
                 maxNumber: this.postNumber,
               }
             }).then(
@@ -200,13 +201,6 @@ export default {
         },
     )
   },
-  setup() {
-    let store = useStore();
-
-    return {
-      store,
-    }
-  }
 }
 </script>
 
