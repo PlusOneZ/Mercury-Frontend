@@ -1,7 +1,7 @@
 <template>
 
   <div class="common-layout">
-    <el-container class="page">
+    <el-container :class="topMargin">
       <el-container class="h-24 flex justify-around items-center ">
         <div class="font-bold text-blue-600 ">Mercury</div>
         <div class="flex justify-center">
@@ -26,7 +26,7 @@
         </div>
         <div></div>
       </el-container>
-      <el-container>
+      <el-container v-if="isShow!==false">
         <el-main>
           <div>
             <div class="w-20 bg-yellow-400 font-bold text-white text-center rounded-md ">
@@ -56,7 +56,7 @@
           </div>
         </el-aside>
       </el-container>
-      <el-footer class="flex justify-center ">
+      <el-footer class="flex justify-center " v-if="isShow!==false">
         <el-pagination
             background
             :page-size="32"
@@ -75,6 +75,7 @@
 import CommodityThumbnail from "@/components/Public/CommodityThumbnail";
 import HotGoodThumbnail from "@/components/Public/HotGoodThumbnail";
 import {ElMessage} from "element-plus";
+import {api} from "@/request";
 
 export default {
   name: "CommoditySearch",
@@ -94,7 +95,9 @@ export default {
       selectType: '宝贝',
       selectTypeList: ['宝贝', '卖家名', '标签'],
       selectId: 1,
-      isAlert: false
+      isAlert: false,
+      isShow: false,
+      topMargin: 'mt-48'
     };
   },
   mounted() {
@@ -104,9 +107,15 @@ export default {
       if (temp['key'] !== undefined) {
         this.input = temp['key']
       }
-      this.setList()
-      this.setPopularList()
-      this.setCurrentList()
+      if (temp['searchType'] !== undefined) {
+        this.selectType = temp['selectType']
+      }
+      let canDis = this.isDis()
+      if(canDis) {
+        this.setList()
+        this.setPopularList()
+        this.setCurrentList()
+      }
     })
   },
 
@@ -115,18 +124,41 @@ export default {
       console.log(this.$route.query)
       let temp = this.$route.query
       this.input = temp['key']
+      this.selectType = temp['selectType']
+      let canDis = this.isDis()
+      if(canDis) {
+        this.setList()
+        this.setPopularList()
+        this.setCurrentList()
+      }
     }
   },
   methods: {
     setList: function () {
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('keyword', this.input);
+      data.append('tag', this.selectType);
+      console.log('keyword' + data.get('keyword'))
+      console.log('tag' + data.get('tag'))
+      api({
+        url: 'commodity',
+        method: 'get',
+        data: data,
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       for (let i = 0; i < 100; i++) {
         this.commodityList[i] = {index: i, popularity: i}
       }
     },
     pageJump: function () {
       let str = this.input.replace(' ', '');
-      if(str.length === 0)
-      {
+      if (str.length === 0) {
         ElMessage.warning({
           message: '搜索内容不能为空',
           type: 'warning'
@@ -138,7 +170,8 @@ export default {
       this.$router.push({
         path: '/CommoditySearch',
         query: {
-          key: this.input
+          key: this.input,
+          selectType: this.selectType
         }
       });
     },
@@ -165,7 +198,7 @@ export default {
         return value2 - value1;
       }
     },
-    getList:function(arr) {
+    getList: function (arr) {
       let newArr = arr.constructor === Array ? [] : {};
       for (let i in arr) {
         if (arr[i].constructor === Object || arr[i].constructor === Array) {
@@ -179,6 +212,19 @@ export default {
     setPopularList: function () {
       this.popularList = this.getList(this.commodityList)
       this.popularList.sort(this.compare('popularity'))
+    },
+    isDis: function () {
+      if (this.input === '') {
+        this.topMargin = 'mt-48'
+        this.isShow = false
+        return false
+      }
+      else
+      {
+        this.topMargin = ''
+        this.isShow = true
+        return true
+      }
     }
   }
 

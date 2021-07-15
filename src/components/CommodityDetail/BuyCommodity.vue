@@ -19,7 +19,7 @@
         <div class="flex  justify-between items-end">
           <el-form-item label="购买数量:" prop="commodityNumber">
             <el-input-number v-model="form.commodityNumber" controls-position="right" :min="1"
-                             :max="10000"></el-input-number>
+                             :max="stock"></el-input-number>
           </el-form-item>
 
           <el-form-item label="总金额:" class=" flex items-center justify-start ">
@@ -60,14 +60,19 @@
 
 <script>
 import {ElMessage} from "element-plus";
+import {useStore} from "vuex";
+import {api} from "@/request";
 
 export default {
   name: "BuyCommodity",
   props: {
     buyer: String,
     commodityName: String,
+    sellerId: String,
+    commodityId: String,
     price: Number,
-    for_rent: Boolean
+    for_rent: Boolean,
+    stock: Number
   },
   data: function () {
     return {
@@ -89,6 +94,9 @@ export default {
   },
   methods: {
     buy: function (formName) {
+      let user = this.store.getters['user/userInfo']
+      let userId = user.id
+
       let isValid = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -102,13 +110,54 @@ export default {
       if (isValid === false) {
         return
       }
-      //发送购买请求
-      this.dialogFormVisible = false
-      ElMessage.success({
-        message: '举报成功',
-        type: 'success'
-      });
+
+      let FormData = require('form-data');
+      let data = new FormData();
+      console.log(this.form.locationSelect + this.form.location)
+      data.append('buyerId', userId);
+      data.append('sellerId', String(this.sellerId));
+      data.append('commodityId', String(this.commodityId));
+      data.append('count', this.form.commodityNumber);
+      data.append('location', this.form.locationSelect + this.form.location);
+      //data.append('returnTime', null);
+      //data.append('returnLocation', null);
+
+
+      api({
+        url: "order",
+        method: "POST",
+        data: data
+      }).then(
+          // Valid response
+          (response) => {
+            let orderId = JSON.stringify(response.data["OrderId"]);
+            console.log(orderId)
+            this.dialogFormVisible = !this.dialogFormVisible
+            this.$router.push({
+              path: '/OrderDetermine',
+              name: 'OrderDetermine',
+              params: {
+                orderId: orderId
+              }
+            });
+          },
+
+          // No response
+          (error) => {
+            console.log(error)
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          })
+
     },
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
+    }
   }
 }
 </script>

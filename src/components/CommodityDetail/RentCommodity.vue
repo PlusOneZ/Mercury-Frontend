@@ -19,7 +19,7 @@
         <div class="flex  justify-between items-end">
           <el-form-item label="租借数量:" prop="commodityNumber">
             <el-input-number v-model="form.commodityNumber" controls-position="right" :min="1"
-                             :max="10000"></el-input-number>
+                             :max="stock"></el-input-number>
           </el-form-item>
 
           <el-form-item label="总金额:" class=" flex items-center justify-start ">
@@ -90,14 +90,19 @@
 
 <script>
 import {ElMessage} from "element-plus";
+import {api} from "@/request";
+import {useStore} from "vuex";
 
 export default {
   name: "RentCommodity",
   props: {
     buyer: String,
     commodityName: String,
+    sellerId: String,
+    commodityId: String,
     price: Number,
-    for_rent: Boolean
+    for_rent: Boolean,
+    stock: Number
   },
   data: function () {
     return {
@@ -139,14 +144,76 @@ export default {
       if (isValid === false) {
         return
       }
-      console.log(this.form.giveBackDate + this.form.giveBackTime)
+      let user = this.store.getters['user/userInfo']
+      let userId = user.id
+      userId = userId === '' ? '1850061' : userId
+      console.log(userId)
       //发送租物品请求
-      this.dialogFormVisible = false
-      ElMessage.success({
-        message: '租借成功',
-        type: 'success'
-      });
+      let FormData = require('form-data');
+      let data = new FormData();
+      console.log(this.form.locationSelect + this.form.location)
+      data.append('buyerId', userId);
+      data.append('sellerId', String(this.sellerId));
+      data.append('commodityId', String(this.commodityId));
+      data.append('count', this.form.commodityNumber);
+      data.append('location', this.form.locationSelect + this.form.location);
+      data.append('returnTime', this.getDate());
+      data.append('returnLocation', this.form.giveBackLocationSelect + this.form.giveBackLocation);
+      //const that = this
+      console.log('buyerId:' + data.get('buyerId'))
+      console.log('sellerId:' + data.get('sellerId'))
+      console.log('commodityId:' + data.get('commodityId'))
+      console.log('count:' + data.get('count'))
+      console.log('location:' + data.get('location'))
+      console.log('returnTime:' + data.get('returnTime'))
+      console.log('returnLocation:' + data.get('returnLocation'))
+
+      api({
+        url: "order",
+        method: "POST",
+        data: data
+      }).then(
+          // Valid response
+          (response) => {
+            let orderId = JSON.stringify(response.data["OrderId"]);
+            console.log(orderId)
+            this.dialogFormVisible = !this.dialogFormVisible
+            this.$router.push({
+              path: '/OrderDetermine',
+              name: 'OrderDetermine',
+              params: {
+                orderId: orderId
+              }
+            });
+          },
+
+          // No response
+          (error) => {
+            console.log(error)
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          })
+
     },
+    getDate: function () {
+      let Y = this.form.giveBackDate.getFullYear();
+      let M = (this.form.giveBackDate.getMonth() + 1 < 10 ? '0' +
+          (this.form.giveBackDate.getMonth() + 1) : this.form.giveBackDate.getMonth() + 1);
+      let D = this.form.giveBackDate.getDate();
+      let h = this.form.giveBackTime.getHours();
+      let m = this.form.giveBackTime.getMinutes();
+      let s = this.form.giveBackTime.getSeconds();
+      return M + '/' + D + '/' + Y + ' ' + h + ':' + m + ':' + s;
+    }
+
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
+    }
   }
 }
 </script>

@@ -85,7 +85,7 @@
               <div><font class="mb-8 "> ：&nbsp;</font></div>
               <div>
                 <font class="text-2xl font-bold mt-4 text-red-600 ">
-                  {{ likes ? likes : "9999" }}
+                  {{ likes }}
                 </font>
               </div>
             </div>
@@ -103,15 +103,19 @@
         </div>
 
         <div class="flex justify-around mt-8">
-          <div class="mr-8 ml-8">
+          <div class="mr-8 ml-8" v-if="for_rent===true">
             <rent-commodity :buyer="userName" :commodity-name="name" :price="price"
-                            :for_rent="for_rent"></rent-commodity>
+                            :for_rent="for_rent" :commodity-id="String(commodityId)"
+                            :seller-id="String(ownerId)" :stock="stock"></rent-commodity>
           </div>
 
-          <div class="mr-8 ml-8">
+          <div class="mr-8 ml-8" v-else>
             <buy-commodity :buyer="userName" :commodity-name="name" :price="price"
-                           :for_rent="for_rent"></buy-commodity>
+                           :for_rent="for_rent" :commodity-id="String(commodityId)"
+                           :seller-id="String(ownerId)" :stock="stock"></buy-commodity>
           </div>
+
+          <div></div>
 
           <div class="mr-8 ml-8">
             <el-button type="danger" @click="addShoppingCart()">加入购物车</el-button>
@@ -140,6 +144,8 @@ import BuyCommodity from "@/components/CommodityDetail/BuyCommodity";
 import RentCommodity from "@/components/CommodityDetail/RentCommodity";
 import UserAndAvatar from "@/components/Public/UserAndAvatar";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
+import {api} from "@/request";
+import {useStore} from "vuex";
 
 
 export default {
@@ -153,10 +159,10 @@ export default {
   },
   data: function () {
     return {
-      commodityId: 0,
-      userId: 0,
+      commodityId: '1',
+      userId: '1850061',
       userName: 'rzc',
-      ownerId: 0,
+      ownerId: '1850061',
       ownerName: 'rzc',
       ownerAvatar: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png",
       name: "自动编程机",
@@ -168,7 +174,7 @@ export default {
           '网格对其而烦心',
       stock: 12,
       isAutoChange: true,
-      for_rent: true,
+      for_rent: false,
       images: [
         "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png",
         "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
@@ -220,9 +226,54 @@ export default {
       if (temp['commodityId'] !== undefined) {
         this.commodityId = temp['commodityId']
       } else {
-        this.commodityId = 123456789098
+        this.commodityId = 1
       }
-      // 发送请求
+
+      let FormData = require('form-data');
+      let data = new FormData();
+      const that = this
+      data.append('id', this.commodityId);
+      console.log('commodityId:' + data.get('id'))
+      api({
+        url: 'commodity',
+        method: 'get',
+        data: data,
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+      var data2 = new FormData();
+      data2.append('userId', this.userId);
+      data2.append('commodityId', this.commodityId);
+
+      api({
+        url: 'Likes/2',
+        method: 'post',
+        data: data2,
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            that.isLike = response.data["Result"]
+            if(that.isLike === 'True')
+            {
+              that.isLike = true
+            }
+            else
+            {
+              that.isLike = false
+            }
+            that.isLike = !that.isLike
+            console.log(that.isLike)
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+
     })
   },
   methods: {
@@ -246,6 +297,29 @@ export default {
       } else {
         this.likes += 1
       }
+
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('userId', this.userId);
+      data.append('commodityId', this.commodityId);
+      console.log(data.get('userId'))
+      console.log(data.get('commodityId'))
+      api({
+        url: 'Likes',
+        method: 'post',
+        data: data
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            console.log('success')
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
       //发送请求
     },
     addShoppingCart: function () {
@@ -258,6 +332,12 @@ export default {
         });
       } else {
         ElMessage.error('加入购物车失败');
+      }
+    },
+    setup() {
+      let store = useStore()
+      return {
+        store
       }
     }
 
