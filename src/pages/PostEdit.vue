@@ -53,7 +53,7 @@ export default {
         desc: '',
         price: '',
       },
-      newData: new FormData(),
+      file: undefined,
     }
   },
   methods: {
@@ -62,19 +62,22 @@ export default {
 
       let id = this.store.getters['user/userInfo'].id;
 
-      this.newData.append("senderId",id);
-      this.newData.append("title",this.form.name);
-      this.newData.append("content",this.form.desc);
-      this.newData.append("price",this.form.price);
+      let data = new FormData();
 
-      this.newData.forEach((value, key) => {
+      data.append("senderId",id);
+      data.append("title",this.form.name);
+      data.append("content",this.form.desc);
+      data.append("price",this.form.price);
+      data.append("photos",this.file);
+
+      data.forEach((value, key) => {
         console.log(`key ${key}: value ${value}`);
       })
 
       api({
         url: "post",
         method: "POST",
-        data: this.newData,
+        data: data,
       }).then(
           (response) => {
             console.log(response);
@@ -84,6 +87,7 @@ export default {
                 message: "创建成功",
                 type: "success",
               })
+              this.$router.push("/postDetail/"+response.data['PostId']);
             }
             else{
               ElMessage.error({
@@ -93,12 +97,6 @@ export default {
             }
           }
       )
-
-      this.newData.delete("senderId");
-      this.newData.delete("title");
-      this.newData.delete("content");
-      this.newData.delete("price");
-      this.newData.delete("photos");
     },
     handlePreview(file) {
       console.log(file);
@@ -107,7 +105,7 @@ export default {
       console.log(file, fileList);
     },
     beforeUpload(file) {
-      this.newData.append("photos",file);
+      this.file=file;
     },
     upLoad() {
       console.log("upload successfully");
@@ -122,7 +120,7 @@ export default {
   setup() {
     let store = useStore()
     return {
-      store
+      store,
     }
   }
 }

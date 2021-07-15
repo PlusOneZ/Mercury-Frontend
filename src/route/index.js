@@ -124,7 +124,7 @@ const routes = [
         beforeEnter: loginGuard
     },
     {
-        path: "/postDetail",
+        path: "/postDetail/:ID",
         name: "PostDetail",
         component: PostDetail
     },
