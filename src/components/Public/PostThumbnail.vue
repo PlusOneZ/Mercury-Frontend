@@ -17,7 +17,7 @@
         <p class="pl-2 text-sm leading-7"> {{ user ? user : "我是ljs" }} </p>
       </div>
       <div class="pr-6">
-        <el-button type="text" class="float-right" @click="viewDetail">查看详情</el-button>
+        <el-button type="primary" class="float-right" @click="viewDetail">查看详情</el-button>
       </div>
     </div>
   </div>
