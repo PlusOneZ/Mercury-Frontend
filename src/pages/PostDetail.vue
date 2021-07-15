@@ -8,6 +8,7 @@
             <el-carousel  v-if="ImageCount!==0" indicator-position="outside" :interval="4000" :autoplay=false class="rounded-lg " height="250px">
               <el-carousel-item  v-for="item in ImageCount" :key="item">
                 <img class="window-img" :src = "'https://139.196.20.137:5001/'+item">
+
               </el-carousel-item>
             </el-carousel>
             <div v-else class="mt-8 w-full ">
@@ -115,8 +116,6 @@ export default {
         }).then(
             (res) => {
               console.log(res.data)
-
-
               var data = res.data.Post
               this.Images = data.Images
               this.SenderName = data.SenderName
@@ -128,7 +127,6 @@ export default {
               this.Time=this.Time.replace("T"," ").substr(0,19);
               this.Title = data.Title
               this.PostComments = data.PostComments
-              this.ImageCount = this.Images.length
               let t = []
               data.Comments.forEach(element => {
                 let temp={
