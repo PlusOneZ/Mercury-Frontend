@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      pageSize: 2,
+      pageSize: 10,
       postList: undefined,
       totalPage: undefined,
     }
@@ -60,14 +60,13 @@ export default {
     currentPageChange(val) {
       this.currentPage = val;
 
-      let data = new FormData();
-      data.append("maxNumber", String(this.pageSize));
-      data.append("pageNumber", String(this.currentPage));
       api({
         url: "post",
         method: "GET",
-        data: data,
-        headers:{'Content-Type':'application/x-www-form-urlencoded'}
+        params: {
+          "maxNumber": this.pageSize,
+          "pageNumber": this.currentPage,
+        },
       }).then(
           (response) => {
             console.log(response);
