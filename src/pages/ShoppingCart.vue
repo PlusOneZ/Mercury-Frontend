@@ -3,7 +3,6 @@
     <div>
     <el-table
         :data="tableData"
-        height="700"
         show-summary
         :summary-method="getSummaries"
         stripe="true"
@@ -61,6 +60,10 @@
 
 </template>
 <script>
+import {useStore} from "vuex";
+import {api} from "@/request";
+import {ElMessage} from "element-plus";
+
 export default {
   name: "ShoppingCart",
   props: {
@@ -72,25 +75,29 @@ export default {
       tableData: [{
         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
         price: '234', count: 3
-      }, {
-        commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-        price: '165', count: 1
-      }, {
-        commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-        price: '324', count: 4
-      }, {
-        commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-        price: '621', count: 9
-      }, {
-        commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
-        price: '539', count: 3
       }],
     };
   },
   methods: {
 
     deleteRow(index, rows) {
-      rows.splice(index, 1);
+      let id = this.tableData[index].id
+      var data = new FormData();
+      data.append('commodityId', id);
+      data.append('userId', this.store.getters['user/userInfo'].id);
+      api({
+        method: 'delete',
+        url: "ShoppingCart",
+        data: data
+      }).then( response => {
+        if (response.data.Code === '200') {
+          ElMessage.success("已删除")
+          rows.splice(index, 1);
+        } else {
+          console.log(response)
+          ElMessage.warning("有点小问题")
+        }
+      })
     },
     buyCommodity(index, rows) {
       console.log(rows[index]);
@@ -115,8 +122,33 @@ export default {
       });
       console.log(sums)
       return sums;
-    }
+    },
 
+  },
+  mounted() {
+    let id = this.store.getters['user/userInfo'].id
+    api({
+      method: "get",
+      url: "ShoppingCart/"+id,
+    }).then( response => {
+      if (response.data.Code == '200') {
+        let data = response.data.ItemList
+        for (let i = 0; i < data.length; i++) {
+          this.tableData[i].commodity = response.data["NameList"][i]
+          this.tableData[i].count = data[i]["Count"]
+          this.tableData[i].price = response.data["PriceList"][i]
+          this.tableData[i].id = data[i]['CommodityId']
+        }
+      } else {
+        ElMessage.error("服务器在开小差...")
+      }
+    })
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
+    }
   }
 }
 </script>

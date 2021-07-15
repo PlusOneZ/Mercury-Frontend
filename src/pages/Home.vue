@@ -15,7 +15,6 @@
       <PostListThumbnail></PostListThumbnail>
     </div>
     <div>
-      <Heated></Heated>
 
       <CategoryView></CategoryView>
     </div>
@@ -25,14 +24,13 @@
 <script>
 import SlideWindow from "@/components/HomePage/SlideWindow";
 import PostListThumbnail from "@/components/HomePage/PostListThumbnail";
-import Heated from "@/components/HomePage/Heated";
+// import Heated from "@/components/HomePage/Heated";
 import CategoryView from "@/components/HomePage/CategoryView";
 
 export default {
   name: "Home",
   components: {
     CategoryView,
-    Heated,
     PostListThumbnail,
     SlideWindow
   },
