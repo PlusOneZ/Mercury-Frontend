@@ -1,78 +1,80 @@
 <template>
+  <el-main>
+    <div class="common-layout" >
+      <el-container :class="topMargin">
+        <el-container class="h-24 flex justify-around items-center ml-52">
+          <div class="flex justify-center">
+            <el-dropdown @command="handleClick">
+              <el-button type="primary">
+                {{ selectType }}<i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item v-for="item in selectTypeList"
+                                    v-text="item"
+                                    :command="item"
+                                    :key="item"
+                  ></el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <div>&nbsp;&nbsp;</div>
+            <input v-model="input" placeholder="请输入要搜索的宝贝" class="rounded-md w-96 border-solid border-2 "/>
+            <div>&nbsp;&nbsp;</div>
+            <el-button size="medium" type="primary" @click="pageJump()">搜索</el-button>
+          </div>
+          <div></div>
+        </el-container>
 
-  <div class="common-layout">
-    <el-container :class="topMargin">
-      <el-container class="h-24 flex justify-around items-center ml-52">
-        <div class="flex justify-center">
-          <el-dropdown @command="handleClick">
-            <el-button type="primary">
-              {{ selectType }}<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <template #dropdown>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item v-for="item in selectTypeList"
-                                  v-text="item"
-                                  :command="item"
-                                  :key="item"
-                ></el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-          <div>&nbsp;&nbsp;</div>
-          <input v-model="input" placeholder="请输入要搜索的宝贝" class="rounded-md w-96 border-solid border-2 "/>
-          <div>&nbsp;&nbsp;</div>
-          <el-button size="medium" type="primary" @click="pageJump()">搜索</el-button>
-        </div>
-        <div></div>
-      </el-container>
-      <el-container v-if="isShow!==false">
-        <el-main>
-          <div>
-            <div class="text-xl w-28 pt-2 pb-2 bg-yellow-400 font-bold text-white text-center rounded-md ">
-              所有宝贝
-            </div>
-            <div class="main border-solid border-2 border-yellow-300 rounded-md mt-4 ...">
-              <div class="h-full grid-cols-4 grid ">
-                <CommodityThumbnail
-                    v-for="i in currentList"
-                    :key="i.Id"
-                    :commodity="i"
-                >
-                </CommodityThumbnail>
+        <el-container v-if="isShow!==false">
+          <el-main>
+            <div>
+              <div class="text-xl w-28 pt-2 pb-2 bg-yellow-400 font-bold text-white text-center rounded-md ">
+                所有宝贝
+              </div>
+              <div class=" border-solid border-2 border-blue-300 rounded-md mt-4 ..."
+                   bgcolor="rgba(255,255,255,0.3)">
+                <div class="h-full grid-cols-4 grid ">
+                  <CommodityThumbnail
+                      v-for="i in currentList"
+                      :key="i.Id"
+                      :commodity="i"
+                  >
+                  </CommodityThumbnail>
 
+                </div>
               </div>
             </div>
-          </div>
-        </el-main>
-        <el-aside width="400px">
-          <br/>
-          <div>
-            <div class="text-xl w-28 pt-2 pb-2  bg-blue-300 font-bold text-white text-center rounded-md ">
-              热卖商品
-            </div>
-            <div class="bg-yellow-200 h-full rounded-md h-full grid-cols-1 grid mt-3 ">
+          </el-main>
+          <el-aside width="400px">
+            <br/>
+            <div>
+              <div class="text-xl w-28 pt-2 pb-2  bg-blue-300 font-bold text-white text-center rounded-md ">
+                热卖商品
+              </div>
+              <div class="border-solid border-2 border-blue-300 h-full rounded-md h-full grid-cols-1 grid mt-3 ">
+                <HotGoodThumbnail v-for="i in currentPopularList"
+                                  :key="i.Id"
+                                  :commodity="i">
+                </HotGoodThumbnail>
+              </div>
 
-              <HotGoodThumbnail class="bg-blue-200 " v-for="i in currentList"
-                                :key="i.Id"
-                                :commodity="i">
-              </HotGoodThumbnail>
             </div>
-          </div>
-        </el-aside>
+          </el-aside>
+        </el-container>
+        <el-footer class="flex justify-center " v-if="isShow!==false">
+          <el-pagination
+              background
+              :page-size="32"
+              @current-change="handleCurrentChange"
+              :data="commodityList.slice((currentPage - 1)*32, currentPage*32)"
+              layout="total, prev, pager, next, jumper"
+              :total=totalPage>
+          </el-pagination>
+        </el-footer>
       </el-container>
-      <el-footer class="flex justify-center " v-if="isShow!==false">
-        <el-pagination
-            background
-            :page-size="32"
-            @current-change="handleCurrentChange"
-            :data="commodityList.slice((currentPage - 1)*32, currentPage*32)"
-            layout="total, prev, pager, next, jumper"
-            :total=totalPage>
-        </el-pagination>
-      </el-footer>
-    </el-container>
-  </div>
-
+    </div>
+  </el-main>
 </template>
 
 <script>
@@ -83,9 +85,6 @@ import {api} from "@/request";
 
 export default {
   name: "CommoditySearch",
-  props: {
-    key: String
-  },
   components: {
     CommodityThumbnail,
     HotGoodThumbnail
@@ -105,7 +104,7 @@ export default {
       selectId: 1,
       isAlert: false,
       isShow: false,
-      topMargin: 'mt-48'
+      topMargin: 'mt-96'
     };
   },
   mounted() {
@@ -212,7 +211,11 @@ export default {
     },
     setCurrentList: function () {
       this.currentList = this.commodityList.slice((this.currentPage - 1) * 32, Math.min(((this.currentPage - 1) * 32 + 32), this.commodityList.length))
-      this.currentPopularList = this.popularList.slice((this.currentPage - 1) * 8, Math.min(((this.currentPage - 1) * 8 + 8), this.popularList.length))
+      let len = Math.min(32, this.commodityList.length - (this.currentPage - 1) * 32) / 4
+      len = Math.floor(len) + 3
+      this.currentPopularList = this.popularList.slice(
+          (this.currentPage - 1) * 8, Math.min(((this.currentPage - 1) * 8 + len), this.popularList.length)
+      )
     },
     handleClick: function (selectType) {
       this.selectType = selectType
@@ -258,12 +261,39 @@ export default {
   background: #0f1423;
 }
 
+.el-main {
+  background: -webkit-linear-gradient(left top, #2f90b9 2.5%, #1781b5 7.5%, #93b5cf 20%, #d8e3e7 50%, #93b5cf 70%, #1781b5 92.5%, #2f90b9 97.5%); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(bottom right, #000, #fff); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
+  background-color: #93b5cf;
+}
+
 .main {
   background: -webkit-linear-gradient(left top, #2f90b9 2.5%, #1781b5 7.5%, #93b5cf 20%, #d8e3e7 50%, #93b5cf 70%, #1781b5 92.5%, #2f90b9 97.5%); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(bottom right, #000, #fff); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
   background-image: linear-gradient(to top, #2f90b9, #1781b5, #93b5cf, #93b5cf);
-  height: 100%
+}
+
+.el-aside {
+  background: -webkit-linear-gradient(left top, #2f90b9 2.5%, #1781b5 7.5%, #93b5cf 20%, #d8e3e7 50%, #93b5cf 70%, #1781b5 92.5%, #2f90b9 97.5%); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(bottom right, #000, #fff); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(bottom right, #000, #fff); /* Firefox 3.6 - 15 */
+  background-color: #93b5cf;
+}
+
+.category-window {
+  @apply rounded-xl;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  padding: 1rem;
+}
+
+
+.el-aside {
+  @apply rounded-md;
+  position: sticky !important;
+  top: 0;
 }
 
 .page {
