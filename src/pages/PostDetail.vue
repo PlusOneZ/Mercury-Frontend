@@ -1,6 +1,7 @@
 <template>
 
     <el-main class="bg-gradient-to-r from-blue-200 to-blue-400 bg-opacity-100">
+
       <div class=" rounded-2xl bg-white border-black divide-y divide-black ml-8  mr-8" >
         <div class="flex flex-row space-x-8">
           <div class="container w-1/6 h-1/2">    
@@ -24,14 +25,17 @@
                 <report ></report>
               </div>
             </div>
+
             <p class="font-black flex justify-start mt-4 text-xl md:text-2xl">{{Title}}</p>
             <div class="flex flex-nowrap justify-start text-1xl">
                 <p>发布时间：</p> 
                 <p >{{Time}}</p>
             </div>
+
             <div class="flex justify-center space-x-20 md:space-x-96">
               <el-button type="primary" icon="el-icon-chat-dot-square" round>联系买家</el-button>
               <comment :isRating="F" :userId="simpleUserId" :id="ID" ></comment>
+
             </div>
 
           </div>
@@ -40,7 +44,9 @@
           <el-tabs type="border-card" class="rounded-lg" @tab-click="handleClick">
             <el-tab-pane @click="canLoad=false" label="商品描述" class="ml-4 mr-2">{{ Content }}</el-tab-pane>
             <el-tab-pane @click="canLoad=true" label="用户评论">
+
               <CommodityCommentList v-if="flag" :comments="comments" :can-load="true" ></CommodityCommentList>
+
             </el-tab-pane>
           </el-tabs>
         </div> 
@@ -55,8 +61,10 @@ import report from "@/components/Public/Report";
 import comment from "@/components/Public/comment";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import {api} from "@/request";
+
 import { toRaw } from '@vue/reactivity';
 import {useStore} from "vuex";
+
 
 
 
@@ -67,6 +75,7 @@ export default {
   },
   data() {
     return {
+
       ImagePaths :[],
       Content :"",
       SenderId :"",
@@ -80,15 +89,18 @@ export default {
       SenderName:"",
       ImageCount:0,
       F: false,
+
       rating:0,
       flag :false,
       simpleUserId :'' 
+
     }
   },
   methods:{
     handleClick: function (tab) {
       this.canLoad = tab['props']['label'] !== '商品描述';
     },
+
   
     getData(){
       let simpleUser = this.store.getters['user/userInfo']
@@ -103,6 +115,7 @@ export default {
         }).then(
             (res) => {
               console.log(res.data)
+
               var data = res.data.Post
               this.Images = data.Images
               this.SenderName = data.SenderName
@@ -127,11 +140,14 @@ export default {
               });
               this.comments = toRaw(t)
               this.flag = true
+
             },
             (error) => {
               console.log(error)
             })    
+
             }
+
   },
   created: function() {
     this.firstPlayFlag = false
@@ -142,6 +158,7 @@ export default {
       if (temp['ID'] !== undefined) {
         this.ID = temp['ID']
       } else {
+
         this.ID = "946710726649"
       }
       this.getData()
@@ -155,6 +172,7 @@ export default {
     }
 
   },
+
 }
 </script>
 

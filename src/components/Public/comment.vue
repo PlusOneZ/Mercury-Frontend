@@ -45,7 +45,7 @@ export default {
   data: function () {
     return {
       form: {
-        content: '',rating : ''
+        content: '',rating :Number
       },
       dialogFormVisible: false,
     }
@@ -54,47 +54,58 @@ export default {
     comment: function () {
       if(this.form.content){      
         this.dialogFormVisible = false
-        if(this.isRating){          
+
+        if(this.isRating){
+          var url="order/"+this.id+"/rating"
           let data = new FormData()
           data.append("userId", this.userId)
           data.append("comment", this.form.content)
           data.append("rate", this.form.rating)
-          data.append("isBuyer", 'true')
+          data.append("isBuyer", true)
           api({
           method: "POST",
-          url: "order/"+this.id+"/rating",
+          url: url,
           data: data,
-          }).then((res) => {
-            if (res.data["Code"] === '201') {
-              console.log(res.data)
-              ElMessage.success({
-                message: "评论成功！"
-              })}else{
-                console.log(res.data)
-                ElMessage.error({
-                message: "失败原因: " + res.data["Description"]
-              })
-              }
-          }, (error) => {
-            console.log(error)
-            ElMessage.error({
-              message: "出了点问题...一会儿再试吧"
+        }).then((res) => {
+          console.log(res)
+          if (res.data["Code"] === '200') {
+            console.log(res)
+            ElMessage.success({
+              message: "评论成功！"
+            })}else{
+              console.log(res.data["Description"])
+              ElMessage.error({
+              message: "失败原因: " + res.data["Description"]
             })
+            }
+        }, (error) => {
+          console.log(error)
+          ElMessage.error({
+            message: "出了点问题...一会儿再试吧"
           })
+        })
+
         }else{
+          url="post/"+this.id+"/comment/"
+          console.log(url)
           let data = new FormData()
-          data.append("senderId", this.userId)
+          data.append("SenderId", this.userId)
           data.append("content", this.form.content)
+          data.append("Sender",this.id)
           api({
             method: "POST",
-            url: "post/"+this.id+"/comment",
+            url: url,
+
             data: data,
           }).then((res) => {
             console.log(res)
             if (res.data["Code"] === '201') {
+              console.log(res)
               ElMessage.success({
                 message: "评论成功！"
               })}else{
+                console.log(res.data["Description"])
+
                 ElMessage.error({
                 message: "失败原因: " + res.data["Description"]
               })
@@ -108,7 +119,7 @@ export default {
         }
         this.form.content=""
         this.form.rating =0
-        location.reload()
+
       }else{
           ElMessage.error({
             message: '评论内容不可为空',
