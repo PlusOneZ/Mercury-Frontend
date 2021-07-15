@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center ml-8" >
       <user-and-avatar :owner-name="ownerName" :is-owner-avatar-success="isOwnerAvatarSuccess"
                        :owner-avatar="ownerAvatar"></user-and-avatar>
-      <div class="flex justify-center items-center">
+      <div class="flex justify-center items-center" v-if='rating >= 0'>
         <div>评分：</div>
         <el-rate
             v-model="rating"
