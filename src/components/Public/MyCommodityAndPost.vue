@@ -113,6 +113,7 @@ export default {
             }
           }
       )
+
     },
     deleteCommodity(index) {
       api({

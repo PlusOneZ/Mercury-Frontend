@@ -59,20 +59,31 @@ export default {
         .then(function (response) {
           let data = response.data
           console.log(JSON.stringify(data));
+          console.log()
           console.log('订单状态' + data['Code'])
           if (data['Code'] === '200') {
             console.log('进入')
-            let orderInfo = data['order']
+            let orderInfo = data['order'][0]
             that.userName = userName
-            that.commodityName = orderInfo["Commodity"]['Name']
+            console.log('1111111111111111111111111111111111111111')
+            that.commodityName = orderInfo['CommodityName']
             that.commodityNumber = orderInfo['Count']
-            that.price = orderInfo["Commodity"]['Price']
-            that.orderTime = '2020/7/13-12:00:00'
+            that.price = orderInfo['CommodityPrice']
+            that.orderTime = orderInfo['Time'].replace('T', ' ').split('.')
+            that.orderTime = that.orderTime[0]
             that.status = orderInfo['Status']
+            console.log('2222222222222222222222222222222222222222222')
             that.location = orderInfo["Location"]
             that.giveBackLocation = orderInfo["ReturnLocation"]
-            let backTime = orderInfo["ReturnTime"].replace('T', ' ').split('.')
-            that.giveBackTime = backTime[0]
+            let backTime = orderInfo["ReturnTime"]
+            if(backTime !== undefined) {
+              backTime = backTime.replace('T', ' ').split('.')
+              that.giveBackTime = backTime[0]
+            }
+            else
+            {
+              that.giveBackTime = '0001-01-01 00:00:00'
+            }
             console.log(that.giveBackLocation)
           } else {
             ElMessage.error({
@@ -108,7 +119,11 @@ export default {
       this.$router.go(-1);
     },
     pay: function () {
-
+      ElMessage.success({
+        message: '支付成功',
+        type: 'success'
+      });
+      this.$router.go(-1);
     }
   },
   setup() {

@@ -157,6 +157,9 @@ export default {
     },
     buyCommodity(index, rows) {
       console.log(rows[index]);
+      this.$router.push({
+        path: '/CommodityDetail/' + rows[index]['id'],
+      })
     },
     getSummaries(param) {
       const {columns, data} = param;
