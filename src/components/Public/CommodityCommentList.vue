@@ -4,7 +4,7 @@
       <li v-for="i in count" :key=i class="infinite-list-item">
         <commodity-comment :owner-name="comments[i-1].userName"
                            :is-owner-avatar-success= true
-                           :owner-avatar="comments[i-1].userImage" :comment="comments[i-1].comment"
+                           :owner-avatar="'https://139.196.20.137:5001/'+comments[i-1].userImage" :comment="comments[i-1].comment"
                            :rating="comments[i-1].rating"></commodity-comment>
       </li>
     </ul>
