@@ -1,4 +1,5 @@
 <template>
+
     <el-main class="bg-gradient-to-r from-blue-200 to-blue-400 bg-opacity-100">
       <div class=" rounded-2xl bg-white border-black divide-y divide-black ml-8  mr-8" >
         <div class="flex flex-row space-x-8">
@@ -32,6 +33,7 @@
               <el-button type="primary" icon="el-icon-chat-dot-square" round>联系买家</el-button>
               <comment :isRating="F" :userId="simpleUserId" :id="ID" ></comment>
             </div>
+
           </div>
         </div> 
         <div>
@@ -48,12 +50,14 @@
 </template>
 
 <script>
-import report from "@/components/Public/report";
+
+import report from "@/components/Public/Report";
 import comment from "@/components/Public/comment";
 import CommodityCommentList from "@/components/Public/CommodityCommentList";
 import {api} from "@/request";
 import { toRaw } from '@vue/reactivity';
 import {useStore} from "vuex";
+
 
 
 export default {
