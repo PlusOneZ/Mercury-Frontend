@@ -26,7 +26,7 @@
               :key="count"
               :index="String(count)"
           >
-            <i class="el-icon-camera-solid"></i>{{ cat[0] }}
+            <i :class="cat[2]"></i>{{ cat[0] }}
           </el-menu-item>
 
         </el-menu>
@@ -65,15 +65,30 @@ export default {
     }
   },
   methods: {
-    handleSelect() {
-
+    handleSelect(key) {
+      console.log("select ", key)
+      let cat = this.categories[key][1]
+      api({
+        method: "GET",
+        url: "commodity/?classification=" + cat,
+      }).then( (response) => {
+        console.log(response)
+        if (response.data.Code === "200") {
+          this.commodities = response.data["commodityList"]
+        }
+      }, (error) => {
+        ElMessage.error({
+          message: "服务器似乎在开小差..."
+        })
+        console.log(error)
+      })
     }
   },
   mounted() {
     // let defaultCat = this.categories[this.defaultActive][1]
     api({
       method: "GET",
-      url: "commodity",
+      url: "commodity/?classification=1",
     }).then( (response) => {
       console.log(response)
       if (response.data.Code === "200") {

@@ -1,5 +1,4 @@
 <template>
-  <el-main class="bg-white ">
     <div class="chat-box">
       <ol class="chat">
         <Bubble
@@ -12,7 +11,6 @@
       <input class="textarea" type="text" placeholder="Type here!" v-model="content">
       <el-button type="primary" round class="flex justify-end " @click="send">发送</el-button>
     </div>
-  </el-main>
 </template>
 
 <script>
@@ -101,6 +99,10 @@ input.textarea {
 
 .el-button:active, .el-button:focus:not(.el-button:hover) {
   background: #409eff;
+}
+
+.el-main {
+  background-image: linear-gradient(#5698c3, #d1c2d3);
 }
 
 </style>

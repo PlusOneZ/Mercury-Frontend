@@ -50,7 +50,14 @@
             </div>
             <div class="bg-yellow-200 h-full rounded-md h-full grid-cols-1 grid mt-3 ">
               <div v-for="i in currentPopularList" :key="i" class="ml-2 bg-yellow-200 ">
-                <HotGoodThumbnail class="bg-blue-200 "></HotGoodThumbnail>
+                <HotGoodThumbnail
+                    class="bg-blue-200 "
+                    :id="i.Id"
+                    :img="i.Cover"
+                    :popularity="i.Likes * 10"
+                    :price="i.Price"
+                    :title="i.Name"
+                ></HotGoodThumbnail>
               </div>
             </div>
           </div>
@@ -79,6 +86,9 @@ import {api} from "@/request";
 
 export default {
   name: "CommoditySearch",
+  props: {
+    key: String
+  },
   components: {
     CommodityThumbnail,
     HotGoodThumbnail
