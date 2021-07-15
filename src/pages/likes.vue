@@ -6,7 +6,7 @@
 
 
   <el-table
-    :data="commodities"
+    :data="tableData"
     border
     height="700"
     
@@ -14,18 +14,15 @@
     
     
     <el-table-column
+     prop="commodity"
      label="商品">
-      <template #default="scope">
-        <div class="grid grid-cols-1">
-          <el-image
-              style="width: 100px; height: 100px"
-              :src='"https://139.196.20.137:5001/api"+commodities[scope.$index].CommodityCover'></el-image>
-          <span>{{commodities[scope.$index].CommodityName}}</span>
-        </div>
-      </template>
+      <img
+            class="w-44 h-44 rounded-b-none rounded-xl image"
+            :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
+        ><span> {{ title ? title : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }}</span>
     </el-table-column>
     <el-table-column
-      prop="CommodityPrice"
+      prop="amount1"
       label="单价">
     </el-table-column>
     
@@ -35,16 +32,19 @@
       width="120">
       <template #default="scope">
         <el-button
+          @click.prevent="deleteRow(scope.$index, tableData)"
           type="text"
           size="small">
           移除
         </el-button>
-        <el-button
+        <router-link to="/CommodityDetail"><el-button
+         
           type="text"
-          size="small"
-          @click="viewDetail(scope.$index)">
+          size="small">
           商品详情
         </el-button>
+        </router-link>
+       
       </template>
     </el-table-column>
   </el-table>
@@ -52,9 +52,6 @@
     
 </template>
 <script>
-import {useStore} from "vuex";
-import {api} from "../request";
-
 export default {
   name: "HeatedThumbnail",
   props: {
@@ -64,36 +61,41 @@ export default {
 
  data() {
       return {
-        commodities: undefined,
+        tableData: [{
+          commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '234',
+        
+
+        }, {
+         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '165',
+         
+
+        }, {
+         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '324',
+         
+        }, {
+         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '621',
+          
+
+        }, {
+         commodity: '超好用拖鞋寝室外出沙滩旅游打小孩居家必备',
+          amount1: '539',
+         
+
+        }],
+      
       };
     },
-  methods: {
-      viewDetail(index) {
-        this.$router.push("/commodityDetail/"+this.commodities[index].CommodityId);
+    methods: {
+      
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
       }
-    },
-  mounted() {
-    let id = this.store.getters['user/userInfo'].id;
-
-    api({
-      url: "likes/"+id,
-      method: "GET",
-    }).then(
-        (response) => {
-          console.log(response);
-
-          if(response.data["Code"] === "200"){
-            this.commodities=response.data["ItemList"];
-          }
-        }
-    )
-  },
-  setup() {
-    let store = useStore()
-    return {
-      store,
+      
     }
-  }
 }
 </script>
 
