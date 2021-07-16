@@ -110,9 +110,7 @@
 
       </el-tabs>
     </el-row>
-    <MyCommodityAndPost>
-
-    </MyCommodityAndPost>
+    <MyCommodityAndPost :isMe=true :id=id></MyCommodityAndPost>
   </div>
 </template>
 
@@ -145,7 +143,7 @@ export default {
       },
       simpleUser: undefined,
       imageUrl: '',
-      file: undefined
+      file: undefined,
     }
   },
   methods: {
@@ -155,13 +153,12 @@ export default {
 
     beforeAvatarUpload(file) {
       console.log("file", file)
-      let id = this.store.getters['user/userInfo'].id
       let formData = new FormData()
       this.file = file
       formData.append("Avatar", this.file)
       api({
         method: "put",
-        url: "user/" + id,
+        url: "user/" + this.id,
         data: formData
       }).then(response => {
         console.log(response)
@@ -169,7 +166,7 @@ export default {
           ElMessage.success("上传成功！")
           api({
             method: "get",
-            url: "user/" + id,
+            url: "user/" + this.id,
           }).then(res => {
             if (response.data.Code === '200') {
               this.imageUrl = res.data.User.AvatarPath
@@ -187,10 +184,9 @@ export default {
       this.$router.push("/login")
       return
     }
-    let id = this.simpleUser.id
     api({
       method: "GET",
-      url: "user/" + id,
+      url: "user/" + this.id,
     }).then(response => {
       console.log(response)
       if (response.data.Code === '200') {
@@ -212,13 +208,15 @@ export default {
   },
   setup() {
     let store = useStore()
+    let id = store.getters['user/userInfo'].id
     const grades = staticData.grades
     const majors = staticData.majors
     console.log("in Me setup")
     return {
-      store,
       grades,
-      majors
+      majors,
+      store,
+      id,
     }
   }
 }
