@@ -122,6 +122,9 @@ export default {
       data.append('count', this.form.commodityNumber);
       data.append('location', this.form.locationSelect + this.form.location);
       data.append('token', token);
+      console.log('-------------------------------------------------------')
+      console.log(data.get('token'))
+      console.log('-------------------------------------------------------')
       //data.append('returnTime', null);
       //data.append('returnLocation', null);
 
@@ -133,20 +136,31 @@ export default {
       }).then(
           // Valid response
           (response) => {
-            let orderId = JSON.stringify(response.data["OrderId"]);
-            console.log(orderId)
-            this.dialogFormVisible = !this.dialogFormVisible
-            this.$router.push({
-              path: '/OrderDetermine',
-              name: 'OrderDetermine',
-              params: {
-                orderId: orderId
-              }
-            });
+            if(String(response.data["Code"]) === '403')
+            {
+              ElMessage.error({
+                message: '登入已过期，请重新登入',
+                type: 'error'
+              })
+            }
+            else {
+              let orderId = JSON.stringify(response.data["OrderId"]);
+              console.log(orderId)
+              this.dialogFormVisible = !this.dialogFormVisible
+              this.$router.push({
+                path: '/OrderDetermine',
+                name: 'OrderDetermine',
+                params: {
+                  orderId: orderId
+                }
+              });
+            }
           },
 
           // No response
           (error) => {
+            console.log('-------------------------------------------------------')
+            console.log('error')
             console.log(error)
             ElMessage.error({
               message: '服务器在开小差...',

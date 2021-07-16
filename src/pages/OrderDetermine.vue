@@ -34,6 +34,7 @@
 import {api} from "@/request";
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
+import {CookieManager} from "../cookie";
 
 export default {
   name: "OrderDetermine",
@@ -121,7 +122,9 @@ export default {
     pay: function () {
       var FormData = require('form-data');
       var data = new FormData();
+      let token = CookieManager.get("token")
       data.append('newStatus', 'PAID');
+      data.append('token', token);
       const that = this
       api({
         url: 'order/' + this.orderId.replaceAll('"', ''),
