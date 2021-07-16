@@ -14,15 +14,15 @@
 
           <div>
             <el-carousel indicator-position="outside" :interval="4000" :autoplay="true" class="rounded-lg ">
-              <el-carousel-item v-if="video!==undefined && video!=='' ">
-                <video controls="controls" @click="clickVideo()">
-                  <source :src=video type="video/mp4"/>
-                </video>
-              </el-carousel-item>
               <el-carousel-item v-for="url in images" :key="url">
                 <img class="window-img" :src="url">
               </el-carousel-item>
             </el-carousel>
+            <el-carousel-item v-if="video!==undefined && video!=='' ">
+              <video controls="controls" @click="clickVideo()">
+                <source :src=video type="video/mp4"/>
+              </video>
+            </el-carousel-item>
           </div>
 
           <br/>
@@ -176,8 +176,7 @@ export default {
       stock: 12,
       isAutoChange: true,
       for_rent: false,
-      images: ["https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-      ],
+      images: [],
       video: "",
       status: "九成新",
       popularity: 55,

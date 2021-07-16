@@ -219,7 +219,10 @@ export default {
             formData.append("Files", this.photoList[i].raw)
           }
           formData.append("Classification", this.ruleForm.category)
-          formData.append("Tag", this.dynamicTags[0])
+          for (let i = 0; i < this.dynamicTags.length; i++) {
+            console.log(this.dynamicTags[i])
+            formData.append("Tags", this.dynamicTags[i])
+          }
 
           api({
             method: "post",
@@ -251,6 +254,7 @@ export default {
     },
 
     handleClose(tag) {
+      console.log("tags", this.dynamicTags)
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
     },
 
