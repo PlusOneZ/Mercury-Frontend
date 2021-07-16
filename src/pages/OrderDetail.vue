@@ -98,6 +98,7 @@
 import {api} from "@/request";
 import comment from "@/components/Public/comment";
 import {ElMessage} from "element-plus";
+import {useStore} from "vuex";
 
 export default {
 
@@ -136,7 +137,7 @@ export default {
       let me = this.store.getters['user/userInfo'].id
       formData.append("senderId", me)
       formData.append('receiverId', this.OwnerId)
-      formData.append("content", "Hi, 这个订单《" + this.Title + '》你看到了吗？')
+      formData.append("content", "Hi, 这个订单《" + this.CommodityName + '》你看到了吗？')
 
       api({
         method: "post",
@@ -232,6 +233,12 @@ export default {
       console.log(this.OrderId)
       this.getData()
     })
+  },
+  setup() {
+    let store = useStore()
+    return {
+      store
+    }
   }
 
 }

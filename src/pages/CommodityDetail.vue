@@ -176,8 +176,7 @@ export default {
       stock: 12,
       isAutoChange: true,
       for_rent: false,
-      images: ["https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-      ],
+      images: [],
       video: "",
       status: "九成新",
       popularity: 55,
@@ -187,7 +186,7 @@ export default {
       ],
       comments: [{
         userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
-        , userId: 0, comment: 'rnm,退钱', rating: 3
+        , userId: 0, comment: '挺好用的，给个好评', rating: 8
       }],
       category: "课程用品",
       isLike: true,
@@ -381,7 +380,7 @@ export default {
             console.log(error);
             ElMessage.error('加入购物车失败');
           });
-      
+
     },
 
   },
