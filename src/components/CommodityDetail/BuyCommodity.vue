@@ -1,7 +1,8 @@
 <template>
   <div>
-    <el-button type="danger" plain v-show="for_rent===false" @click="dialogFormVisible = true">
-      {{ for_rent === false ? '立即购买' : '商品不可购买' }}
+    <el-button type="danger" plain v-show="for_rent===false" @click="dialogFormVisible = true"
+               :disabled="stock===0">
+      {{ stock === 0 ? '商品已售罄' : '立即购买' }}
     </el-button>
 
     <el-dialog title="购买信息" v-model="dialogFormVisible">
@@ -62,6 +63,7 @@
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
 import {api} from "@/request";
+import {CookieManager} from "../../cookie";
 
 export default {
   name: "BuyCommodity",
@@ -110,7 +112,7 @@ export default {
       if (isValid === false) {
         return
       }
-
+      let token = CookieManager.get("token")
       let FormData = require('form-data');
       let data = new FormData();
       console.log(this.form.locationSelect + this.form.location)
@@ -119,6 +121,7 @@ export default {
       data.append('commodityId', String(this.commodityId));
       data.append('count', this.form.commodityNumber);
       data.append('location', this.form.locationSelect + this.form.location);
+      data.append('token', token);
       //data.append('returnTime', null);
       //data.append('returnLocation', null);
 

@@ -1,7 +1,8 @@
 <template>
   <div>
-    <el-button type="success" v-show="for_rent===true" @click="dialogFormVisible = true">
-      {{ for_rent === true ? '立即租用' : '商品不可租用' }}
+    <el-button type="success" v-show="for_rent===true" @click="dialogFormVisible = true"
+               :disabled="stock===0">
+      {{ stock === 0 ? '商品已售罄' : '立即购买' }}
     </el-button>
 
     <el-dialog title="租借信息" v-model="dialogFormVisible">
@@ -92,6 +93,7 @@
 import {ElMessage} from "element-plus";
 import {api} from "@/request";
 import {useStore} from "vuex";
+import {CookieManager} from "../../cookie";
 
 export default {
   name: "RentCommodity",
@@ -152,12 +154,14 @@ export default {
       let FormData = require('form-data');
       let data = new FormData();
       console.log(this.form.locationSelect + this.form.location)
+      let token = CookieManager.get("token")
       data.append('buyerId', userId);
       data.append('sellerId', String(this.sellerId));
       data.append('commodityId', String(this.commodityId));
       data.append('count', this.form.commodityNumber);
       data.append('location', this.form.locationSelect + this.form.location);
       data.append('returnTime', this.getDate());
+      data.append('token', token);
       data.append('returnLocation', this.form.giveBackLocationSelect + this.form.giveBackLocation);
       //const that = this
       console.log('buyerId:' + data.get('buyerId'))

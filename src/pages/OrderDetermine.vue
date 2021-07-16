@@ -119,11 +119,30 @@ export default {
       this.$router.go(-1);
     },
     pay: function () {
-      ElMessage.success({
-        message: '支付成功',
-        type: 'success'
-      });
-      this.$router.go(-1);
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('newStatus', 'PAID');
+      const that = this
+      api({
+        url: 'order/' + this.orderId.replaceAll('"', ''),
+        method: "put",
+        data : data
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            ElMessage.success({
+              message: '支付成功',
+              type: 'success'
+            });
+            that.$router.go(-1);
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error({
+              message: '服务器在开小差...',
+              type: 'error'
+            })
+          });
     }
   },
   setup() {
