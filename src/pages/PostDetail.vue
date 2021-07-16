@@ -34,7 +34,7 @@
           </div>
 
           <div class="flex justify-center space-x-20 md:space-x-96">
-            <el-button type="primary" icon="el-icon-chat-dot-square" round>联系买家</el-button>
+            <el-button type="primary" icon="el-icon-chat-dot-square" @click="sendContact" round>联系买家</el-button>
             <comment :isRating="F" :userId="simpleUserId" :id="ID" ></comment>
 
           </div>
@@ -101,6 +101,22 @@ export default {
       this.canLoad = tab['props']['label'] !== '商品描述';
     },
 
+    sendContact() {
+      let formData = new FormData()
+      formData.append("senderId", this.simpleUserId)
+      formData.append('receiverId', this.SenderId)
+      formData.append("content", "Hi, 我看了你的帖子《" + this.Title + '》')
+
+      api({
+        method: "post",
+        url: 'chat',
+        data: formData
+      }).then( response => {
+        if (response.data.Code === '200') {
+          this.$router.push("/notification")
+        }
+      })
+    },
 
     getData(){
       let simpleUser = this.store.getters['user/userInfo']
@@ -126,7 +142,7 @@ export default {
             data.Comments.forEach(element => {
               let temp={
                 userName: element.SenderName,
-                userImage: element.AvatarPath,
+                userImage: 'https://139.196.20.137:5001/'+element.AvatarPath,
                 userId: element.SenderId,
                 comment: element.Content,
                 rating: -1

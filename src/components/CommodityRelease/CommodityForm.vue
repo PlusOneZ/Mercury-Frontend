@@ -213,6 +213,7 @@ export default {
           formData.append("Stock", this.ruleForm.stock)
           formData.append("ForRent", this.ruleForm.forRent)
           formData.append("Unit", this.ruleForm.unit)
+          formData.append("Description", this.ruleForm.desc)
           for (let i = 0; i < this.photoList.length; i++) {
             console.log("file", this.photoList[i])
             formData.append("Files", this.photoList[i].raw)

@@ -4,18 +4,20 @@
     <el-row class="p-14">
       <el-col :span="5" :offset="1">
         <el-card class="avatar-card" :body-style="{ padding: '35px' }">
-          <div id="wrap">
-            <div id="box">
-              <el-upload
-                  class="avatar-uploader"
-                  :before-upload="beforeAvatarUpload"
-                  :show-file-list="false"
-              >
+
+          <el-upload
+              class="avatar-uploader"
+              :before-upload="beforeAvatarUpload"
+              :show-file-list="false"
+          >
+            <div id="wrap">
+              <div id="box">
                 <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+              </div>
             </div>
-          </div>
+          </el-upload>
+
         </el-card>
       </el-col>
       <el-col :span="10" :offset="1">
@@ -78,24 +80,28 @@
     </el-row>
     <el-row type="flex" class="row-bg pb-20" justify="space-around">
       <el-tabs type="border-card">
-        <el-tab-pane class="order-box">
+        <el-tab-pane class="order-box" >
           <template #label>
             <span><i class="el-icon-s-goods"></i>订单管理</span>
           </template>
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane>
+            <el-tab-pane name="second">
               <template #label>
                 <span><i class="el-icon-document"></i>进行中</span>
               </template>
-              <MyOrders>
+              <MyOrders
+                  :type="'UNPAID'"
+              >
 
               </MyOrders>
             </el-tab-pane>
-            <el-tab-pane>
+            <el-tab-pane name="first">
               <template #label>
                 <span><i class="el-icon-document-checked"></i>已完成</span>
               </template>
-              <MyOrders>
+              <MyOrders
+                  :type="'PAID'"
+              >
 
               </MyOrders>
             </el-tab-pane>
@@ -104,9 +110,7 @@
 
       </el-tabs>
     </el-row>
-    <MyCommodityAndPost>
-
-    </MyCommodityAndPost>
+    <MyCommodityAndPost :isMe=true :id=id></MyCommodityAndPost>
   </div>
 </template>
 
@@ -139,7 +143,7 @@ export default {
       },
       simpleUser: undefined,
       imageUrl: '',
-      file: undefined
+      file: undefined,
     }
   },
   methods: {
@@ -149,22 +153,21 @@ export default {
 
     beforeAvatarUpload(file) {
       console.log("file", file)
-      let id = this.store.getters['user/userInfo'].id
       let formData = new FormData()
       this.file = file
       formData.append("Avatar", this.file)
       api({
         method: "put",
-        url: "user/" + id,
+        url: "user/" + this.id,
         data: formData
-      }).then( response => {
+      }).then(response => {
         console.log(response)
         if (response.data.Code === '200') {
           ElMessage.success("上传成功！")
           api({
             method: "get",
-            url: "user/" + id,
-          }).then( res => {
+            url: "user/" + this.id,
+          }).then(res => {
             if (response.data.Code === '200') {
               this.imageUrl = res.data.User.AvatarPath
               this.store.commit("user/uerAvatarChange", this.imageUrl)
@@ -181,10 +184,9 @@ export default {
       this.$router.push("/login")
       return
     }
-    let id = this.simpleUser.id
     api({
       method: "GET",
-      url: "user/" + id,
+      url: "user/" + this.id,
     }).then(response => {
       console.log(response)
       if (response.data.Code === '200') {
@@ -206,13 +208,15 @@ export default {
   },
   setup() {
     let store = useStore()
+    let id = store.getters['user/userInfo'].id
     const grades = staticData.grades
     const majors = staticData.majors
     console.log("in Me setup")
     return {
-      store,
       grades,
-      majors
+      majors,
+      store,
+      id,
     }
   }
 }
@@ -241,6 +245,10 @@ export default {
 
 .box-card {
   min-height: 300px;
+}
+
+.avatar {
+  min-height: 15vw;
 }
 
 #wrap {

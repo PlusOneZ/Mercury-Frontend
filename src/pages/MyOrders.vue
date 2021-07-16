@@ -49,7 +49,7 @@
           align="center">
         <template #default="scope">
           <el-button
-              @click.prevent="deleteRow(scope.$index, tableData)"
+              @click.prevent="viewDetail(scope.$index)"
               type="primary"
               size="small">
             查看订单
@@ -76,18 +76,19 @@
 import {useStore} from "vuex";
 import {api} from "@/request";
 export default {
+  props: {
+    type: String,
+  },
   data() {
     return {
       orderList: [],
       fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
       // url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-      type: String,
       itemKey: 0,
       simpleUser: {}
     }
   },
   mounted() {
-    this.type = 'UNPAID';
     this.simpleUser = this.store.getters['user/userInfo']
     if (!this.simpleUser.loggedIn) {
       this.$router.push("/login")
@@ -102,13 +103,18 @@ export default {
     }
   },
   methods: {
+    viewDetail(index) {
+      let orderId = this.orderList[index].Id
+      this.$router.push("/orderDetail/" + orderId)
+    },
+
     getOrders() {
       console.log("Loading orders...");
-      let data = new FormData();
-      data.append('userId', this.simpleUser.Id);
-      data.append('maxNumber', '5');
-      data.append('pageNumber', '1');
-      data.append('status', this.type);
+      // let data = new FormData();
+      // data.append('userId', this.simpleUser.Id);
+      // data.append('maxNumber', '5');
+      // data.append('pageNumber', '1');
+      // data.append('status', this.type);
 
       // var config = {
       //   method: 'get',
@@ -118,8 +124,7 @@ export default {
 
       api({
         method: 'get',
-        data : data,
-        url: "order"
+        url: "order?userID=" + this.store.getters['user/userInfo'].id
       })
       .then( (response) => {
         var orders = response.data.OrderList;

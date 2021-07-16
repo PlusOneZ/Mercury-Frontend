@@ -118,7 +118,7 @@ const routes = [
         beforeEnter: loginGuard
     },
     {
-        path: "/orderDetail",
+        path: "/orderDetail/:OrderId",
         name: "OrderDetail",
         component: OrderDetail,
         beforeEnter: loginGuard

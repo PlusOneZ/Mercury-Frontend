@@ -359,15 +359,29 @@ export default {
     },
     addShoppingCart: function () {
       //发送请求
-      let i = 1
-      if (i === 1) {
-        ElMessage.success({
-          message: '加入购物车成功',
-          type: 'success'
-        });
-      } else {
-        ElMessage.error('加入购物车失败');
-      }
+      var FormData = require('form-data');
+      var data = new FormData();
+      data.append('commodityId', this.commodityId);
+      data.append('userId', this.userId);
+
+
+      api({
+        url: 'shoppingCart',
+        method: 'post',
+        data: data
+      })
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            ElMessage.success({
+              message: '加入购物车成功',
+              type: 'success'
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+            ElMessage.error('加入购物车失败');
+          });
+      
     },
 
   },

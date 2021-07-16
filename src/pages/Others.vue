@@ -4,7 +4,7 @@
       <el-col :span="5" :offset="1">
         <el-card :body-style="{ padding: '35px' }">
           <div class="demo-basic--circle">
-            <div class="block"><el-avatar :size="200" :src="circleUrl"></el-avatar></div>
+            <img v-if="imageUrl" :src="'https://139.196.20.137:5001/' + imageUrl" class="avatar">
           </div>
         </el-card>
       </el-col>
@@ -17,59 +17,78 @@
             </div>
           </template>
           <div class="text item">
-            {{'用户昵称：橘黄黄黄'}}
+            用户昵称：{{ user.Nickname }}
           </div>
           <div class="text item">
-            {{'专业：软件工程&emsp;年级：大二'}}
+            专业：{{
+              majors.find((i) => {
+                return i.value === user.Major
+              }).label
+            }} <span class="w-4"></span> 年级：{{
+              grades.find((i) => {
+                return i.value === String(user.Grade)
+              }).label
+            }}
           </div>
           <div class="text item">
-            {{'用户信用值：666'}}
+            用户信用值：{{ user.Credit }}
           </div>
           <div class="text item">
-            {{'用户个性签名：稳的一批'}}
+            用户个性签名：{{ user.Brief }}
           </div>
         </el-card>
       </el-col>
-      <!-- <el-col :span="5" :offset="1">
-        <el-card class="box-card">
-          <template #header>
-            <div class="card-header">
-              <span>订单信息</span>
-              <el-button class="button" type="text"></el-button>
-            </div>
-          </template>
-          <div class="text item">
-            {{'待支付订单数量：0'}}
-          </div>
-          <div class="text item">
-            {{'待交易订单数量：0'}}
-          </div>
-          <div class="text item">
-            {{'已发布订单数量：0'}}
-          </div>
-          <div class="text item">
-            {{'收藏夹商品数量：0'}}
-          </div>
-        </el-card>
-      </el-col> -->
     </el-row>
-    <el-row type="flex" class="row-bg" justify="space-around">
-      <el-space :size="100" spacer="|">
-      <!-- <el-button size="medium" type="primary" icon="el-icon-star-on">收藏夹</el-button> -->
-      <!-- <el-button size="medium" type="primary" icon="el-icon-shopping-cart-2">购物车</el-button>
-      <el-button size="medium" type="primary" icon="el-icon-s-goods">我的订单</el-button> -->
-      <el-button size="medium" type="primary" icon="el-icon-date">发布历史</el-button>
-      </el-space>
-    </el-row>
+    <MyCommodityAndPost :isMe=false :id=id></MyCommodityAndPost>
   </div>
 </template>
 
 <script>
+import {api} from "@/request";
+import {staticData} from "@/assets/js/static";
+import MyCommodityAndPost from "../components/Public/MyCommodityAndPost";
+
 export default {
   name: "Home",
+  components: {MyCommodityAndPost},
+  props: {
+    id: String,
+  },
   data () {
     return {
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+      imageUrl: null,
+      user: {
+        "SchoolId": "null",
+        "Nickname": "null",
+        "RealName": "null",
+        "Phone": "0000000000",
+        "Major": "OT",
+        "Credit": 0,
+        "Role": "null",
+        "Grade": 1,
+        "Brief": "null",
+        "AvatarPath": "null"
+      },
+    }
+  },
+  mounted() {
+    api({
+      method: 'GET',
+      url: "user/" + this.id
+    }).then( response => {
+      if (response.data.Code === '200') {
+        this.user = response.data.User
+        this.imageUrl = this.user.AvatarPath
+      }
+    })
+  },
+  setup() {
+    const grades = staticData.grades
+    const majors = staticData.majors
+    console.log("in Me setup")
+    return {
+      grades,
+      majors
     }
   }
 }
@@ -89,5 +108,22 @@ export default {
 
 .item {
   margin-bottom: 18px;
+}
+
+.avatar {
+  min-height: 15vw;
+}
+
+#wrap {
+  width: 100%;
+  height: 100%;
+}
+
+#box {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+  border-radius: 50%;
 }
 </style>
