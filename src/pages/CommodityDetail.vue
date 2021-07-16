@@ -14,15 +14,15 @@
 
           <div>
             <el-carousel indicator-position="outside" :interval="4000" :autoplay="true" class="rounded-lg ">
-              <el-carousel-item v-if="video!==undefined && video!=='' ">
-                <video controls="controls" @click="clickVideo()">
-                  <source :src=video type="video/mp4"/>
-                </video>
-              </el-carousel-item>
               <el-carousel-item v-for="url in images" :key="url">
                 <img class="window-img" :src="url">
               </el-carousel-item>
             </el-carousel>
+            <el-carousel-item v-if="video!==undefined && video!=='' ">
+              <video controls="controls" @click="clickVideo()">
+                <source :src=video type="video/mp4"/>
+              </video>
+            </el-carousel-item>
           </div>
 
           <br/>
@@ -184,10 +184,12 @@ export default {
       tags: [
         "好用", "牛逼", '我是你爹', '你是我儿', '写网页好累', '啦啦啦'
       ],
+
       comments: [{
         userName: 'rzc', userImage: "https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png"
         , userId: 0, comment: '挺好用的，给个好评', rating: 8
       }],
+
       category: "课程用品",
       isLike: true,
       isOwnerAvatarSuccess: true,
@@ -273,7 +275,7 @@ export default {
               that.comments.unshift(temp)
             }
             console.log('++++++++++++++++++++++++++++++++++++++')
-            console.log(that.comments[0]['userName'])
+            //console.log(that.comments[0]['userName'])
           })
           .catch(function (error) {
             console.log(error);
