@@ -179,16 +179,23 @@ export default {
       }).then(
           // Valid response
           (response) => {
-            let orderId = JSON.stringify(response.data["OrderId"]);
-            console.log(orderId)
-            this.dialogFormVisible = !this.dialogFormVisible
-            this.$router.push({
-              path: '/OrderDetermine',
-              name: 'OrderDetermine',
-              params: {
-                orderId: orderId
-              }
-            });
+            if (String(response.data["Code"]) === '403') {
+              ElMessage.error({
+                message: '登入已过期，请重新登入',
+                type: 'error'
+              })
+            } else {
+              let orderId = JSON.stringify(response.data["OrderId"]);
+              console.log(orderId)
+              this.dialogFormVisible = !this.dialogFormVisible
+              this.$router.push({
+                path: '/OrderDetermine',
+                name: 'OrderDetermine',
+                params: {
+                  orderId: orderId
+                }
+              });
+            }
           },
 
           // No response
