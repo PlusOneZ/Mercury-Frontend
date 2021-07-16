@@ -5,7 +5,7 @@
     <div class=" rounded-2xl bg-white border-black divide-y divide-black ml-8  mr-8" >
       <div class="flex flex-row space-x-8">
         <div class="container w-1/6 h-1/2">
-          <el-carousel  v-if="Images" indicator-position="outside" :interval="4000" :autoplay=false class="rounded-lg " height="250px">
+          <el-carousel  v-if="Images.length !== 0" indicator-position="outside" :interval="4000" :autoplay= true class="rounded-lg " height="250px">
             <el-carousel-item  v-for="item in Images" :key="item">
               <img class="window-img" :src = "'https://139.196.20.137:5001/'+item">
 
