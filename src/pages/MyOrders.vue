@@ -54,18 +54,6 @@
               size="small">
             查看订单
           </el-button>
-          <el-button
-              @click.prevent="cancelOrder(scope.$index)"
-              type="primary"
-              size="small">
-            取消订单
-          </el-button>
-          <el-button
-              @click.prevent="deleteRow(scope.$index, tableData)"
-              type="primary"
-              size="small">
-            联系卖家
-          </el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -99,6 +99,7 @@ import {api} from "@/request";
 import comment from "@/components/Public/comment";
 import {ElMessage} from "element-plus";
 import {useStore} from "vuex";
+import {CookieManager} from "@/cookie";
 
 export default {
 
@@ -153,6 +154,7 @@ export default {
     pay() {
       let data = new FormData()
       data.append("newStatus", "PAID")
+      data.append("token", CookieManager.get("token"))
       api({
         method: "put",
         url: "order/" + this.OrderId,
@@ -161,6 +163,8 @@ export default {
         if (response.data.Code === '200') {
           ElMessage.success("支付成功！")
           this.$router.go(0)
+        } else {
+          ElMessage.error("支付失败")
         }
       })
     },
