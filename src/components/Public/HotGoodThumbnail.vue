@@ -5,7 +5,7 @@
         <el-main>
           <img
               class="w-44 h-44 rounded-b-none rounded-xl image"
-              :src="img ? img : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
+              :src="commodity.Cover ? 'https://139.196.20.137:5001/' + commodity.Cover : 'https://i.loli.net/2021/05/18/vWptQgAlsTqdxrK.png'"
           >
         </el-main>
         <el-aside width="200px" class="">
