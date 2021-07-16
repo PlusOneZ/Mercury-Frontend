@@ -57,7 +57,7 @@
         <div class="border-red-300 ml-12 grid justify-items-center ">
 
           <div class="mt-8">
-            <p class="text-center px-3 py-3 text-3xl font-bold "> {{ name ? name : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }} </p>
+            <p class="text-center px-3 py-3 text-3xl font-bold"> {{ name ? name : "超好用拖鞋寝室外出沙滩旅游打小孩居家必备" }} </p>
           </div>
 
           <div class="rounded-lg border-2 border-blue-200">
@@ -104,7 +104,7 @@
           </div>
 
           <div class="flex justify-around mt-8">
-            <div class="mr-8 ml-8" v-if="for_rent===true">
+            <div class="mr-8 ml-8" v-if="for_rent==true">
               <rent-commodity :buyer="userName" :commodity-name="name" :price="price"
                               :for_rent="for_rent" :commodity-id="String(commodityId)"
                               :seller-id="String(ownerId)" :stock="stock"></rent-commodity>

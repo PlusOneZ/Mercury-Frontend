@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="danger" plain v-show="for_rent===false" @click="dialogFormVisible = true"
+    <el-button type="danger" plain v-show="for_rent==false" @click="dialogFormVisible = true"
                :disabled="stock===0">
       {{ stock === 0 ? '商品已售罄' : '立即购买' }}
     </el-button>

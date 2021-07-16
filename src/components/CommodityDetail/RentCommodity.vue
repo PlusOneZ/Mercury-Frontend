@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-button type="success" v-show="for_rent===true" @click="dialogFormVisible = true"
+    <el-button type="success" v-show="for_rent==true" @click="dialogFormVisible = true"
                :disabled="stock===0">
-      {{ stock === 0 ? '商品已售罄' : '立即购买' }}
+      {{ stock === 0 ? '商品已售罄' : '立即租借' }}
     </el-button>
 
     <el-dialog title="租借信息" v-model="dialogFormVisible">
