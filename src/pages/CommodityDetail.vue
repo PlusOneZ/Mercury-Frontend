@@ -13,16 +13,17 @@
         <div class="ml-32 rounded-lg border-gray-300 border ">
 
           <div>
-            <el-carousel indicator-position="outside" :interval="4000" :autoplay="true" class="rounded-lg ">
-              <el-carousel-item v-for="url in images" :key="url">
+            <el-carousel v-if ="images.length !== 0" loopindicator-position="outside" :interval="4000" :autoplay="true" class="rounded-lg ">
+              <el-carousel-item  v-for="url in images" :key="url">
                 <img class="window-img" :src="url">
               </el-carousel-item>
-            </el-carousel>
-            <el-carousel-item v-if="video!==undefined && video!=='' ">
-              <video controls="controls" @click="clickVideo()">
-                <source :src=video type="video/mp4"/>
-              </video>
-            </el-carousel-item>
+             </el-carousel>
+              <el-carousel-item v-if="video!==undefined && video!=='' ">
+                <video controls="controls" @click="clickVideo()">
+                  <source :src=video type="video/mp4"/>
+                </video>
+              </el-carousel-item>
+           
           </div>
 
           <br/>
