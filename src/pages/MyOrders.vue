@@ -127,7 +127,7 @@ export default {
           order.name = orders[i].CommodityName;
           order.price = orders[i].Price;
           order.count = orders[i].Count;
-          order.totalPrice = orders.price * order.count;
+          order['totalPrice'] = order.price * order.count;
           order.Id = orders[i].Id;
           this.orderList.push(order);
         }

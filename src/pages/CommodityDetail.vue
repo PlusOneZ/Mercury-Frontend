@@ -246,9 +246,9 @@ export default {
             for (let i = 0; i < temp.length; i++) {
               that.images.push('https://139.196.20.137:5001/' + temp[i])
             }
-            if (commo['Cover'] !== undefined) {
-              that.images.push('https://139.196.20.137:5001/' + commo['Cover'])
-            }
+            // if (commo['Cover'] !== undefined) {
+            //   that.images.push('https://139.196.20.137:5001/' + commo['Cover'])
+            // }
             that.video = commo['VidePath']
             if (that.video !== undefined) {
               that.video = 'https://139.196.20.137:5001/' + that.video

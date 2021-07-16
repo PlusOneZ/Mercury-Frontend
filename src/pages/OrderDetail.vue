@@ -172,6 +172,7 @@ export default {
     cancel() {
       let data = new FormData()
       data.append("newStatus", "CANCELLED")
+      data.append("token", CookieManager.get("token"))
       api({
         method: "put",
         url: "order/" + this.OrderId,
